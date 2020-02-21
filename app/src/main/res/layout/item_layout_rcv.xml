@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/font_8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginTop="@dimen/font_8dp"
+        android:id="@+id/itemConstCalendar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtDayItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20"
+            android:textColor="#03A9F4"
+            android:textSize="@dimen/font_16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:textSize="@dimen/font_16sp"
+            android:textColor="#03A9F4"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txtDayItem"
+            android:id="@+id/txtthangItem"
+            android:layout_marginLeft="@dimen/font_4dp"
+            app:layout_constraintStart_toEndOf="@id/txtDayItem"
+            android:text="tháng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:textSize="@dimen/font_16sp"
+            android:textColor="#03A9F4"
+            android:textStyle="bold"
+            android:id="@+id/txtMonthItem"
+            android:text="2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txtthangItem"
+            android:layout_marginLeft="@dimen/font_4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textSize="@dimen/font_16sp"
+            android:textColor="#03A9F4"
+            android:textStyle="bold"
+            android:id="@+id/txtYearItem"
+            android:text="2020"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txtMonthItem"
+            android:layout_marginLeft="@dimen/font_4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:textSize="@dimen/font_16sp"
+            android:textColor="#03A9F4"
+            android:textStyle="bold"
+            android:id="@+id/txtTh"
+            android:text="Th"
+            android:layout_marginLeft="@dimen/font_8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txtYearItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textSize="@dimen/font_16sp"
+            android:textColor="#03A9F4"
+            android:textStyle="bold"
+            android:id="@+id/txtThu"
+            android:layout_marginLeft="@dimen/font_4dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txtTh"
+            android:text="6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemConstContent"
+        app:layout_constraintTop_toBottomOf="@id/itemConstCalendar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="@dimen/font_16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtHourItem"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="17"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txtpoint"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txtHourItem"
+            android:text=":"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txtMinuteItem"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txtpoint"
+            android:text="30"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txtContainItem"
+            app:layout_constraintTop_toBottomOf="@id/txtHourItem"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="@dimen/font_4dp"
+            android:text="Di choi tam chuc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/imgItem"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/icons8_account_64"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="@dimen/font_64dp"
+            android:layout_height="@dimen/font_64dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

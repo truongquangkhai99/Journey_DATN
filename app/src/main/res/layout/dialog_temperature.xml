@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/font_16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/txt_DL_describeWeather"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/font_24dp"
+        android:textSize="@dimen/font_24dp"
+        android:textColor="#03A9F4"
+        android:text="Nắng ấm xa dần"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt_DL_temperature"
+        app:layout_constraintTop_toBottomOf="@id/txt_DL_describeWeather"
+        app:layout_constraintStart_toStartOf="@id/txt_DL_describeWeather"
+        android:layout_marginTop="@dimen/font_8dp"
+        android:textSize="@dimen/font_32dp"
+        android:textColor="#03A9F4"
+        android:text="22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        app:layout_constraintTop_toBottomOf="@id/txt_DL_describeWeather"
+        app:layout_constraintStart_toEndOf="@id/txt_DL_temperature"
+        android:layout_marginTop="@dimen/font_8dp"
+        android:textSize="@dimen/font_32dp"
+        android:textColor="#03A9F4"
+        android:text="°C"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/img_DL_RemoveTemperature"
+        app:layout_constraintStart_toStartOf="@id/txt_DL_describeWeather"
+        app:layout_constraintTop_toBottomOf="@id/txt_DL_temperature"
+        android:layout_marginTop="@dimen/font_16dp"
+        android:layout_marginLeft="@dimen/font_16dp"
+        android:src="@drawable/icons8_cloud_48"
+        android:layout_width="@dimen/font_48dp"
+        android:layout_height="@dimen/font_48dp"/>
+
+    <TextView
+        app:layout_constraintStart_toStartOf="@id/img_DL_RemoveTemperature"
+        app:layout_constraintEnd_toEndOf="@id/img_DL_RemoveTemperature"
+        app:layout_constraintTop_toBottomOf="@id/img_DL_RemoveTemperature"
+        android:text="Remove Weather"
+        android:textSize="@dimen/font_16dp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

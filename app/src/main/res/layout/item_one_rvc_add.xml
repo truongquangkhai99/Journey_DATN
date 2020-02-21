@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/font_8dp"
+    android:paddingBottom="@dimen/font_8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imgIconCoilAdd"
+        android:src="@drawable/icons8_coil_60"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imgIconRegionAdd"
+        android:layout_width="@dimen/font_32dp"
+        android:layout_height="@dimen/font_32dp"/>
+
+    <ImageView
+        android:id="@+id/imgIconRegionAdd"
+        android:src="@drawable/icons8_region_80"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="@dimen/font_8dp"
+        app:layout_constraintStart_toEndOf="@id/imgIconCoilAdd"
+        app:layout_constraintEnd_toStartOf="@id/imgIconThermometerAdd"
+        android:layout_width="@dimen/font_32dp"
+        android:layout_height="@dimen/font_32dp"/>
+
+    <ImageView
+        android:id="@+id/imgIconThermometerAdd"
+        android:src="@drawable/icons8_thermometer_64"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="@dimen/font_8dp"
+        app:layout_constraintStart_toEndOf="@id/imgIconRegionAdd"
+        app:layout_constraintEnd_toStartOf="@id/imgIconCollectAdd"
+        android:layout_width="@dimen/font_32dp"
+        android:layout_height="@dimen/font_32dp"/>
+
+    <ImageView
+        android:id="@+id/imgIconCollectAdd"
+        android:src="@drawable/icons8_collect_50"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="@dimen/font_8dp"
+        app:layout_constraintStart_toEndOf="@id/imgIconThermometerAdd"
+        app:layout_constraintEnd_toStartOf="@id/imgIconHappyAdd"
+        android:layout_width="@dimen/font_32dp"
+        android:layout_height="@dimen/font_32dp"/>
+    <ImageView
+        android:id="@+id/imgIconHappyAdd"
+        android:src="@drawable/icons8_happy_52"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="@dimen/font_8dp"
+        app:layout_constraintStart_toEndOf="@id/imgIconCollectAdd"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="@dimen/font_32dp"
+        android:layout_height="@dimen/font_32dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

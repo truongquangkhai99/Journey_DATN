@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="@dimen/font_16dp"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img_setup_Journey"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/widget_text_preview"
+        android:layout_width="@dimen/font_32dp"
+        android:layout_height="@dimen/font_32dp"/>
+
+    <TextView
+        app:layout_constraintTop_toTopOf="@id/img_setup_Journey"
+        app:layout_constraintBottom_toBottomOf="@id/img_setup_Journey"
+        app:layout_constraintStart_toEndOf="@id/img_setup_Journey"
+        android:layout_marginLeft="@dimen/font_8dp"
+        android:text="JOURNEY"
+        android:textSize="@dimen/font_16dp"
+        android:textColor="#03A9F4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:id="@+id/viewOne"
+        app:layout_constraintTop_toBottomOf="@id/img_setup_Journey"
+        android:layout_marginTop="@dimen/font_16dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <ImageView
+        android:id="@+id/img_setup_avatar"
+        app:layout_constraintTop_toBottomOf="@id/viewOne"
+        app:layout_constraintStart_toStartOf="@id/img_setup_Journey"
+        android:layout_marginTop="@dimen/font_16dp"
+        android:src="@drawable/icons8_account_64"
+        android:layout_width="@dimen/font_32dp"
+        android:layout_height="@dimen/font_32dp"/>
+
+    <TextView
+        android:id="@+id/txt_Setup_UserName"
+        app:layout_constraintTop_toTopOf="@id/img_setup_avatar"
+        app:layout_constraintBottom_toBottomOf="@id/img_setup_avatar"
+        app:layout_constraintStart_toEndOf="@id/img_setup_avatar"
+        android:layout_marginLeft="@dimen/font_16dp"
+        android:text="Nguyen Van Quan"
+        android:textSize="@dimen/font_16dp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:id="@+id/vieTwo"
+        app:layout_constraintTop_toBottomOf="@id/img_setup_avatar"
+        android:layout_marginTop="@dimen/font_16dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const_setup_alarm"
+        app:layout_constraintStart_toStartOf="@id/img_setup_Journey"
+        app:layout_constraintTop_toBottomOf="@id/vieTwo"
+        android:layout_marginTop="@dimen/font_16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_setup_reminder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/icons8_add_reminder_50"
+            android:layout_width="@dimen/font_32dp"
+            android:layout_height="@dimen/font_32dp"/>
+
+        <TextView
+            app:layout_constraintTop_toTopOf="@id/img_setup_reminder"
+            app:layout_constraintBottom_toBottomOf="@id/img_setup_reminder"
+            app:layout_constraintStart_toEndOf="@id/img_setup_reminder"
+            android:text="Setup Alarm"
+            android:layout_marginLeft="@dimen/font_16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const_setup_linkWeb"
+        app:layout_constraintStart_toStartOf="@id/img_setup_Journey"
+        app:layout_constraintTop_toBottomOf="@id/const_setup_alarm"
+        android:layout_marginTop="@dimen/font_32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_setup_linkWeb"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/icons8_linking2_50"
+            android:layout_width="@dimen/font_32dp"
+            android:layout_height="@dimen/font_32dp"/>
+
+        <TextView
+            app:layout_constraintTop_toTopOf="@id/img_setup_linkWeb"
+            app:layout_constraintBottom_toBottomOf="@id/img_setup_linkWeb"
+            app:layout_constraintStart_toEndOf="@id/img_setup_linkWeb"
+            android:text="Go To The Web Version"
+            android:layout_marginLeft="@dimen/font_16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const_setup_help"
+        app:layout_constraintStart_toStartOf="@id/img_setup_Journey"
+        app:layout_constraintTop_toBottomOf="@id/const_setup_linkWeb"
+        android:layout_marginTop="@dimen/font_32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_setup_help"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/icons8_help_50"
+            android:layout_width="@dimen/font_32dp"
+            android:layout_height="@dimen/font_32dp"/>
+
+        <TextView
+            app:layout_constraintTop_toTopOf="@id/img_setup_help"
+            app:layout_constraintBottom_toBottomOf="@id/img_setup_help"
+            app:layout_constraintStart_toEndOf="@id/img_setup_help"
+            android:text="Help"
+            android:layout_marginLeft="@dimen/font_16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const_setup_feedback"
+        app:layout_constraintStart_toStartOf="@id/img_setup_Journey"
+        app:layout_constraintTop_toBottomOf="@id/const_setup_help"
+        android:layout_marginTop="@dimen/font_32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_setup_feedback"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/icons8_feedback_100"
+            android:layout_width="@dimen/font_32dp"
+            android:layout_height="@dimen/font_32dp"/>
+
+        <TextView
+            app:layout_constraintTop_toTopOf="@id/img_setup_feedback"
+            app:layout_constraintBottom_toBottomOf="@id/img_setup_feedback"
+            app:layout_constraintStart_toEndOf="@id/img_setup_feedback"
+            android:text="Feedback"
+            android:layout_marginLeft="@dimen/font_16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const_setup_setting"
+        app:layout_constraintStart_toStartOf="@id/img_setup_Journey"
+        app:layout_constraintTop_toBottomOf="@id/const_setup_feedback"
+        android:layout_marginTop="@dimen/font_32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_setup_setting"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/icons8_setting_56"
+            android:layout_width="@dimen/font_32dp"
+            android:layout_height="@dimen/font_32dp"/>
+
+        <TextView
+            app:layout_constraintTop_toTopOf="@id/img_setup_setting"
+            app:layout_constraintBottom_toBottomOf="@id/img_setup_setting"
+            app:layout_constraintStart_toEndOf="@id/img_setup_setting"
+            android:text="Setting"
+            android:layout_marginLeft="@dimen/font_16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

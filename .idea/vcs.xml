@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Github/People_MVVM" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Github/fullcalendar/example-projects" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Github/nr1-customer-journey" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Github/tictactoe_mvvm" vcs="Git" />
+    <mapping directory="C:\Users\admin\AndroidStudioProjects\Github\Android-PickerView" vcs="Git" />
+    <mapping directory="C:\Users\admin\AndroidStudioProjects\Github\Material-Calendar-View" vcs="Git" />
+    <mapping directory="C:\Users\admin\AndroidStudioProjects\Github\fullcalendar" vcs="Git" />
+  </component>
+</project>
