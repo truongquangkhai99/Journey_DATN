@@ -107,6 +107,18 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/txtWrong_Login"
+        app:layout_constraintBottom_toTopOf="@id/constNumberLogin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="@dimen/font_8dp"
+        android:text="Wrong passcode. Please try again."
+        android:textColor="@android:color/white"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constNumberLogin"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -240,6 +252,7 @@
             app:layout_constraintTop_toTopOf="@id/txtMark"
             app:layout_constraintStart_toEndOf="@id/txtMark"
             app:layout_constraintEnd_toStartOf="@id/txtMul"
+            android:layout_marginRight="@dimen/font_4dp"
             android:id="@+id/txt0"
             android:text="0"
             android:textColor="@android:color/white"
@@ -251,6 +264,7 @@
             app:layout_constraintTop_toTopOf="@id/txtMark"
             app:layout_constraintStart_toEndOf="@id/txt0"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="@dimen/font_4dp"
             android:id="@+id/txtMul"
             android:text="x"
             android:textColor="@android:color/white"
@@ -260,7 +274,4 @@
             android:layout_height="wrap_content"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
