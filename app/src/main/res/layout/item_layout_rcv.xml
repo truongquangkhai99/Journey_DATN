@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_margin="@dimen/font_8dp"
+    android:paddingBottom="@dimen/font_8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -135,6 +136,15 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_width="@dimen/font_64dp"
             android:layout_height="@dimen/font_64dp"/>
+
+        <TextView
+            android:id="@+id/txtPositionItem"
+            app:layout_constraintTop_toBottomOf="@id/imgItem"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="@dimen/font_8dp"
+            android:text="85 vu trong phung"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
