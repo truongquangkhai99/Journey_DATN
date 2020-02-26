@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-     android:id="@+id/journey"
+     android:id="@+id/menu_journey"
      android:icon="@drawable/icons8_journey_60"
      android:title="Journey"
         />
     <item
-        android:id="@+id/calendar"
+        android:id="@+id/menu_calendar"
         android:icon="@drawable/icons8_calendar"
         android:title="Calendar"
         />
     <item
-        android:id="@+id/media"
+        android:id="@+id/menu_media"
         android:icon="@drawable/icons8_media"
         android:title="Media"
         />
     <item
-        android:id="@+id/atlas"
+        android:id="@+id/menu_atlas"
         android:icon="@drawable/icons8_atlas_64"
         android:title="Atlas"
         />
     <item
-        android:id="@+id/today"
+        android:id="@+id/menu_today"
         android:icon="@drawable/icons8_today_52"
         android:title="Today"
         />

@@ -7,14 +7,14 @@
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_Calendar"
+        android:id="@+id/appbar_calendar"
         android:layout_width="match_parent"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay"
         android:layout_height="180dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout_Calendar"
+            android:id="@+id/toolbar_layout_calendar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -23,7 +23,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:paddingTop="@dimen/font_16dp"
+                android:paddingTop="@dimen/dp_16"
                 android:layout_height="wrap_content">
 
                 //chèn DatePicker vào đây
@@ -39,14 +39,14 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvJourney_Calendar"
+            android:id="@+id/rcv_journey_calendar_Calendar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_Calendar"
+        android:id="@+id/fab_calendar"
         android:layout_margin="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

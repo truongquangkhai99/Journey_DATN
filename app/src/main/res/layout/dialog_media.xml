@@ -3,129 +3,129 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:padding="@dimen/font_16dp"
+    android:padding="@dimen/dp_16"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/txt_DL_Media"
+        android:id="@+id/txt_dl_media"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:text="Media..."
-        android:textSize="@dimen/font_32dp"
-        android:textColor="#03A9F4"
+        android:textSize="@dimen/dp_32"
+        android:textColor="@color/color_background_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constMedia"
-        app:layout_constraintTop_toBottomOf="@id/txt_DL_Media"
-        app:layout_constraintStart_toStartOf="@id/txt_DL_Media"
-        android:layout_marginTop="@dimen/font_16dp"
+        android:id="@+id/const_media"
+        app:layout_constraintTop_toBottomOf="@id/txt_dl_media"
+        app:layout_constraintStart_toStartOf="@id/txt_dl_media"
+        android:layout_marginTop="@dimen/dp_16"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/img_DL_Gallery"
+            android:id="@+id/img_dl_gallery"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/img_DL_File"
+            app:layout_constraintEnd_toStartOf="@id/img_dl_file"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons_gallery_80"
-            android:layout_marginLeft="@dimen/font_16dp"
-            android:layout_width="@dimen/font_48dp"
-            android:layout_height="@dimen/font_48dp"/>
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_48"/>
 
         <TextView
-            android:id="@+id/txt_DL_Gallery"
-            app:layout_constraintStart_toStartOf="@id/img_DL_Gallery"
-            app:layout_constraintTop_toBottomOf="@id/img_DL_Gallery"
-            app:layout_constraintEnd_toEndOf="@id/img_DL_Gallery"
-            android:layout_marginTop="@dimen/font_8dp"
+            android:id="@+id/txt_dl_gallery"
+            app:layout_constraintStart_toStartOf="@id/img_dl_gallery"
+            app:layout_constraintTop_toBottomOf="@id/img_dl_gallery"
+            app:layout_constraintEnd_toEndOf="@id/img_dl_gallery"
+            android:layout_marginTop="@dimen/dp_8"
             android:text="Gallery"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <ImageView
-            android:id="@+id/img_DL_File"
-            app:layout_constraintStart_toEndOf="@id/img_DL_Gallery"
-            app:layout_constraintEnd_toStartOf="@id/img_DL_Photo"
+            android:id="@+id/img_dl_file"
+            app:layout_constraintStart_toEndOf="@id/img_dl_gallery"
+            app:layout_constraintEnd_toStartOf="@id/img_dl_photo"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_file_48"
-            android:layout_marginLeft="@dimen/font_16dp"
-            android:layout_width="@dimen/font_48dp"
-            android:layout_height="@dimen/font_48dp"/>
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_48"/>
 
         <TextView
-            android:id="@+id/txt_DL_File"
-            app:layout_constraintStart_toStartOf="@id/img_DL_File"
-            app:layout_constraintTop_toBottomOf="@id/img_DL_File"
-            app:layout_constraintEnd_toEndOf="@id/img_DL_File"
-            android:layout_marginTop="@dimen/font_8dp"
+            android:id="@+id/txt_dl_file"
+            app:layout_constraintStart_toStartOf="@id/img_dl_file"
+            app:layout_constraintTop_toBottomOf="@id/img_dl_file"
+            app:layout_constraintEnd_toEndOf="@id/img_dl_file"
+            android:layout_marginTop="@dimen/dp_8"
             android:text="File"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <ImageView
-            android:id="@+id/img_DL_Photo"
-            app:layout_constraintStart_toEndOf="@id/img_DL_File"
-            app:layout_constraintEnd_toStartOf="@id/img_DL_Video"
+            android:id="@+id/img_dl_photo"
+            app:layout_constraintStart_toEndOf="@id/img_dl_file"
+            app:layout_constraintEnd_toStartOf="@id/img_dl_video"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_unsplash_50"
-            android:layout_marginLeft="@dimen/font_16dp"
-            android:layout_width="@dimen/font_48dp"
-            android:layout_height="@dimen/font_48dp"/>
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_48"/>
 
         <TextView
-            android:id="@+id/txt_DL_Photo"
-            app:layout_constraintStart_toStartOf="@id/img_DL_Photo"
-            app:layout_constraintTop_toBottomOf="@id/img_DL_Photo"
-            app:layout_constraintEnd_toEndOf="@id/img_DL_Photo"
-            android:layout_marginTop="@dimen/font_8dp"
+            android:id="@+id/txt_dl_photo"
+            app:layout_constraintStart_toStartOf="@id/img_dl_photo"
+            app:layout_constraintTop_toBottomOf="@id/img_dl_photo"
+            app:layout_constraintEnd_toEndOf="@id/img_dl_photo"
+            android:layout_marginTop="@dimen/dp_8"
             android:text="Photo"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <ImageView
-            android:id="@+id/img_DL_Video"
-            app:layout_constraintStart_toEndOf="@id/img_DL_Photo"
-            app:layout_constraintEnd_toStartOf="@id/img_DL_Microphone"
+            android:id="@+id/img_dl_video"
+            app:layout_constraintStart_toEndOf="@id/img_dl_photo"
+            app:layout_constraintEnd_toStartOf="@id/img_dl_microphone"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_video_call_48"
-            android:layout_marginLeft="@dimen/font_16dp"
-            android:layout_width="@dimen/font_48dp"
-            android:layout_height="@dimen/font_48dp"/>
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_48"/>
 
         <TextView
-            android:id="@+id/txt_DL_Video"
-            app:layout_constraintStart_toStartOf="@id/img_DL_Video"
-            app:layout_constraintTop_toBottomOf="@id/img_DL_Video"
-            app:layout_constraintEnd_toEndOf="@id/img_DL_Video"
-            android:layout_marginTop="@dimen/font_8dp"
+            android:id="@+id/txt_dl_video"
+            app:layout_constraintStart_toStartOf="@id/img_dl_video"
+            app:layout_constraintTop_toBottomOf="@id/img_dl_video"
+            app:layout_constraintEnd_toEndOf="@id/img_dl_video"
+            android:layout_marginTop="@dimen/dp_8"
             android:text="Video"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <ImageView
-            android:id="@+id/img_DL_Microphone"
-            app:layout_constraintStart_toEndOf="@id/img_DL_Video"
+            android:id="@+id/img_dl_microphone"
+            app:layout_constraintStart_toEndOf="@id/img_dl_video"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_microphone_48"
-            android:layout_marginRight="@dimen/font_16dp"
-            android:layout_marginLeft="@dimen/font_16dp"
-            android:layout_width="@dimen/font_48dp"
-            android:layout_height="@dimen/font_48dp"/>
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_48"/>
 
         <TextView
-            android:id="@+id/txt_DL_Microphone"
-            app:layout_constraintStart_toStartOf="@id/img_DL_Microphone"
-            app:layout_constraintTop_toBottomOf="@id/img_DL_Microphone"
-            app:layout_constraintEnd_toEndOf="@id/img_DL_Microphone"
-            android:layout_marginTop="@dimen/font_8dp"
+            android:id="@+id/txt_dl_microphone"
+            app:layout_constraintStart_toStartOf="@id/img_dl_microphone"
+            app:layout_constraintTop_toBottomOf="@id/img_dl_microphone"
+            app:layout_constraintEnd_toEndOf="@id/img_dl_microphone"
+            android:layout_marginTop="@dimen/dp_8"
             android:text="Microphone"
             android:textStyle="bold"
             android:layout_width="wrap_content"

@@ -3,57 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:padding="@dimen/font_16dp"
+    android:padding="@dimen/dp_16"
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/img_DL_Heart"
+        android:id="@+id/img_dl_heart"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/img_DL_Happy"
+        app:layout_constraintEnd_toStartOf="@id/img_dl_happy"
         android:src="@drawable/icons8_heart_48"
-        android:layout_width="@dimen/font_32dp"
-        android:layout_height="@dimen/font_32dp"/>
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
 
     <ImageView
-        android:id="@+id/img_DL_Happy"
+        android:id="@+id/img_dl_happy"
         android:src="@drawable/icons8_happy_52"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/img_DL_Heart"
-        app:layout_constraintEnd_toStartOf="@id/img_DL_Grinning"
-        android:layout_width="@dimen/font_32dp"
-        android:layout_height="@dimen/font_32dp"/>
+        app:layout_constraintStart_toEndOf="@id/img_dl_heart"
+        app:layout_constraintEnd_toStartOf="@id/img_dl_grinning"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
 
     <ImageView
-        android:id="@+id/img_DL_Grinning"
+        android:id="@+id/img_dl_grinning"
         android:src="@drawable/icons8_grinning_face_64"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/img_DL_Happy"
-        app:layout_constraintEnd_toStartOf="@id/img_DL_Sad"
-        android:layout_width="@dimen/font_32dp"
-        android:layout_height="@dimen/font_32dp"/>
+        app:layout_constraintStart_toEndOf="@id/img_dl_happy"
+        app:layout_constraintEnd_toStartOf="@id/img_dl_sad"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
 
     <ImageView
-        android:id="@+id/img_DL_Sad"
+        android:id="@+id/img_dl_sad"
         android:src="@drawable/icons8_sad_48"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/img_DL_Grinning"
-        app:layout_constraintEnd_toStartOf="@id/img_DL_Neutral"
-        android:layout_width="@dimen/font_32dp"
-        android:layout_height="@dimen/font_32dp"/>
+        app:layout_constraintStart_toEndOf="@id/img_dl_grinning"
+        app:layout_constraintEnd_toStartOf="@id/img_dl_neutral"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
 
     <ImageView
-        android:id="@+id/img_DL_Neutral"
+        android:id="@+id/img_dl_neutral"
         android:src="@drawable/icons8_neutral_48"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/img_DL_Sad"
+        app:layout_constraintStart_toEndOf="@id/img_dl_sad"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="@dimen/font_32dp"
-        android:layout_height="@dimen/font_32dp"/>
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

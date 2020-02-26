@@ -2,101 +2,102 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_margin="@dimen/font_8dp"
-    android:paddingBottom="@dimen/font_8dp"
+    android:id="@+id/const_item_layout_rcv"
+    android:layout_margin="@dimen/dp_8"
+    android:paddingBottom="@dimen/dp_8"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginTop="@dimen/font_8dp"
-        android:id="@+id/itemConstCalendar"
+        android:layout_marginTop="@dimen/dp_8"
+        android:id="@+id/item_const_calendar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/txtDayItem"
+            android:id="@+id/txt_day_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="20"
-            android:textColor="#03A9F4"
-            android:textSize="@dimen/font_16sp"
+            android:textColor="@color/color_background_main"
+            android:textSize="@dimen/sp_16"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:textSize="@dimen/font_16sp"
-            android:textColor="#03A9F4"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_background_main"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/txtDayItem"
-            android:id="@+id/txtthangItem"
-            android:layout_marginLeft="@dimen/font_4dp"
-            app:layout_constraintStart_toEndOf="@id/txtDayItem"
+            app:layout_constraintLeft_toRightOf="@id/txt_day_item"
+            android:id="@+id/txt_th_item"
+            android:layout_marginLeft="@dimen/dp_4"
+            app:layout_constraintStart_toEndOf="@id/txt_day_item"
             android:text="tháng"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:textSize="@dimen/font_16sp"
-            android:textColor="#03A9F4"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_background_main"
             android:textStyle="bold"
-            android:id="@+id/txtMonthItem"
+            android:id="@+id/txt_month_item"
             android:text="2"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/txtthangItem"
-            android:layout_marginLeft="@dimen/font_4dp"
+            app:layout_constraintLeft_toRightOf="@id/txt_th_item"
+            android:layout_marginLeft="@dimen/dp_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:textSize="@dimen/font_16sp"
-            android:textColor="#03A9F4"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_background_main"
             android:textStyle="bold"
-            android:id="@+id/txtYearItem"
+            android:id="@+id/txt_year_item"
             android:text="2020"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/txtMonthItem"
-            android:layout_marginLeft="@dimen/font_4dp"
+            app:layout_constraintLeft_toRightOf="@id/txt_month_item"
+            android:layout_marginLeft="@dimen/dp_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:textSize="@dimen/font_16sp"
-            android:textColor="#03A9F4"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_background_main"
             android:textStyle="bold"
-            android:id="@+id/txtTh"
+            android:id="@+id/txt_thu"
             android:text="Th"
-            android:layout_marginLeft="@dimen/font_8dp"
+            android:layout_marginLeft="@dimen/dp_8"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/txtYearItem"
+            app:layout_constraintLeft_toRightOf="@id/txt_year_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:textSize="@dimen/font_16sp"
-            android:textColor="#03A9F4"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_background_main"
             android:textStyle="bold"
-            android:id="@+id/txtThu"
-            android:layout_marginLeft="@dimen/font_4dp"
+            android:id="@+id/txt_th"
+            android:layout_marginLeft="@dimen/dp_4"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/txtTh"
+            app:layout_constraintLeft_toRightOf="@id/txt_thu"
             android:text="6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/itemConstContent"
-        app:layout_constraintTop_toBottomOf="@id/itemConstCalendar"
+        android:id="@+id/item_const_content"
+        app:layout_constraintTop_toBottomOf="@id/item_const_calendar"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="@dimen/font_16dp"
+        android:layout_marginTop="@dimen/dp_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/txtHourItem"
+            android:id="@+id/txt_hour_item"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:text="17"
@@ -104,48 +105,79 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:id="@+id/txtpoint"
+            android:id="@+id/txt_point"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/txtHourItem"
+            app:layout_constraintLeft_toRightOf="@id/txt_hour_item"
             android:text=":"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:id="@+id/txtMinuteItem"
+            android:id="@+id/txt_minute_item"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/txtpoint"
+            app:layout_constraintLeft_toRightOf="@id/txt_point"
             android:text="30"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/txtContainItem"
-            app:layout_constraintTop_toBottomOf="@id/txtHourItem"
+            android:id="@+id/txt_contain_item"
+            app:layout_constraintTop_toBottomOf="@id/txt_hour_item"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginTop="@dimen/font_4dp"
+            android:layout_marginTop="@dimen/dp_4"
             android:text="Di choi tam chuc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <ImageView
-            android:id="@+id/imgItem"
+            android:id="@+id/img_item"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_account_64"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_width="@dimen/font_64dp"
-            android:layout_height="@dimen/font_64dp"/>
+            android:layout_width="@dimen/dp_64"
+            android:layout_height="@dimen/dp_64"/>
 
         <TextView
-            android:id="@+id/txtPositionItem"
-            app:layout_constraintTop_toBottomOf="@id/imgItem"
+            android:id="@+id/txt_position_item"
+            app:layout_constraintTop_toBottomOf="@id/img_item"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginTop="@dimen/font_8dp"
+            android:layout_marginTop="@dimen/dp_8"
+            android:paddingTop="@dimen/dp_4"
+            android:paddingBottom="@dimen/dp_4"
             android:text="85 vu trong phung"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <ImageView
+            android:id="@+id/img_icon_collect_item"
+            android:src="@drawable/icons8_collect_50"
+            app:layout_constraintTop_toTopOf="@id/txt_position_item"
+            app:layout_constraintBottom_toBottomOf="@id/txt_position_item"
+            app:layout_constraintRight_toLeftOf="@id/img_item"
+            android:layout_marginRight="@dimen/dp_8"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"/>
+
+        <TextView
+            android:id="@+id/txt_temperature_c"
+            android:text="°C"
+            app:layout_constraintTop_toTopOf="@id/txt_position_item"
+            app:layout_constraintBottom_toBottomOf="@id/txt_position_item"
+            app:layout_constraintEnd_toStartOf="@id/img_icon_collect_item"
+            android:layout_marginRight="@dimen/dp_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txt_temperature_item"
+            app:layout_constraintTop_toTopOf="@id/txt_position_item"
+            app:layout_constraintBottom_toBottomOf="@id/txt_position_item"
+            app:layout_constraintEnd_toStartOf="@id/txt_temperature_c"
+            android:text="20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

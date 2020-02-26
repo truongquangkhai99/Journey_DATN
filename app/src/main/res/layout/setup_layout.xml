@@ -3,68 +3,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:padding="@dimen/font_16dp"
+    android:padding="@dimen/dp_16"
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/img_setup_Journey"
+        android:id="@+id/img_setup_journey"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:src="@drawable/widget_text_preview"
-        android:layout_width="@dimen/font_32dp"
-        android:layout_height="@dimen/font_32dp"/>
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
 
     <TextView
-        app:layout_constraintTop_toTopOf="@id/img_setup_Journey"
-        app:layout_constraintBottom_toBottomOf="@id/img_setup_Journey"
-        app:layout_constraintStart_toEndOf="@id/img_setup_Journey"
-        android:layout_marginLeft="@dimen/font_8dp"
+        app:layout_constraintTop_toTopOf="@id/img_setup_journey"
+        app:layout_constraintBottom_toBottomOf="@id/img_setup_journey"
+        app:layout_constraintStart_toEndOf="@id/img_setup_journey"
+        android:layout_marginLeft="@dimen/dp_8"
         android:text="JOURNEY"
-        android:textSize="@dimen/font_16dp"
-        android:textColor="#03A9F4"
+        android:textSize="@dimen/dp_16"
+        android:textColor="@color/color_background_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <View
-        android:id="@+id/viewOne"
-        app:layout_constraintTop_toBottomOf="@id/img_setup_Journey"
-        android:layout_marginTop="@dimen/font_16dp"
+        android:id="@+id/view_one"
+        app:layout_constraintTop_toBottomOf="@id/img_setup_journey"
+        android:layout_marginTop="@dimen/dp_16"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
     <ImageView
         android:id="@+id/img_setup_avatar"
-        app:layout_constraintTop_toBottomOf="@id/viewOne"
-        app:layout_constraintStart_toStartOf="@id/img_setup_Journey"
-        android:layout_marginTop="@dimen/font_16dp"
+        app:layout_constraintTop_toBottomOf="@id/view_one"
+        app:layout_constraintStart_toStartOf="@id/img_setup_journey"
+        android:layout_marginTop="@dimen/dp_16"
         android:src="@drawable/icons8_account_64"
-        android:layout_width="@dimen/font_32dp"
-        android:layout_height="@dimen/font_32dp"/>
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
 
     <TextView
-        android:id="@+id/txt_Setup_UserName"
+        android:id="@+id/txt_setup_username"
         app:layout_constraintTop_toTopOf="@id/img_setup_avatar"
         app:layout_constraintBottom_toBottomOf="@id/img_setup_avatar"
         app:layout_constraintStart_toEndOf="@id/img_setup_avatar"
-        android:layout_marginLeft="@dimen/font_16dp"
+        android:layout_marginLeft="@dimen/dp_16"
         android:text="Nguyen Van Quan"
-        android:textSize="@dimen/font_16dp"
+        android:textSize="@dimen/dp_16"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <View
-        android:id="@+id/vieTwo"
+        android:id="@+id/view_two"
         app:layout_constraintTop_toBottomOf="@id/img_setup_avatar"
-        android:layout_marginTop="@dimen/font_16dp"
+        android:layout_marginTop="@dimen/dp_16"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/const_setup_alarm"
-        app:layout_constraintStart_toStartOf="@id/img_setup_Journey"
-        app:layout_constraintTop_toBottomOf="@id/vieTwo"
-        android:layout_marginTop="@dimen/font_16dp"
+        app:layout_constraintStart_toStartOf="@id/img_setup_journey"
+        app:layout_constraintTop_toBottomOf="@id/view_two"
+        android:layout_marginTop="@dimen/dp_16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -73,42 +73,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_add_reminder_50"
-            android:layout_width="@dimen/font_32dp"
-            android:layout_height="@dimen/font_32dp"/>
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"/>
 
         <TextView
             app:layout_constraintTop_toTopOf="@id/img_setup_reminder"
             app:layout_constraintBottom_toBottomOf="@id/img_setup_reminder"
             app:layout_constraintStart_toEndOf="@id/img_setup_reminder"
             android:text="Setup Alarm"
-            android:layout_marginLeft="@dimen/font_16dp"
+            android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/const_setup_linkWeb"
-        app:layout_constraintStart_toStartOf="@id/img_setup_Journey"
+        android:id="@+id/const_setup_link_web"
+        app:layout_constraintStart_toStartOf="@id/img_setup_journey"
         app:layout_constraintTop_toBottomOf="@id/const_setup_alarm"
-        android:layout_marginTop="@dimen/font_32dp"
+        android:layout_marginTop="@dimen/dp_32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/img_setup_linkWeb"
+            android:id="@+id/img_setup_link_web"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_linking2_50"
-            android:layout_width="@dimen/font_32dp"
-            android:layout_height="@dimen/font_32dp"/>
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"/>
 
         <TextView
-            app:layout_constraintTop_toTopOf="@id/img_setup_linkWeb"
-            app:layout_constraintBottom_toBottomOf="@id/img_setup_linkWeb"
-            app:layout_constraintStart_toEndOf="@id/img_setup_linkWeb"
+            app:layout_constraintTop_toTopOf="@id/img_setup_link_web"
+            app:layout_constraintBottom_toBottomOf="@id/img_setup_link_web"
+            app:layout_constraintStart_toEndOf="@id/img_setup_link_web"
             android:text="Go To The Web Version"
-            android:layout_marginLeft="@dimen/font_16dp"
+            android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -116,9 +116,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/const_setup_help"
-        app:layout_constraintStart_toStartOf="@id/img_setup_Journey"
-        app:layout_constraintTop_toBottomOf="@id/const_setup_linkWeb"
-        android:layout_marginTop="@dimen/font_32dp"
+        app:layout_constraintStart_toStartOf="@id/img_setup_journey"
+        app:layout_constraintTop_toBottomOf="@id/const_setup_link_web"
+        android:layout_marginTop="@dimen/dp_32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -127,15 +127,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_help_50"
-            android:layout_width="@dimen/font_32dp"
-            android:layout_height="@dimen/font_32dp"/>
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"/>
 
         <TextView
             app:layout_constraintTop_toTopOf="@id/img_setup_help"
             app:layout_constraintBottom_toBottomOf="@id/img_setup_help"
             app:layout_constraintStart_toEndOf="@id/img_setup_help"
             android:text="Help"
-            android:layout_marginLeft="@dimen/font_16dp"
+            android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -143,9 +143,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/const_setup_feedback"
-        app:layout_constraintStart_toStartOf="@id/img_setup_Journey"
+        app:layout_constraintStart_toStartOf="@id/img_setup_journey"
         app:layout_constraintTop_toBottomOf="@id/const_setup_help"
-        android:layout_marginTop="@dimen/font_32dp"
+        android:layout_marginTop="@dimen/dp_32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -154,15 +154,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_feedback_100"
-            android:layout_width="@dimen/font_32dp"
-            android:layout_height="@dimen/font_32dp"/>
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"/>
 
         <TextView
             app:layout_constraintTop_toTopOf="@id/img_setup_feedback"
             app:layout_constraintBottom_toBottomOf="@id/img_setup_feedback"
             app:layout_constraintStart_toEndOf="@id/img_setup_feedback"
             android:text="Feedback"
-            android:layout_marginLeft="@dimen/font_16dp"
+            android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -170,9 +170,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/const_setup_setting"
-        app:layout_constraintStart_toStartOf="@id/img_setup_Journey"
+        app:layout_constraintStart_toStartOf="@id/img_setup_journey"
         app:layout_constraintTop_toBottomOf="@id/const_setup_feedback"
-        android:layout_marginTop="@dimen/font_32dp"
+        android:layout_marginTop="@dimen/dp_32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -181,15 +181,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_setting_56"
-            android:layout_width="@dimen/font_32dp"
-            android:layout_height="@dimen/font_32dp"/>
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"/>
 
         <TextView
             app:layout_constraintTop_toTopOf="@id/img_setup_setting"
             app:layout_constraintBottom_toBottomOf="@id/img_setup_setting"
             app:layout_constraintStart_toEndOf="@id/img_setup_setting"
             android:text="Setting"
-            android:layout_marginLeft="@dimen/font_16dp"
+            android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

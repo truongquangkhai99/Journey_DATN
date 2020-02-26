@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:paddingTop="@dimen/font_8dp"
-    android:paddingBottom="@dimen/font_8dp"
+    android:paddingTop="@dimen/dp_8"
+    android:paddingBottom="@dimen/dp_8"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewIconAdd"
+        android:id="@+id/cardview_icon_add"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -20,52 +20,52 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imgBoldAdd"
+                android:id="@+id/img_bold_add"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/imgItalicAdd"
+                app:layout_constraintEnd_toStartOf="@id/img_italic_add"
                 android:src="@drawable/icons8_bold_48"
-                android:layout_width="@dimen/font_32dp"
-                android:layout_height="@dimen/font_32dp"/>
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"/>
 
             <ImageView
-                android:id="@+id/imgItalicAdd"
+                android:id="@+id/img_italic_add"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgBoldAdd"
-                app:layout_constraintEnd_toStartOf="@id/imgUnderlineAdd"
+                app:layout_constraintStart_toEndOf="@id/img_bold_add"
+                app:layout_constraintEnd_toStartOf="@id/img_underline_add"
                 android:src="@drawable/icons8_italic_52"
-                android:layout_marginLeft="@dimen/font_8dp"
-                android:layout_width="@dimen/font_32dp"
-                android:layout_height="@dimen/font_32dp"/>
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"/>
 
             <ImageView
-                android:id="@+id/imgUnderlineAdd"
+                android:id="@+id/img_underline_add"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgItalicAdd"
-                app:layout_constraintEnd_toStartOf="@id/imgBackAdd"
+                app:layout_constraintStart_toEndOf="@id/img_italic_add"
+                app:layout_constraintEnd_toStartOf="@id/img_back_add"
                 android:src="@drawable/icons8_underline_48"
-                android:layout_marginLeft="@dimen/font_8dp"
-                android:layout_width="@dimen/font_32dp"
-                android:layout_height="@dimen/font_32dp"/>
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"/>
             <ImageView
-                android:id="@+id/imgBackAdd"
+                android:id="@+id/img_back_add"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgUnderlineAdd"
-                app:layout_constraintEnd_toStartOf="@id/imgForwardAdd"
+                app:layout_constraintStart_toEndOf="@id/img_underline_add"
+                app:layout_constraintEnd_toStartOf="@id/img_forward_add"
                 android:src="@drawable/icons8_back_50_2"
-                android:layout_marginLeft="@dimen/font_8dp"
-                android:layout_width="@dimen/font_32dp"
-                android:layout_height="@dimen/font_32dp"/>
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"/>
 
             <ImageView
-                android:id="@+id/imgForwardAdd"
+                android:id="@+id/img_forward_add"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgBackAdd"
+                app:layout_constraintStart_toEndOf="@id/img_back_add"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:src="@drawable/icons8_forward_48"
-                android:layout_marginLeft="@dimen/font_8dp"
-                android:layout_width="@dimen/font_32dp"
-                android:layout_height="@dimen/font_32dp"/>
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

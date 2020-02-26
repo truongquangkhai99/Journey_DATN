@@ -5,47 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/night_sky"
-    android:padding="@dimen/font_16dp"
+    android:padding="@dimen/dp_16"
     tools:context=".Activity.LoginActivity">
 
     <ImageView
-        android:id="@+id/img_Journey_Login"
+        android:id="@+id/img_journey_jogin"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:src="@drawable/widget_text_preview"
-        android:layout_width="@dimen/font_32dp"
-        android:layout_height="@dimen/font_32dp"/>
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
 
     <TextView
-        android:id="@+id/txtJourney_Login"
-        app:layout_constraintTop_toTopOf="@id/img_Journey_Login"
-        app:layout_constraintBottom_toBottomOf="@id/img_Journey_Login"
-        app:layout_constraintStart_toEndOf="@id/img_Journey_Login"
-        android:layout_marginLeft="@dimen/font_8dp"
+        android:id="@+id/txtjourney_login"
+        app:layout_constraintTop_toTopOf="@id/img_journey_jogin"
+        app:layout_constraintBottom_toBottomOf="@id/img_journey_jogin"
+        app:layout_constraintStart_toEndOf="@id/img_journey_jogin"
+        android:layout_marginLeft="@dimen/dp_8"
         android:text="JOURNEY"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/font_20dp"
+        android:textSize="@dimen/dp_20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <ImageView
-        android:id="@+id/img_Cloud_Login"
+        android:id="@+id/img_cloud_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/txtJourney_Login"
+        app:layout_constraintTop_toTopOf="@id/txtjourney_login"
         android:src="@drawable/icons8_cloud_blue_40"
-        android:layout_width="@dimen/font_32dp"
-        android:layout_height="@dimen/font_32dp"/>
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        app:layout_constraintTop_toBottomOf="@id/img_Journey_Login"
-        app:layout_constraintBottom_toTopOf="@id/constNumberLogin"
+        app:layout_constraintTop_toBottomOf="@id/img_journey_jogin"
+        app:layout_constraintBottom_toTopOf="@id/const_number_login"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/enterPW"
+            android:id="@+id/txtenter_pw"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -56,49 +56,49 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/NumPassOne"
-            app:layout_constraintStart_toStartOf="@id/enterPW"
-            app:layout_constraintTop_toBottomOf="@id/enterPW"
-            app:layout_constraintEnd_toStartOf="@id/NumPassTwo"
+            android:id="@+id/txt_num_pass_one"
+            app:layout_constraintStart_toStartOf="@id/txtenter_pw"
+            app:layout_constraintTop_toBottomOf="@id/txtenter_pw"
+            app:layout_constraintEnd_toStartOf="@id/txt_num_pass_two"
             android:text="1"
             android:textStyle="bold"
-            android:textSize="@dimen/font_20dp"
+            android:textSize="@dimen/dp_20"
             android:password="true"
             android:textColor="@android:color/white"
-            android:layout_marginTop="@dimen/font_8dp"
+            android:layout_marginTop="@dimen/dp_8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:id="@+id/NumPassTwo"
-            app:layout_constraintTop_toTopOf="@id/NumPassOne"
-            app:layout_constraintStart_toEndOf="@id/NumPassOne"
-            app:layout_constraintEnd_toStartOf="@id/NumPassThree"
+            android:id="@+id/txt_num_pass_two"
+            app:layout_constraintTop_toTopOf="@id/txt_num_pass_one"
+            app:layout_constraintStart_toEndOf="@id/txt_num_pass_one"
+            app:layout_constraintEnd_toStartOf="@id/txt_num_pass_three"
             android:textStyle="bold"
-            android:textSize="@dimen/font_20dp"
+            android:textSize="@dimen/dp_20"
             android:text="2"
             android:password="true"
             android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:id="@+id/NumPassThree"
-            app:layout_constraintTop_toTopOf="@id/NumPassOne"
-            app:layout_constraintStart_toEndOf="@id/NumPassTwo"
-            app:layout_constraintEnd_toStartOf="@id/NumPassFour"
+            android:id="@+id/txt_num_pass_three"
+            app:layout_constraintTop_toTopOf="@id/txt_num_pass_one"
+            app:layout_constraintStart_toEndOf="@id/txt_num_pass_two"
+            app:layout_constraintEnd_toStartOf="@id/txt_num_pass_four"
             android:textStyle="bold"
-            android:textSize="@dimen/font_20dp"
+            android:textSize="@dimen/dp_20"
             android:text="3"
             android:password="true"
             android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:id="@+id/NumPassFour"
-            app:layout_constraintTop_toTopOf="@id/NumPassOne"
-            app:layout_constraintStart_toEndOf="@id/NumPassThree"
-            app:layout_constraintEnd_toEndOf="@id/enterPW"
+            android:id="@+id/txt_num_pass_four"
+            app:layout_constraintTop_toTopOf="@id/txt_num_pass_one"
+            app:layout_constraintStart_toEndOf="@id/txt_num_pass_three"
+            app:layout_constraintEnd_toEndOf="@id/txtenter_pw"
             android:textStyle="bold"
-            android:textSize="@dimen/font_20dp"
+            android:textSize="@dimen/dp_20"
             android:text="4"
             android:password="true"
             android:textColor="@android:color/white"
@@ -108,11 +108,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/txtWrong_Login"
-        app:layout_constraintBottom_toTopOf="@id/constNumberLogin"
+        android:id="@+id/txt_wrong_login"
+        app:layout_constraintBottom_toTopOf="@id/const_number_login"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="@dimen/font_8dp"
+        android:layout_marginBottom="@dimen/dp_8"
         android:text="Wrong passcode. Please try again."
         android:textColor="@android:color/white"
         android:visibility="invisible"
@@ -120,7 +120,7 @@
         android:layout_height="wrap_content"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constNumberLogin"
+        android:id="@+id/const_number_login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -135,7 +135,7 @@
             android:id="@+id/txt1"
             android:text="1"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_24dp"
+            android:textSize="@dimen/dp_24"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -147,7 +147,7 @@
             android:id="@+id/txt2"
             android:text="2"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_24dp"
+            android:textSize="@dimen/dp_24"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -158,7 +158,7 @@
             android:id="@+id/txt3"
             android:text="3"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_24dp"
+            android:textSize="@dimen/dp_24"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -171,7 +171,7 @@
             android:id="@+id/txt4"
             android:text="4"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_24dp"
+            android:textSize="@dimen/dp_24"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -183,7 +183,7 @@
             android:id="@+id/txt5"
             android:text="5"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_24dp"
+            android:textSize="@dimen/dp_24"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -194,7 +194,7 @@
             android:id="@+id/txt6"
             android:text="6"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_24dp"
+            android:textSize="@dimen/dp_24"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -207,7 +207,7 @@
             android:id="@+id/txt7"
             android:text="7"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_24dp"
+            android:textSize="@dimen/dp_24"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -219,7 +219,7 @@
             android:id="@+id/txt8"
             android:text="8"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_24dp"
+            android:textSize="@dimen/dp_24"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -230,7 +230,7 @@
             android:id="@+id/txt9"
             android:text="9"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_24dp"
+            android:textSize="@dimen/dp_24"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -243,7 +243,7 @@
             android:id="@+id/txtMark"
             android:text="✓"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_24dp"
+            android:textSize="@dimen/dp_24"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -251,12 +251,12 @@
         <TextView
             app:layout_constraintTop_toTopOf="@id/txtMark"
             app:layout_constraintStart_toEndOf="@id/txtMark"
-            app:layout_constraintEnd_toStartOf="@id/txtMul"
-            android:layout_marginRight="@dimen/font_4dp"
+            app:layout_constraintEnd_toStartOf="@id/txt_mul"
+            android:layout_marginRight="@dimen/dp_4"
             android:id="@+id/txt0"
             android:text="0"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_24dp"
+            android:textSize="@dimen/dp_24"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -264,11 +264,11 @@
             app:layout_constraintTop_toTopOf="@id/txtMark"
             app:layout_constraintStart_toEndOf="@id/txt0"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginRight="@dimen/font_4dp"
-            android:id="@+id/txtMul"
+            android:layout_marginRight="@dimen/dp_4"
+            android:id="@+id/txt_mul"
             android:text="x"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/font_24dp"
+            android:textSize="@dimen/dp_24"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

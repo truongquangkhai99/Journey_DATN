@@ -2,58 +2,58 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="@dimen/font_16dp"
+    android:padding="@dimen/dp_16"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/txt_DL_describeWeather"
+        android:id="@+id/txt_dl_describe_weather"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="@dimen/font_24dp"
-        android:textSize="@dimen/font_24dp"
-        android:textColor="#03A9F4"
+        android:layout_marginLeft="@dimen/dp_24"
+        android:textSize="@dimen/dp_24"
+        android:textColor="@color/color_background_main"
         android:text="Nắng ấm xa dần"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/txt_DL_temperature"
-        app:layout_constraintTop_toBottomOf="@id/txt_DL_describeWeather"
-        app:layout_constraintStart_toStartOf="@id/txt_DL_describeWeather"
-        android:layout_marginTop="@dimen/font_8dp"
-        android:textSize="@dimen/font_32dp"
-        android:textColor="#03A9F4"
+        android:id="@+id/txt_dl_temperature"
+        app:layout_constraintTop_toBottomOf="@id/txt_dl_describe_weather"
+        app:layout_constraintStart_toStartOf="@id/txt_dl_describe_weather"
+        android:layout_marginTop="@dimen/dp_8"
+        android:textSize="@dimen/dp_32"
+        android:textColor="@color/color_background_main"
         android:text="22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
-        app:layout_constraintTop_toBottomOf="@id/txt_DL_describeWeather"
-        app:layout_constraintStart_toEndOf="@id/txt_DL_temperature"
-        android:layout_marginTop="@dimen/font_8dp"
-        android:textSize="@dimen/font_32dp"
-        android:textColor="#03A9F4"
+        app:layout_constraintTop_toBottomOf="@id/txt_dl_describe_weather"
+        app:layout_constraintStart_toEndOf="@id/txt_dl_temperature"
+        android:layout_marginTop="@dimen/dp_8"
+        android:textSize="@dimen/dp_32"
+        android:textColor="@color/color_background_main"
         android:text="°C"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <ImageView
-        android:id="@+id/img_DL_RemoveTemperature"
-        app:layout_constraintStart_toStartOf="@id/txt_DL_describeWeather"
-        app:layout_constraintTop_toBottomOf="@id/txt_DL_temperature"
-        android:layout_marginTop="@dimen/font_16dp"
-        android:layout_marginLeft="@dimen/font_16dp"
+        android:id="@+id/img_dl_remove_temperature"
+        app:layout_constraintStart_toStartOf="@id/txt_dl_describe_weather"
+        app:layout_constraintTop_toBottomOf="@id/txt_dl_temperature"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginLeft="@dimen/dp_16"
         android:src="@drawable/icons8_cloud_48"
-        android:layout_width="@dimen/font_48dp"
-        android:layout_height="@dimen/font_48dp"/>
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"/>
 
     <TextView
-        app:layout_constraintStart_toStartOf="@id/img_DL_RemoveTemperature"
-        app:layout_constraintEnd_toEndOf="@id/img_DL_RemoveTemperature"
-        app:layout_constraintTop_toBottomOf="@id/img_DL_RemoveTemperature"
+        app:layout_constraintStart_toStartOf="@id/img_dl_remove_temperature"
+        app:layout_constraintEnd_toEndOf="@id/img_dl_remove_temperature"
+        app:layout_constraintTop_toBottomOf="@id/img_dl_remove_temperature"
         android:text="Remove Weather"
-        android:textSize="@dimen/font_16dp"
+        android:textSize="@dimen/dp_16"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
