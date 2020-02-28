@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="@dimen/dp_16"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img_back_search"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/icons8_back"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
+
+    <TextView
+        android:id="@+id/txt_search"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/img_back_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:hint="Search Your Memories..."
+        android:textSize="@dimen/dp_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:id="@+id/view_search_one"
+        app:layout_constraintTop_toBottomOf="@id/txt_search"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:id="@+id/const_star_search"
+       app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintTop_toBottomOf="@id/view_search_one"
+       android:layout_marginTop="@dimen/dp_16"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <ImageView
+           android:id="@+id/img_star_search"
+           app:layout_constraintLeft_toLeftOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+          android:src="@drawable/icons8_star_48"
+           android:layout_width="@dimen/dp_32"
+           android:layout_height="@dimen/dp_32"/>
+       <TextView
+           android:id="@+id/txt_starred"
+           app:layout_constraintStart_toEndOf="@id/img_star_search"
+           app:layout_constraintTop_toTopOf="@id/img_star_search"
+           app:layout_constraintBottom_toBottomOf="@id/img_star_search"
+           android:text="Starred"
+           android:textStyle="bold"
+           android:layout_marginLeft="@dimen/dp_16"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"/>
+       <view
+           app:layout_constraintStart_toStartOf="@id/txt_starred"
+           app:layout_constraintTop_toBottomOf="@id/txt_starred"
+           app:layout_constraintEnd_toEndOf="parent"
+           android:layout_marginTop="@dimen/dp_8"
+           android:layout_width="match_parent"
+           android:layout_height="1dp"/>
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/img_people_search"
+        app:layout_constraintTop_toBottomOf="@id/const_star_search"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="@dimen/dp_8"
+        android:src="@drawable/icons8_standing_man_50"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
+
+    <TextView
+        android:id="@+id/txt_activity_search"
+        app:layout_constraintTop_toTopOf="@id/img_people_search"
+        app:layout_constraintBottom_toBottomOf="@id/img_people_search"
+        app:layout_constraintStart_toEndOf="@id/img_people_search"
+        android:text="Activity"
+        android:textStyle="bold"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt_stationary_search"
+        app:layout_constraintStart_toStartOf="@id/txt_activity_search"
+        app:layout_constraintTop_toBottomOf="@id/txt_activity_search"
+        android:text="Stationary"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt_eating_search"
+        app:layout_constraintStart_toStartOf="@id/txt_activity_search"
+        app:layout_constraintTop_toBottomOf="@id/txt_stationary_search"
+        android:text="Eating"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/txt_flying_search"
+        app:layout_constraintStart_toStartOf="@id/txt_activity_search"
+        app:layout_constraintTop_toBottomOf="@id/txt_eating_search"
+        android:text="Flying"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <view
+        android:id="@+id/view_search_two"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_flying_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <ImageView
+        android:id="@+id/img_mood_search"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_search_two"
+        android:layout_marginTop="@dimen/dp_16"
+        android:src="@drawable/icons8_happy_52"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
+
+    <TextView
+        android:id="@+id/txt_mood"
+        app:layout_constraintTop_toTopOf="@id/img_mood_search"
+        app:layout_constraintBottom_toBottomOf="@id/img_mood_search"
+        app:layout_constraintStart_toEndOf="@id/img_mood_search"
+        android:text="Mood"
+        android:textStyle="bold"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/img_heart_search"
+        app:layout_constraintTop_toBottomOf="@id/txt_mood"
+        app:layout_constraintStart_toStartOf="@id/txt_mood"
+        android:layout_marginTop="@dimen/dp_16"
+        android:src="@drawable/icons8_heart_48"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
+
+    <ImageView
+        android:id="@+id/img_happy_search"
+        android:src="@drawable/icons8_happy_52"
+        app:layout_constraintTop_toTopOf="@id/img_heart_search"
+        app:layout_constraintStart_toEndOf="@id/img_heart_search"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
+
+    <ImageView
+        android:id="@+id/img_dl_grinning_search"
+        android:src="@drawable/icons8_grinning_face_64"
+        app:layout_constraintTop_toTopOf="@id/img_happy_search"
+        app:layout_constraintStart_toEndOf="@id/img_happy_search"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
+
+    <ImageView
+        android:id="@+id/img_sad_search"
+        android:src="@drawable/icons8_sad_48"
+        app:layout_constraintTop_toTopOf="@id/img_dl_grinning_search"
+        app:layout_constraintStart_toEndOf="@id/img_dl_grinning_search"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
+
+    <ImageView
+        android:id="@+id/img_neutral_search"
+        android:src="@drawable/icons8_neutral_48"
+        app:layout_constraintTop_toTopOf="@id/img_sad_search"
+        android:layout_marginLeft="@dimen/dp_16"
+        app:layout_constraintStart_toEndOf="@id/img_sad_search"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

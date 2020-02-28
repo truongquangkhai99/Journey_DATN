@@ -1,17 +1,17 @@
 package com.example.journey_datn.Activity;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.ImageView;
-
 import com.example.journey_datn.Adapter.SectionsPagerAdapter;
 import com.example.journey_datn.R;
-import com.example.journey_datn.fragment.fragment_Journey;
+import com.example.journey_datn.fragment.FragmentJourney;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
-        fragmentList.add(new fragment_Journey());
+        fragmentList.add(new FragmentJourney());
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragmentList);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -66,3 +66,4 @@ public class MainActivity extends AppCompatActivity {
         img_cloud = findViewById(R.id.img_cloud);
     }
 }
+

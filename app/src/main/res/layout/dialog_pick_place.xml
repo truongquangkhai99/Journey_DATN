@@ -23,40 +23,38 @@
         app:layout_constraintStart_toStartOf="@id/txt_dl_place_pick_place"
         android:layout_marginTop="@dimen/dp_16"
         app:layout_constraintEnd_toEndOf="parent"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/img_dl_pick_lace"
+            android:id="@+id/img_dl_pick_place"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/img_dl_rename_place_pick_place"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_pick_place"
-            android:layout_marginLeft="@dimen/dp_16"
-            android:layout_width="@dimen/dp_48"
-            android:layout_height="@dimen/dp_48"/>
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"/>
 
         <TextView
             android:id="@+id/txt_dl_gallery_pick_place"
-            app:layout_constraintStart_toStartOf="@id/img_dl_pick_lace"
-            app:layout_constraintTop_toBottomOf="@id/img_dl_pick_lace"
-            app:layout_constraintEnd_toEndOf="@id/img_dl_pick_lace"
+            app:layout_constraintStart_toStartOf="@id/img_dl_pick_place"
+            app:layout_constraintTop_toBottomOf="@id/img_dl_pick_place"
+            app:layout_constraintEnd_toEndOf="@id/img_dl_pick_place"
             android:layout_marginTop="@dimen/dp_8"
-            android:text="Pick a Place"
+            android:text="Pick"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <ImageView
             android:id="@+id/img_dl_rename_place_pick_place"
-            app:layout_constraintStart_toEndOf="@id/img_dl_pick_lace"
+            app:layout_constraintStart_toEndOf="@id/img_dl_pick_place"
             app:layout_constraintEnd_toStartOf="@id/img_dl_remove_place"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_rename_place"
-            android:layout_marginLeft="@dimen/dp_24"
-            android:layout_width="@dimen/dp_48"
-            android:layout_height="@dimen/dp_48"/>
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"/>
 
         <TextView
             android:id="@+id/txt_dl_file_pick_place"
@@ -75,9 +73,9 @@
             app:layout_constraintEnd_toStartOf="@id/img_dl_setup_gps"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_remove_place"
-            android:layout_marginLeft="@dimen/dp_16"
-            android:layout_width="@dimen/dp_48"
-            android:layout_height="@dimen/dp_48"/>
+            android:layout_marginLeft="@dimen/dp_24"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"/>
 
         <TextView
             android:id="@+id/txt_dl_photo_pick_place"
@@ -96,10 +94,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/icons8_region_80"
-            android:layout_marginLeft="@dimen/dp_24"
-            android:layout_marginRight="@dimen/dp_16"
-            android:layout_width="@dimen/dp_48"
-            android:layout_height="@dimen/dp_48"/>
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_2"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"/>
 
         <TextView
             android:id="@+id/txt_dl_video_pick_place"
@@ -107,7 +105,7 @@
             app:layout_constraintTop_toBottomOf="@id/img_dl_setup_gps"
             app:layout_constraintEnd_toEndOf="@id/img_dl_setup_gps"
             android:layout_marginTop="@dimen/dp_8"
-            android:text="Setup GPS"
+            android:text="Setup"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

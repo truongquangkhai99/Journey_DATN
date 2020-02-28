@@ -92,19 +92,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"/>
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        app:layout_constraintTop_toBottomOf="@id/cardView"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/navigation"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        android:layout_marginTop="@dimen/dp_8"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp">-->
-
-<!--        <include layout="@layout/fragment_journey"/>-->
-
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         app:layout_constraintBottom_toBottomOf="parent"
