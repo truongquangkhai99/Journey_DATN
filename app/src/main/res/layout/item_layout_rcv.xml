@@ -35,9 +35,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/txt_day_item"
             android:id="@+id/txt_th_item"
-            android:layout_marginLeft="@dimen/dp_4"
+            android:layout_marginLeft="@dimen/dp_2"
             app:layout_constraintStart_toEndOf="@id/txt_day_item"
-            android:text="tháng"
+            android:text="-"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
@@ -48,7 +48,18 @@
             android:text="2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/txt_th_item"
-            android:layout_marginLeft="@dimen/dp_4"
+            android:layout_marginLeft="@dimen/dp_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txt_shortline"
+            app:layout_constraintStart_toEndOf="@id/txt_month_item"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="-"
+            android:textSize="@dimen/sp_16"
+            android:layout_marginLeft="@dimen/dp_2"
+            android:textColor="@color/color_background_main"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -59,31 +70,19 @@
             android:id="@+id/txt_year_item"
             android:text="2020"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/txt_month_item"
-            android:layout_marginLeft="@dimen/dp_4"
+            app:layout_constraintLeft_toRightOf="@id/txt_shortline"
+            android:layout_marginLeft="@dimen/dp_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        <TextView
-            android:textSize="@dimen/sp_16"
-            android:textColor="@color/color_background_main"
-            android:textStyle="bold"
-            android:id="@+id/txt_thu"
-            android:text="Th"
-            android:layout_marginLeft="@dimen/dp_8"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/txt_year_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
         <TextView
             android:textSize="@dimen/sp_16"
             android:textColor="@color/color_background_main"
             android:textStyle="bold"
             android:id="@+id/txt_th"
-            android:layout_marginLeft="@dimen/dp_4"
+            android:layout_marginLeft="@dimen/dp_10"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/txt_thu"
-            android:text="6"
+            app:layout_constraintLeft_toRightOf="@id/txt_year_item"
+            android:text="Monday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -150,21 +149,29 @@
             android:layout_height="wrap_content"/>
 
         <ImageView
-            android:id="@+id/img_icon_collect_item"
-            android:src="@drawable/icons8_collect_50"
+            android:id="@+id/img_icon_happy_item"
             app:layout_constraintTop_toTopOf="@id/txt_position_item"
-            app:layout_constraintBottom_toBottomOf="@id/txt_position_item"
             app:layout_constraintRight_toLeftOf="@id/img_item"
             android:layout_marginRight="@dimen/dp_8"
             android:layout_marginLeft="@dimen/dp_8"
+            android:src="@drawable/icons8_happy_52"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"/>
+
+        <ImageView
+            android:id="@+id/img_icon_collect_item"
+            android:src="@drawable/icons8_collect_50"
+            app:layout_constraintTop_toTopOf="@id/txt_position_item"
+            app:layout_constraintEnd_toStartOf="@id/img_icon_happy_item"
+            android:layout_marginRight="@dimen/dp_8"
             android:layout_width="@dimen/dp_24"
             android:layout_height="@dimen/dp_24"/>
 
         <TextView
             android:id="@+id/txt_temperature_c"
             android:text="°C"
-            app:layout_constraintTop_toTopOf="@id/txt_position_item"
-            app:layout_constraintBottom_toBottomOf="@id/txt_position_item"
+            app:layout_constraintTop_toTopOf="@id/img_icon_collect_item"
+            app:layout_constraintBottom_toBottomOf="@id/img_icon_collect_item"
             app:layout_constraintEnd_toStartOf="@id/img_icon_collect_item"
             android:layout_marginRight="@dimen/dp_8"
             android:layout_width="wrap_content"
@@ -172,8 +179,8 @@
 
         <TextView
             android:id="@+id/txt_temperature_item"
-            app:layout_constraintTop_toTopOf="@id/txt_position_item"
-            app:layout_constraintBottom_toBottomOf="@id/txt_position_item"
+            app:layout_constraintTop_toTopOf="@id/img_icon_collect_item"
+            app:layout_constraintBottom_toBottomOf="@id/img_icon_collect_item"
             app:layout_constraintEnd_toStartOf="@id/txt_temperature_c"
             android:text="20"
             android:layout_width="wrap_content"

@@ -12,13 +12,12 @@ import com.example.journey_datn.Model.Entity;
 public abstract class EntityDatabase extends RoomDatabase{
 
     private static EntityDatabase INSTANCE;
-    public static final String DATABASE_NAME = "RoomJourney";
+    public static final String DATABASE_NAME = "Journey111";
 
     public abstract EntityDAO EntityDao();
 
     public static EntityDatabase getInMemoryDatabase(Context context) {
         if (INSTANCE == null) {
-//            INSTANCE = inMemoryDatabaseBuilder(context.getApplicationContext(), EntityDatabase.class).allowMainThreadQueries().build();
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(), EntityDatabase.class, DATABASE_NAME)
                     .fallbackToDestructiveMigration()
                     .build();

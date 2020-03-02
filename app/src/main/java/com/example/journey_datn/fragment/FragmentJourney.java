@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,9 +22,6 @@ import com.example.journey_datn.Activity.AddDataActivity;
 import com.example.journey_datn.Adapter.AdapterRcvEntity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.EntityDatabase;
-import com.example.journey_datn.db.EntityLocalDataSource;
-import com.example.journey_datn.db.EntityRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -35,7 +31,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
@@ -49,13 +44,10 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
     private FloatingActionButton fabJourney;
     private TextView txt_user_name, txt_day,txt_month, txt_year, txt_number_item;
 
-
-    private CompositeDisposable mCompositeDisposable;
-    private EntityRepository mEntityRepository;
     private List<Entity> mEntity;
 
-    private String contain,day,month,year,hour,minute,action,position,mood,srcImage;
-    private int temperature, th;
+    private String contain,day,month,year,hour,minute,position,srcImage, th;
+    private int temperature, action, mood;
 
 
     @Nullable
@@ -76,18 +68,8 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
         rcvJourney.setAdapter(adapterRcvEntity);
         rcvJourney.setLayoutManager(linearLayoutManager);
 
-        mCompositeDisposable = new CompositeDisposable();
-
-
-//        rcvJourney.setOnItemLongClickListener(this);
-//        rcvJourney.setOnItemClickListener(this);
-
-        EntityDatabase entityDatabase = EntityDatabase.getInMemoryDatabase(getContext());
-        mEntityRepository = EntityRepository.getInstance(EntityLocalDataSource.getInstance(entityDatabase.EntityDao()));
-
-        getData();
-        //
-
+        adapterRcvEntity.getData();
+//        adapterRcvEntity.deleteAllEntity();
         return view;
     }
 
@@ -103,12 +85,12 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
             year = bundle.getString("year");
             hour = bundle.getString("hour");
             minute = bundle.getString("minute");
-            action = bundle.getString("action");
+            action = bundle.getInt("action");
             position = bundle.getString("position");
-            mood = bundle.getString("mood");
+            mood = bundle.getInt("mood");
             srcImage = bundle.getString("srcImage");
             temperature = bundle.getInt("temperature");
-            th = bundle.getInt("th");
+            th = bundle.getString("th");
 
             Entity entity = new Entity();
             entity.setContent(contain);
@@ -124,77 +106,16 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
             entity.setTemperature(temperature);
             entity.setTh(th);
 
-            insertEntity(entity);
+            adapterRcvEntity.insertEntity(entity);
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mCompositeDisposable.clear();
+        adapterRcvEntity.mCompositeDisposable.clear();
     }
 
-    private void getData() {
-        Disposable disposable = mEntityRepository.getALlEntity()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<List<Entity>>() {
-                    @Override
-                    public void accept(List<Entity> entities) throws Exception {
-                        onGetAllUserSuccess(entities);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        onGetAllUserFailure(throwable.getMessage());
-                    }
-                });
-
-        mCompositeDisposable.add(disposable);
-
-    }
-
-    private void onGetAllUserFailure(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    private void onGetAllUserSuccess(List<Entity> entities) {
-        mEntity.clear();
-        mEntity.addAll(entities);
-        adapterRcvEntity.notifyDataSetChanged();
-    }
-
-
-
-    private void deleteAllUser() {
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                mEntityRepository.deleteAllEntity();
-                e.onComplete();
-            }
-        })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        //no ops
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        onGetAllUserFailure(throwable.getMessage());
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        getData();
-                    }
-                });
-
-        mCompositeDisposable.add(disposable);
-    }
 
     private void initView(View view) {
         rcvJourney = view.findViewById(R.id.rcv_journey);
@@ -229,16 +150,16 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        onGetAllUserFailure(throwable.getMessage());
+                        adapterRcvEntity.onGetAllUserFailure(throwable.getMessage());
                     }
                 }, new Action() {
                     @Override
                     public void run() throws Exception {
-                        getData();
+                        adapterRcvEntity.getData();
                     }
                 });
 
-        mCompositeDisposable.add(disposable);
+        adapterRcvEntity.mCompositeDisposable.add(disposable);
     }
 
     @Override
@@ -257,42 +178,12 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
                             return;
                         }
 //                        entity.setLastName(editText.getText().toString());
-                        updateEntity(entity);
+                        adapterRcvEntity.updateEntity(entity);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()
                 .show();
-    }
-
-    public void updateEntity(final Entity entity) {
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                mEntityRepository.updateEntity(entity);
-                e.onComplete();
-            }
-        })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        //no ops
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        onGetAllUserFailure(throwable.getMessage());
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        getData();
-                    }
-                });
-
-        mCompositeDisposable.add(disposable);
     }
 
     @Override
@@ -303,72 +194,12 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        deleteEntity(entity);
+                        adapterRcvEntity.deleteEntity(entity);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()
                 .show();
         return false;
-    }
-
-    private void deleteEntity(final Entity entity) {
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                mEntityRepository.deleteEntity(entity);
-                e.onComplete();
-            }
-        })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        //no ops
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        onGetAllUserFailure(throwable.getMessage());
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        getData();
-                    }
-                });
-
-        mCompositeDisposable.add(disposable);
-    }
-
-    private void insertEntity(final Entity entity){
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                mEntityRepository.insertEntity(entity);
-                e.onComplete();
-            }
-        })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        //no ops
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        onGetAllUserFailure(throwable.getMessage());
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        getData();
-                    }
-                });
-
-        mCompositeDisposable.add(disposable);
     }
 }

@@ -12,15 +12,15 @@ public class Entity {
     private int id;
 
 
-    private String content, action;
+    private String content;
     private String strPosition;
-    private int temperature;
-    private int year, month, day, th, hour, minute;
-    private String mood;
+    private int temperature, action, mood;
+    private int year, month, day, hour, minute;
+    private String th;
     private String srcImage;
 
     @Ignore
-    public Entity(String content, String action, String strPosition, int temperature, int year, int month, int day, int th, int hour, int minute, String mood, String srcImage) {
+    public Entity(String content, int action, String strPosition, int temperature, int year, int month, int day, String th, int hour, int minute, int mood, String srcImage) {
         this.content = content;
         this.action = action;
         this.strPosition = strPosition;
@@ -55,11 +55,11 @@ public class Entity {
         this.content = content;
     }
 
-    public String getAction() {
+    public int getAction() {
         return action;
     }
 
-    public void setAction(String action) {
+    public void setAction(int action) {
         this.action = action;
     }
 
@@ -103,11 +103,11 @@ public class Entity {
         this.day = day;
     }
 
-    public int getTh() {
+    public String getTh() {
         return th;
     }
 
-    public void setTh(int th) {
+    public void setTh(String th) {
         this.th = th;
     }
 
@@ -127,11 +127,11 @@ public class Entity {
         this.minute = minute;
     }
 
-    public String getMood() {
+    public int getMood() {
         return mood;
     }
 
-    public void setMood(String mood) {
+    public void setMood(int mood) {
         this.mood = mood;
     }
 
@@ -142,4 +142,5 @@ public class Entity {
     public void setSrcImage(String srcImage) {
         this.srcImage = srcImage;
     }
+
 }
