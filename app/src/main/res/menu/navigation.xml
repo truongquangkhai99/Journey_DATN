@@ -2,27 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
      android:id="@+id/menu_journey"
-     android:icon="@drawable/icons8_journey_60"
+     android:icon="@drawable/ic_journey_black_24dp"
      android:title="Journey"
         />
     <item
         android:id="@+id/menu_calendar"
-        android:icon="@drawable/icons8_calendar"
+        android:icon="@drawable/ic_calendar_black_24dp"
         android:title="Calendar"
         />
     <item
         android:id="@+id/menu_media"
-        android:icon="@drawable/icons8_media"
+        android:icon="@drawable/ic_insert_photo_black_24dp"
         android:title="Media"
         />
     <item
         android:id="@+id/menu_atlas"
-        android:icon="@drawable/icons8_atlas_64"
+        android:icon="@drawable/ic_map_black_24dp"
         android:title="Atlas"
         />
     <item
         android:id="@+id/menu_today"
-        android:icon="@drawable/icons8_today_52"
+        android:icon="@drawable/ic_today_black_24dp"
         android:title="Today"
         />
 </menu>

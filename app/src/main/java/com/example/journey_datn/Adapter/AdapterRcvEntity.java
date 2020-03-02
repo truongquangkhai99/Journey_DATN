@@ -4,11 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,9 +76,6 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         holder.txt_th.setText(pos.getTh() + "");
         holder.txt_year_item.setText(pos.getYear() + "");
 
-//        holder.img_mood.setImageResource(pos.getMood());
-//        holder.img_action.setImageResource(pos.getAction());
-//        holder.img_item.setImageURI(Uri.parse(pos.getSrcImage()));
         Glide.with(context).load(pos.getMood()).into(holder.img_mood);
         Glide.with(context).load(pos.getAction()).into(holder.img_action);
 
@@ -103,17 +97,6 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
                 return false;
             }
         });
-    }
-
-    public static Bitmap convertStringToBitMap(String encodedString) {
-        try {
-            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
     }
 
     private void itemClick(int mpositon){

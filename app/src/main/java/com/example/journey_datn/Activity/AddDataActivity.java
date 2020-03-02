@@ -53,7 +53,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
     private String th;
     private String position = "",srcImage = "";
-    private int temperature = 0, action = R.drawable.icons8_collect_50, mood = R.drawable.icons8_happy_52;
+    private int temperature = 0, action = R.drawable.ic_action_black_24dp , mood = R.drawable.ic_mood_black_24dp;
     private  String contain, day, month, year, hour, minute;
     private static final int MY_CAMERA_PERMISSION_CODE = 100, CAMERA_CODE = 0, GALLERY_CODE = 1;
 
@@ -373,7 +373,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onOptionsSelect(int options1, int option2, int options3) {
                 if (items.get(options1) == items.get(0))
-                    action = R.drawable.icons8_collect_50;
+                    action = R.drawable.ic_action_black_24dp;
                 if (items.get(options1) == items.get(1))
                     action = R.drawable.ic_accessibility_black_24dp;
                 if (items.get(options1) == items.get(2))
@@ -402,13 +402,6 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         dialog.show();
     }
 
-    private void activityClick(){
-        final View dialogView = View.inflate(this,R.layout.dialog_activity,null);
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(dialogView);
-        dialog.show();
-    }
-
     private void faceClick(){
         final View dialogView = View.inflate(this,R.layout.dialog_face,null);
         final Dialog dialog = new Dialog(this);
@@ -423,7 +416,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgHeart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mood = R.drawable.icons8_heart_48;
+                mood = R.drawable.ic_favorite_border_black_24dp;
                 dialog.dismiss();
             }
         });
@@ -431,7 +424,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgHappy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mood = R.drawable.icons8_happy_52;
+                mood = R.drawable.ic_happy_black_24dp;
                 dialog.dismiss();
             }
         });
@@ -439,7 +432,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgGrinning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mood = R.drawable.icons8_grinning_face_64;
+                mood = R.drawable.ic_mood_emoticon_black_24dp;
                 dialog.dismiss();
             }
         });
@@ -447,7 +440,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgSad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mood = R.drawable.icons8_sad_48;
+                mood = R.drawable.ic_sad_black_24dp;
                 dialog.dismiss();
             }
         });
@@ -455,7 +448,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgNeutral.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mood = R.drawable.icons8_neutral_48;
+                mood = R.drawable.ic_neutral_black_24dp;
                 dialog.dismiss();
             }
         });

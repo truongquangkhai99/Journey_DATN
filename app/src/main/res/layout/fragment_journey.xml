@@ -30,7 +30,7 @@
                    android:id="@+id/img_account"
                    app:layout_constraintTop_toTopOf="parent"
                    app:layout_constraintLeft_toLeftOf="parent"
-                   android:src="@drawable/icons8_account_64"
+                   android:src="@drawable/ic_account_box_blue_24dp"
                    android:paddingLeft="@dimen/dp_16"
                    android:layout_width="@dimen/dp_48"
                    android:layout_height="@dimen/dp_48"/>
@@ -150,6 +150,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_black_24dp"
         app:layout_anchorGravity="bottom|end"
+        android:backgroundTint="@color/color_background_main"
         app:layout_anchor="@id/nestedView"/>
 
 

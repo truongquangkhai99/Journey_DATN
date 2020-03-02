@@ -10,7 +10,7 @@
         android:id="@+id/img_setup_journey"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:src="@drawable/widget_text_preview"
+        android:src="@drawable/ic_journey_24dp"
         android:layout_width="@dimen/dp_32"
         android:layout_height="@dimen/dp_32"/>
 
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@id/view_one"
         app:layout_constraintStart_toStartOf="@id/img_setup_journey"
         android:layout_marginTop="@dimen/dp_16"
-        android:src="@drawable/icons8_account_64"
+        android:src="@drawable/ic_account_box_black_24dp"
         android:layout_width="@dimen/dp_32"
         android:layout_height="@dimen/dp_32"/>
 
@@ -72,7 +72,7 @@
             android:id="@+id/img_setup_reminder"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons8_add_reminder_50"
+            android:src="@drawable/ic_add_alert_black_24dp"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
 
@@ -99,7 +99,7 @@
             android:id="@+id/img_setup_link_web"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons8_linking2_50"
+            android:src="@drawable/ic_gotoweb_black_24dp"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
 
@@ -126,7 +126,7 @@
             android:id="@+id/img_setup_help"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons8_help_50"
+            android:src="@drawable/ic_help_outline_black_24dp"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
 
@@ -153,7 +153,7 @@
             android:id="@+id/img_setup_feedback"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons8_feedback_100"
+            android:src="@drawable/ic_feedback_black_24dp"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
 
@@ -180,7 +180,7 @@
             android:id="@+id/img_setup_setting"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons8_setting_56"
+            android:src="@drawable/ic_settings_black_24dp"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
 

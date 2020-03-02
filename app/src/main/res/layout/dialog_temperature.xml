@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@id/txt_dl_temperature"
         android:layout_marginTop="@dimen/dp_16"
         android:layout_marginLeft="@dimen/dp_16"
-        android:src="@drawable/icons8_cloud_48"
+        android:src="@drawable/ic_cloud_off_blue_24dp"
         android:layout_width="@dimen/dp_48"
         android:layout_height="@dimen/dp_48"/>
 

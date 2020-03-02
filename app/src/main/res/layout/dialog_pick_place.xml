@@ -31,7 +31,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/img_dl_rename_place_pick_place"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons8_pick_place"
+            android:src="@drawable/ic_add_location_blue_24dp"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
 
@@ -51,7 +51,7 @@
             app:layout_constraintStart_toEndOf="@id/img_dl_pick_place"
             app:layout_constraintEnd_toStartOf="@id/img_dl_remove_place"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons8_rename_place"
+            android:src="@drawable/ic_edit_location_blue_24dp"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
@@ -72,7 +72,7 @@
             app:layout_constraintStart_toEndOf="@id/img_dl_rename_place_pick_place"
             app:layout_constraintEnd_toStartOf="@id/img_dl_setup_gps"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons8_remove_place"
+            android:src="@drawable/ic_location_off_blue_24dp"
             android:layout_marginLeft="@dimen/dp_24"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
@@ -93,7 +93,7 @@
             app:layout_constraintStart_toEndOf="@id/img_dl_remove_place"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons8_region_80"
+            android:src="@drawable/ic_location_on_blue_24dp"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_marginRight="@dimen/dp_2"
             android:layout_width="@dimen/dp_32"

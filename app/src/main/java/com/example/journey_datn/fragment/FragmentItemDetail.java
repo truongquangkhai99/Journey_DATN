@@ -1,5 +1,6 @@
 package com.example.journey_datn.fragment;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.journey_datn.R;
 
 public class FragmentItemDetail extends Fragment {
@@ -47,9 +49,11 @@ public class FragmentItemDetail extends Fragment {
     }
 
     private void setData(){
-//        img_item_detail.setImageResource(srcImage);
-//        img_action_detail.setImageResource(action);// action dang la kieu string
-//        img_mood_detail.setImageResource(mood);
+
+        Glide.with(getContext()).load(getMood()).into(img_mood_detail);
+        Glide.with(getContext()).load(getAction()).into(img_action_detail);
+        Glide.with(getContext()).load(Uri.parse(getSrcImage())).into(img_item_detail);
+
 
         txt_day_detail.setText(getDay()+ "");
         txt_month_detail.setText(getMonth()+ "");

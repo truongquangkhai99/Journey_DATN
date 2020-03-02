@@ -22,16 +22,16 @@ public class AdapterRcvAdd extends RecyclerView.Adapter<AdapterRcvAdd.ViewHolder
 
     public AdapterRcvAdd(Context context){
         this.context = context;
-        arrItem.add(R.drawable.icons8_coil_60);
-        arrItem.add(R.drawable.icons8_region_80);
-        arrItem.add(R.drawable.icons8_thermometer_64);
-        arrItem.add(R.drawable.icons8_collect_50);
-        arrItem.add(R.drawable.icons8_happy_52);
-        arrItem.add(R.drawable.icons8_bold_48);
-        arrItem.add(R.drawable.icons8_italic_52);
-        arrItem.add(R.drawable.icons8_underline_48);
-        arrItem.add(R.drawable.icons8_back_50_2);
-        arrItem.add(R.drawable.icons8_forward_48);
+        arrItem.add(R.drawable.ic_attach_file_black_24dp);
+        arrItem.add(R.drawable.ic_location_on_black_24dp);
+        arrItem.add(R.drawable.ic_sunny_black_24dp);
+        arrItem.add(R.drawable.ic_action_black_24dp);
+        arrItem.add(R.drawable.ic_mood_black_24dp);
+        arrItem.add(R.drawable.ic_bold_black_24dp);
+        arrItem.add(R.drawable.ic_italic_black_24dp);
+        arrItem.add(R.drawable.ic_underlined_black_24dp);
+        arrItem.add(R.drawable.ic_undo_black_24dp);
+        arrItem.add(R.drawable.ic_redo_black_24dp);
 
     }
 

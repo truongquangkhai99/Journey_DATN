@@ -30,7 +30,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/img_dl_file"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons_gallery_80"
+            android:src="@drawable/ic_gallery_blue_24dp"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
@@ -51,7 +51,7 @@
             app:layout_constraintStart_toEndOf="@id/img_dl_gallery"
             app:layout_constraintEnd_toStartOf="@id/img_dl_photo"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons8_file_48"
+            android:src="@drawable/ic_file_blue_24dp"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
@@ -72,7 +72,7 @@
             app:layout_constraintStart_toEndOf="@id/img_dl_file"
             app:layout_constraintEnd_toStartOf="@id/img_dl_video"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons8_unsplash_50"
+            android:src="@drawable/ic_photo_camera_blue_24dp"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
@@ -93,7 +93,7 @@
             app:layout_constraintStart_toEndOf="@id/img_dl_photo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/icons8_video_call_48"
+            android:src="@drawable/ic_videocam_blue_24dp"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
@@ -115,7 +115,7 @@
             app:layout_constraintEnd_toEndOf="@id/img_dl_gallery"
             android:layout_marginTop="@dimen/dp_16"
             app:layout_constraintTop_toBottomOf="@id/txt_dl_gallery"
-            android:src="@drawable/icons8_microphone_48"
+            android:src="@drawable/ic_keyboard_voice_blue_24dp"
             android:layout_marginRight="@dimen/dp_16"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_width="@dimen/dp_32"
