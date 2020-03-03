@@ -36,4 +36,7 @@ public interface EntityDAO {
 
     @Delete
     void deleteEntity(Entity entity);
+
+    @Query("SELECT COUNT(*) FROM Entity")
+    int getCountItem();
 }

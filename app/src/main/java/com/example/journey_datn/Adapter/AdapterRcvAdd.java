@@ -35,6 +35,10 @@ public class AdapterRcvAdd extends RecyclerView.Adapter<AdapterRcvAdd.ViewHolder
 
     }
 
+    public void updateItem(int position, int value){
+        arrItem.set(position, value);
+        notifyItemChanged(position);
+    }
 
     @NonNull
     @Override
@@ -60,7 +64,7 @@ public class AdapterRcvAdd extends RecyclerView.Adapter<AdapterRcvAdd.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView img_item;
+        public ImageView img_item;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             img_item = itemView.findViewById(R.id.image_item_add);

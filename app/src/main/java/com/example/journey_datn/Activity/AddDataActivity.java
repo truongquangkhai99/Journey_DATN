@@ -56,6 +56,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     private int temperature = 0, action = R.drawable.ic_action_black_24dp , mood = R.drawable.ic_mood_black_24dp;
     private  String contain, day, month, year, hour, minute;
     private static final int MY_CAMERA_PERMISSION_CODE = 100, CAMERA_CODE = 0, GALLERY_CODE = 1;
+    private int mposition;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,23 +83,43 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+        getCalendar();
+        txt_day_add.setText( mDay + "");
+        txt_month_add.setText( mMonth + "");
+        txt_year_add.setText( mYear + "");
+        txt_hour_add.setText( mHour + "");
+        txt_minute_add.setText( mMinute + "");
+
+
     }
 
-    private void dateTimePicker(){
-        final Calendar c = Calendar.getInstance();
+    private void getCalendar(){
+        Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+        getDayofMonth(mDay, mMonth, mYear);
+        mMonth = mMonth + 1;
+    }
+
+    private void getDayofMonth(int day, int month, int year){
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+        day = day - 1;
+        Date date = new Date(year, month, day);
+        th = sdf.format(date);
+    }
+
+    private void dateTimePicker(){
+        getCalendar();
+        final TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 txt_hour_add.setText(hourOfDay + "");
                 txt_minute_add.setText(minute + "");
             }
         }, mHour, mMinute, false);
-        timePickerDialog.show();
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -107,10 +129,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                         txt_month_add.setText(month + "");
                         txt_year_add.setText(year + "");
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
-                        dayOfMonth = dayOfMonth - 1;
-                        Date date = new Date(year, monthOfYear, dayOfMonth);
-                        th = sdf.format(date);
+                        getDayofMonth(dayOfMonth, monthOfYear, year);
+                        timePickerDialog.show();
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
@@ -187,27 +207,39 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void OnItemClick(int position) {
-                if (position == 0)
-                    mediaClick();
-                if (position == 1)
-                    placeClick();
-                if (position == 2)
-                    temperatureClick();
-                if (position == 3)
-//                    activityClick();
-                    pickerView();
-                if (position == 4)
-                    faceClick();
-                if (position == 5)
-                    boldClick();
-                if (position == 6)
-                    italicClick();
-                if (position == 7)
-                    underlineClick();
-                if (position == 8)
-                    backClick();
-                if (position == 9)
-                    forwardClick();
+        mposition = position;
+        switch (position){
+            case 0:
+                mediaClick();
+                break;
+            case 1:
+                placeClick();
+                break;
+            case 2:
+                temperatureClick();
+                break;
+            case 3:
+                pickerView();
+                break;
+            case 4:
+                faceClick();
+                break;
+            case 5:
+                boldClick();
+                break;
+            case 6:
+                italicClick();
+                break;
+            case 7:
+                underlineClick();
+                break;
+            case 8:
+                backClick();
+                break;
+            case 9:
+                forwardClick();
+                break;
+        }
     }
 
     private void mediaClick(){
@@ -287,9 +319,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 startActivityForResult(cameraIntent, CAMERA_CODE);
             }
             else
-            {
                 Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
-            }
         }
     }
 
@@ -308,6 +338,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 Uri selectedImage = data.getData();
                 Glide.with(this).load(selectedImage).into(img_tag_add);
                 srcImage = selectedImage.toString();
+
                 break;
         }
     }
@@ -372,22 +403,38 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         singlePicker.setOnoptionsSelectListener(new MyOptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int option2, int options3) {
-                if (items.get(options1) == items.get(0))
+                if (items.get(options1) == items.get(0)){
                     action = R.drawable.ic_action_black_24dp;
-                if (items.get(options1) == items.get(1))
+                    adapterRcvAdd.updateItem(mposition, action);
+                }
+                if (items.get(options1) == items.get(1)){
                     action = R.drawable.ic_accessibility_black_24dp;
-                if (items.get(options1) == items.get(2))
+                    adapterRcvAdd.updateItem(mposition, action);
+                }
+                if (items.get(options1) == items.get(2)){
                     action = R.drawable.ic_restaurant_menu_black_24dp;
-                if (items.get(options1) == items.get(3))
+                    adapterRcvAdd.updateItem(mposition, action);
+                }
+                if (items.get(options1) == items.get(3)){
                     action = R.drawable.ic_directions_walk_black_24dp;
-                if (items.get(options1) == items.get(4))
+                    adapterRcvAdd.updateItem(mposition, action);
+                }
+                if (items.get(options1) == items.get(4)){
                     action = R.drawable.ic_directions_run_black_24dp;
-                if (items.get(options1) == items.get(5))
+                    adapterRcvAdd.updateItem(mposition, action);
+                }
+                if (items.get(options1) == items.get(5)){
                     action = R.drawable.ic_directions_bike_black_24dp;
-                if (items.get(options1) == items.get(6))
+                    adapterRcvAdd.updateItem(mposition, action);
+                }
+                if (items.get(options1) == items.get(6)){
                     action = R.drawable.ic_directions_car_black_24dp;
-                if (items.get(options1) == items.get(7))
+                    adapterRcvAdd.updateItem(mposition, action);
+                }
+                if (items.get(options1) == items.get(7)){
                     action = R.drawable.ic_airplanemode_active_black_24dp;
+                    adapterRcvAdd.updateItem(mposition, action);
+                }
             }
         });
 
@@ -416,7 +463,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgHeart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mood = R.drawable.ic_favorite_border_black_24dp;
+                mood = R.drawable.ic_favorite_red_24dp;
+                adapterRcvAdd.updateItem(mposition, mood);
                 dialog.dismiss();
             }
         });
@@ -424,7 +472,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgHappy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mood = R.drawable.ic_happy_black_24dp;
+                mood = R.drawable.ic_happy_red_24dp;
+                adapterRcvAdd.updateItem(mposition, mood);
                 dialog.dismiss();
             }
         });
@@ -432,7 +481,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgGrinning.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mood = R.drawable.ic_mood_emoticon_black_24dp;
+                mood = R.drawable.ic_mood_emoticon_red_24dp;
+                adapterRcvAdd.updateItem(mposition, mood);
                 dialog.dismiss();
             }
         });
@@ -440,7 +490,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgSad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mood = R.drawable.ic_sad_black_24dp;
+                mood = R.drawable.ic_sad_red_24dp;
+                adapterRcvAdd.updateItem(mposition, mood);
                 dialog.dismiss();
             }
         });
@@ -448,7 +499,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgNeutral.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mood = R.drawable.ic_neutral_black_24dp;
+                mood = R.drawable.ic_neutral_red_24dp;
+                adapterRcvAdd.updateItem(mposition, mood);
                 dialog.dismiss();
             }
         });

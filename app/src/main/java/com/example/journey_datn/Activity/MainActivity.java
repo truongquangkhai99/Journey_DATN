@@ -1,7 +1,9 @@
 package com.example.journey_datn.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -54,6 +56,14 @@ public class MainActivity extends AppCompatActivity {
                         return  true;
                 }
                 return false;
+            }
+        });
+
+        img_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
             }
         });
     }

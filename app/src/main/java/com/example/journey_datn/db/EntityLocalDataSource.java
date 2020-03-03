@@ -58,4 +58,9 @@ public class EntityLocalDataSource implements EntityDataSource {
     public void updateEntity(Entity entities) {
         mEntityDAO.updateEntity(entities);
     }
+
+    @Override
+    public int getCountItemEntity() {
+        return mEntityDAO.getCountItem();
+    }
 }

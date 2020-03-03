@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,6 +98,7 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
                 return false;
             }
         });
+
     }
 
     private void itemClick(int mpositon){
@@ -248,6 +250,38 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         lstEntity.clear();
         lstEntity.addAll(entities);
         notifyDataSetChanged();
+    }
+
+    public void getItem(){
+        Disposable disposable = Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> e) throws Exception {
+                mEntityRepository.getCountItemEntity();
+                e.onComplete();
+            }
+        })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        //no ops
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        onGetAllUserFailure(throwable.getMessage());
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        getData();
+                    }
+                });
+
+        Log.d("count", mEntityRepository.toString());
+
+        mCompositeDisposable.add(disposable);
     }
 
 

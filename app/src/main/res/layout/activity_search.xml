@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:padding="@dimen/dp_16"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".Activity.SearchActivity">
 
     <ImageView
         android:id="@+id/img_back_search"
@@ -14,8 +15,8 @@
         android:layout_width="@dimen/dp_32"
         android:layout_height="@dimen/dp_32"/>
 
-    <TextView
-        android:id="@+id/txt_search"
+    <EditText
+        android:id="@+id/edt_search"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/img_back_search"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,44 +27,49 @@
 
     <View
         android:id="@+id/view_search_one"
-        app:layout_constraintTop_toBottomOf="@id/txt_search"
+        app:layout_constraintTop_toBottomOf="@id/edt_search"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="@dimen/dp_16"
         android:layout_width="match_parent"
         android:layout_height="2dp"/>
 
-   <androidx.constraintlayout.widget.ConstraintLayout
-       android:id="@+id/const_star_search"
-       app:layout_constraintLeft_toLeftOf="parent"
-       app:layout_constraintTop_toBottomOf="@id/view_search_one"
-       android:layout_marginTop="@dimen/dp_16"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content">
-       <ImageView
-           android:id="@+id/img_star_search"
-           app:layout_constraintLeft_toLeftOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-          android:src="@drawable/ic_star_yellow_24dp"
-           android:layout_width="@dimen/dp_32"
-           android:layout_height="@dimen/dp_32"/>
-       <TextView
-           android:id="@+id/txt_starred"
-           app:layout_constraintStart_toEndOf="@id/img_star_search"
-           app:layout_constraintTop_toTopOf="@id/img_star_search"
-           app:layout_constraintBottom_toBottomOf="@id/img_star_search"
-           android:text="Starred"
-           android:textStyle="bold"
-           android:layout_marginLeft="@dimen/dp_16"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"/>
-       <view
-           app:layout_constraintStart_toStartOf="@id/txt_starred"
-           app:layout_constraintTop_toBottomOf="@id/txt_starred"
-           app:layout_constraintEnd_toEndOf="parent"
-           android:layout_marginTop="@dimen/dp_8"
-           android:layout_width="match_parent"
-           android:layout_height="1dp"/>
-   </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const_star_search"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_search_one"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_star_search"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_star_yellow_24dp"
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="@dimen/dp_32"/>
+
+        <TextView
+            android:id="@+id/txt_starred"
+            app:layout_constraintStart_toEndOf="@id/img_star_search"
+            app:layout_constraintTop_toTopOf="@id/img_star_search"
+            app:layout_constraintBottom_toBottomOf="@id/img_star_search"
+            android:text="Starred"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <View
+            app:layout_constraintStart_toStartOf="@id/txt_starred"
+            app:layout_constraintTop_toBottomOf="@id/txt_starred"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/img_people_search"
@@ -111,19 +117,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <view
-        android:id="@+id/view_search_two"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_flying_search"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-
     <ImageView
         android:id="@+id/img_mood_search"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_search_two"
+        app:layout_constraintTop_toBottomOf="@id/txt_flying_search"
         android:layout_marginTop="@dimen/dp_16"
         android:src="@drawable/ic_mood_red_24dp"
         android:layout_width="@dimen/dp_32"

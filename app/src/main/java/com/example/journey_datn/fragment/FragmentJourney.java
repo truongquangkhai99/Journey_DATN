@@ -25,6 +25,7 @@ import com.example.journey_datn.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -55,6 +56,7 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_journey, container, false);
         initView(view);
+        getCalendar();
         fabJourney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +71,7 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
         rcvJourney.setLayoutManager(linearLayoutManager);
 
         adapterRcvEntity.getData();
+
 //        adapterRcvEntity.deleteAllEntity();
         return view;
     }
@@ -125,6 +128,19 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
         txt_year = view.findViewById(R.id.txt_year);
         txt_number_item = view.findViewById(R.id.txt_number_item);
         fabJourney = view.findViewById(R.id.fab_journey);
+    }
+
+    private void getCalendar(){
+        int mYear, mMonth, mDay;
+        Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        mMonth = mMonth + 1;
+        txt_day.setText(mDay + "");
+        txt_month.setText(mMonth + "");
+        txt_year.setText(mYear + "");
+
     }
 
     @Override

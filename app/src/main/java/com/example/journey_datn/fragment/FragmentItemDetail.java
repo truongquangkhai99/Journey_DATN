@@ -54,7 +54,6 @@ public class FragmentItemDetail extends Fragment {
         Glide.with(getContext()).load(getAction()).into(img_action_detail);
         Glide.with(getContext()).load(Uri.parse(getSrcImage())).into(img_item_detail);
 
-
         txt_day_detail.setText(getDay()+ "");
         txt_month_detail.setText(getMonth()+ "");
         txt_year_detail.setText(getYear()+ "");
@@ -64,6 +63,7 @@ public class FragmentItemDetail extends Fragment {
         txt_temperature_detail.setText(getTemperature()+ "");
         txt_position_detail.setText(getStrPosition());
         txt_contain_detail.setText(getContent());
+
 
     }
 

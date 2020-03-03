@@ -57,4 +57,9 @@ public class EntityRepository implements EntityDataSource {
     public void updateEntity(Entity entities) {
         mLocalDataSource.updateEntity(entities);
     }
+
+    @Override
+    public int getCountItemEntity() {
+        return mLocalDataSource.getCountItemEntity();
+    }
 }
