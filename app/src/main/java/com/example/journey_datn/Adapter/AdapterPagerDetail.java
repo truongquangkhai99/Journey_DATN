@@ -5,23 +5,26 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.journey_datn.Model.Entity;
+import com.example.journey_datn.fragment.FragmentItemDetail;
+
 import java.util.List;
 
 public class AdapterPagerDetail extends FragmentPagerAdapter {
-    public List<Fragment> fragmentList;
-    public AdapterPagerDetail(@NonNull FragmentManager fm, List<Fragment> fragments) {
+    public  List<Entity> listEntity;
+    public AdapterPagerDetail(@NonNull FragmentManager fm, List<Entity> listEntity) {
         super(fm);
-        this.fragmentList = fragments;
+        this.listEntity = listEntity;
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return fragmentList.get(0);
+        return  new FragmentItemDetail(listEntity.get(position));
     }
 
     @Override
     public int getCount() {
-        return fragmentList.size();
+        return listEntity.size();
     }
 }

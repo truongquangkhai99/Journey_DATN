@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,8 @@ import com.example.journey_datn.db.EntityDatabase;
 import com.example.journey_datn.db.EntityLocalDataSource;
 import com.example.journey_datn.db.EntityRepository;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -40,14 +43,14 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.ViewHolder> {
     private Context context;
-    private List<Entity> lstEntity;
+    private ArrayList<Entity> lstEntity;
     private OnItemClickListener listener;
 
     public CompositeDisposable mCompositeDisposable;
     public EntityRepository mEntityRepository;
 
 
-    public AdapterRcvEntity(Context context, List<Entity> mEntity) {
+    public AdapterRcvEntity(Context context, ArrayList<Entity> mEntity) {
         this.context = context;
         this.lstEntity = mEntity;
 
@@ -79,8 +82,7 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
 
         Glide.with(context).load(pos.getMood()).into(holder.img_mood);
         Glide.with(context).load(pos.getAction()).into(holder.img_action);
-
-        Glide.with(context).load(Uri.parse(pos.getSrcImage())).into(holder.img_item);
+        Glide.with(context).load(pos.getSrcImage()).into(holder.img_item);
 
         holder.const_item_layout_rcv.setOnClickListener(new View.OnClickListener() {
             int mpositon = position;
@@ -101,45 +103,12 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
 
     }
 
-    private void itemClick(int mpositon){
-         String content;
-         String strPosition, th;
-         int temperature, action, mood;
-         int year, month, day, hour, minute;
-         String srcImage;
-
-         content = lstEntity.get(mpositon).getContent();
-         action = lstEntity.get(mpositon).getAction();
-         strPosition = lstEntity.get(mpositon).getStrPosition();
-         mood = lstEntity.get(mpositon).getMood();
-         srcImage = lstEntity.get(mpositon).getSrcImage();
-         temperature = lstEntity.get(mpositon).getTemperature();
-         year = lstEntity.get(mpositon).getYear();
-         month = lstEntity.get(mpositon).getMonth();
-         day = lstEntity.get(mpositon).getDay();
-         th = lstEntity.get(mpositon).getTh();
-         hour = lstEntity.get(mpositon).getHour();
-         minute = lstEntity.get(mpositon).getMinute();
-
+    private void itemClick(int mposition){
         Intent intent = new Intent(context, ItemDetailActivity.class);
-        Bundle bundle = new Bundle();
-
-        bundle.putString("content", content);
-        bundle.putInt("action", action);
-        bundle.putString("strPosition", strPosition);
-        bundle.putInt("mood", mood);
-        bundle.putString("srcImage", srcImage);
-        bundle.putInt("temperature", temperature);
-        bundle.putInt("year", year);
-        bundle.putInt("month", month);
-        bundle.putInt("day", day);
-        bundle.putString("th", th);
-        bundle.putInt("hour", hour);
-        bundle.putInt("minute", minute);
-
-        intent.putExtra("bundle", bundle);
+        intent.putExtra("entity",  lstEntity.get(mposition));
+        intent.putParcelableArrayListExtra("listEntity", lstEntity);
+        intent.putExtra("position", mposition);
         context.startActivity(intent);
-
     }
 
     private void itemLongClick(int mposition){

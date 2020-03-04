@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bigkoo.pickerview.MyOptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.example.journey_datn.Adapter.AdapterRcvAdd;
+import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
 
 import java.io.File;
@@ -40,6 +41,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
 
 public class AddDataActivity extends AppCompatActivity implements View.OnClickListener, AdapterRcvAdd.OnItemClickListener {
 
@@ -54,9 +57,11 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     private String th;
     private String position = "",srcImage = "";
     private int temperature = 0, action = R.drawable.ic_action_black_24dp , mood = R.drawable.ic_mood_black_24dp;
-    private  String contain, day, month, year, hour, minute;
-    private static final int MY_CAMERA_PERMISSION_CODE = 100, CAMERA_CODE = 0, GALLERY_CODE = 1;
+    private  String contain;
+    private int day, month, year, hour, minute;
+    private static final int CAMERA_CODE = 0, GALLERY_CODE = 1;
     private int mposition;
+    private String urri_random;
 
 
     @Override
@@ -90,7 +95,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         txt_hour_add.setText( mHour + "");
         txt_minute_add.setText( mMinute + "");
 
-
+        urri_random = UUID.randomUUID() +".jpg";
     }
 
     private void getCalendar(){
@@ -113,6 +118,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
     private void dateTimePicker(){
         getCalendar();
+        mMonth = mMonth - 1;
         final TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -174,32 +180,18 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
       contain = edt_contain_add.getText().toString();
-      day = txt_day_add.getText().toString();
-      month = txt_month_add.getText().toString();
-      year = txt_year_add.getText().toString();
-      hour = txt_hour_add.getText().toString();
-      minute = txt_minute_add.getText().toString();
+      day = Integer.parseInt(txt_day_add.getText().toString());
+      month = Integer.parseInt(txt_month_add.getText().toString());
+      year = Integer.parseInt(txt_year_add.getText().toString());
+      hour = Integer.parseInt(txt_hour_add.getText().toString());
+      minute = Integer.parseInt(txt_minute_add.getText().toString());
 
         if (TextUtils.isEmpty(contain)) {
             Toast.makeText(this, "No contain", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = getIntent();
-            Bundle bundle = new Bundle();
-
-            bundle.putString("contain", contain);
-            bundle.putString("day", day);
-            bundle.putString("month", month);
-            bundle.putString("year", year);
-            bundle.putString("hour", hour);
-            bundle.putString("minute", minute);
-            bundle.putInt("action", action);
-            bundle.putString("position", position);
-            bundle.putInt("mood", mood);
-            bundle.putString("srcImage", srcImage);
-            bundle.putInt("temperature", temperature);
-            bundle.putString("th", th);
-
-            intent.putExtra("data", bundle);
+            Entity entity = new Entity(contain, action, position, temperature, year, month, day, th, hour, minute, mood, srcImage);
+            intent.putExtra("entity", entity);
             setResult(113, intent);
             finish();
         }
@@ -257,7 +249,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto , GALLERY_CODE);
                 dialog.dismiss();
             }
@@ -274,19 +266,11 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-                {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-                }
-                else
-                {
-                    Intent m_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
-                    Uri uri = FileProvider.getUriForFile(AddDataActivity.this, AddDataActivity.this.getApplicationContext().getPackageName() + ".provider", file);
-                    m_intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
-                    startActivityForResult(m_intent, CAMERA_CODE);
-                }
-
+                Intent m_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File file = new File(Environment.getExternalStorageDirectory(),  urri_random);
+                Uri uri = FileProvider.getUriForFile(AddDataActivity.this, AddDataActivity.this.getApplicationContext().getPackageName() + ".provider", file);
+                m_intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
+                startActivityForResult(m_intent, CAMERA_CODE);
                 dialog.dismiss();
             }
         });
@@ -307,29 +291,11 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-    {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_CAMERA_PERMISSION_CODE)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_CODE);
-            }
-            else
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
-        }
-    }
-
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case CAMERA_CODE:
-                File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
+                File file = new File(Environment.getExternalStorageDirectory(), urri_random);
                 Uri uri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", file);
                 Glide.with(this).load(uri).into(img_tag_add);
                 srcImage = uri.toString();
@@ -338,7 +304,6 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 Uri selectedImage = data.getData();
                 Glide.with(this).load(selectedImage).into(img_tag_add);
                 srcImage = selectedImage.toString();
-
                 break;
         }
     }

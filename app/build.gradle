@@ -50,4 +50,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation "android.arch.persistence.room:rxjava2:1.0.0-beta2"
     implementation 'com.ramesh.mypicker:pickerview:1.1'
+    implementation 'androidx.appcompat:appcompat:1.2.0-alpha02'
+
 }

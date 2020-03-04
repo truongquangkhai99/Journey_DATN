@@ -4,51 +4,48 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.journey_datn.Adapter.AdapterPagerDetail;
+import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
-import com.example.journey_datn.fragment.FragmentItemDetail;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ItemDetailActivity extends AppCompatActivity {
 
-    private List<Fragment> fragmentList = new ArrayList<>();
     private ViewPager mViewPager;
     private AdapterPagerDetail adapterPagerDetail;
+    private ArrayList<Entity> lstEntity;
+    private int position;
+    private  Entity entity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_detail);
+        getDataIntent();
         mViewPager = findViewById(R.id.viewpager_detail);
-        fragmentList.add(new FragmentItemDetail());
-        adapterPagerDetail = new AdapterPagerDetail(getSupportFragmentManager(), fragmentList);
-        setDataIntent();
+        adapterPagerDetail = new AdapterPagerDetail(getSupportFragmentManager(), lstEntity);
         mViewPager.setAdapter(adapterPagerDetail);
+        mViewPager.setCurrentItem(position);
 
     }
 
-    private void setDataIntent(){
+    public void getDataIntent(){
         Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("bundle");
+        Entity entity = intent.getParcelableExtra("entity");
+        lstEntity =  intent.getParcelableArrayListExtra("listEntity");
+        position = intent.getIntExtra("position", 0);
+        setEntity(entity);
+    }
 
-        FragmentItemDetail mfragment = ((FragmentItemDetail)adapterPagerDetail.fragmentList.get(0));
+    public Entity getEntity(){
+        return  entity;
+    }
 
-        mfragment.setContent(bundle.getString("content"));
-        mfragment.setAction(bundle.getInt("action"));
-        mfragment.setStrPosition(bundle.getString("strPosition"));
-        mfragment.setMood(bundle.getInt("mood"));
-        mfragment.setSrcImage(bundle.getString("srcImage"));
-        mfragment.setTemperature(bundle.getInt("temperature"));
-        mfragment.setYear(bundle.getInt("year"));
-        mfragment.setMonth(bundle.getInt("month"));
-        mfragment.setDay(bundle.getInt("day"));
-        mfragment.setTh(bundle.getString("th"));
-        mfragment.setHour(bundle.getInt("hour"));
-        mfragment.setMinute(bundle.getInt("minute"));
+    public void setEntity(Entity entity) {
+        this.entity = entity;
     }
 }

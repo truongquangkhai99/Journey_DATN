@@ -1,11 +1,16 @@
 package com.example.journey_datn.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @androidx.room.Entity
-public class Entity {
+public class Entity implements Parcelable {
 
     @NonNull
     @PrimaryKey(autoGenerate = true)
@@ -38,6 +43,35 @@ public class Entity {
     public Entity(){
 
     }
+
+    protected Entity(Parcel in) {
+        id = in.readInt();
+        content = in.readString();
+        strPosition = in.readString();
+        temperature = in.readInt();
+        action = in.readInt();
+        mood = in.readInt();
+        year = in.readInt();
+        month = in.readInt();
+        day = in.readInt();
+        hour = in.readInt();
+        minute = in.readInt();
+        th = in.readString();
+        srcImage = in.readString();
+    }
+
+    public static final Creator<Entity> CREATOR = new Creator<Entity>() {
+        @Override
+        public Entity createFromParcel(Parcel in) {
+            return new Entity(in);
+        }
+
+        @Override
+        public Entity[] newArray(int size) {
+            return new Entity[size];
+        }
+    };
+
     public int getId() {
         return id;
     }
@@ -143,4 +177,25 @@ public class Entity {
         this.srcImage = srcImage;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(content);
+        dest.writeString(strPosition);
+        dest.writeInt(temperature);
+        dest.writeInt(action);
+        dest.writeInt(mood);
+        dest.writeInt(year);
+        dest.writeInt(month);
+        dest.writeInt(day);
+        dest.writeInt(hour);
+        dest.writeInt(minute);
+        dest.writeString(th);
+        dest.writeString(srcImage);
+    }
 }

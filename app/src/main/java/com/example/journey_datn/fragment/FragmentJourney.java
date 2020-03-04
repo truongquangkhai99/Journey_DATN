@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,11 +46,7 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
     private FloatingActionButton fabJourney;
     private TextView txt_user_name, txt_day,txt_month, txt_year, txt_number_item;
 
-    private List<Entity> mEntity;
-
-    private String contain,day,month,year,hour,minute,position,srcImage, th;
-    private int temperature, action, mood;
-
+    private ArrayList<Entity> lstEntity;
 
     @Nullable
     @Override
@@ -65,8 +62,8 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
             }
         });
 
-        mEntity = new ArrayList<>();
-        adapterRcvEntity = new AdapterRcvEntity(getContext(), mEntity);
+        lstEntity = new ArrayList<>();
+        adapterRcvEntity = new AdapterRcvEntity(getContext(), lstEntity);
         rcvJourney.setAdapter(adapterRcvEntity);
         rcvJourney.setLayoutManager(linearLayoutManager);
 
@@ -80,35 +77,7 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 911 && resultCode == 113){
-           Bundle bundle = data.getBundleExtra("data");
-
-            contain = bundle.getString("contain");
-            day = bundle.getString("day");
-            month = bundle.getString("month");
-            year = bundle.getString("year");
-            hour = bundle.getString("hour");
-            minute = bundle.getString("minute");
-            action = bundle.getInt("action");
-            position = bundle.getString("position");
-            mood = bundle.getInt("mood");
-            srcImage = bundle.getString("srcImage");
-            temperature = bundle.getInt("temperature");
-            th = bundle.getString("th");
-
-            Entity entity = new Entity();
-            entity.setContent(contain);
-            entity.setDay(Integer.parseInt(day));
-            entity.setMonth(Integer.parseInt(month));
-            entity.setYear(Integer.parseInt(year));
-            entity.setHour(Integer.parseInt(hour));
-            entity.setMinute(Integer.parseInt(minute));
-            entity.setAction(action);
-            entity.setStrPosition(position);
-            entity.setMood(mood);
-            entity.setSrcImage(srcImage);
-            entity.setTemperature(temperature);
-            entity.setTh(th);
-
+            Entity entity = data.getParcelableExtra("entity");
             adapterRcvEntity.insertEntity(entity);
         }
     }
@@ -180,7 +149,7 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        final Entity entity = mEntity.get(position);
+        final Entity entity = lstEntity.get(position);
         final EditText editText = new EditText(getContext());
 //        editText.setText(entity.getLastName());
 //        editText.setHint(R.string.hint_last_name);
@@ -204,7 +173,7 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        final Entity entity = mEntity.get(position);
+        final Entity entity = lstEntity.get(position);
         new AlertDialog.Builder(getContext()).setTitle("Delete")
                 .setMessage("Do you want to delete " + entity.toString())
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
