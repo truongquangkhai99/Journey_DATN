@@ -12,10 +12,8 @@ import java.io.Serializable;
 @androidx.room.Entity
 public class Entity implements Parcelable {
 
-    @NonNull
     @PrimaryKey(autoGenerate = true)
     private int id;
-
 
     private String content;
     private String strPosition;

@@ -26,6 +26,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.journey_datn.Adapter.SectionsPagerAdapter;
 import com.example.journey_datn.R;
 import com.example.journey_datn.fragment.FragmentJourney;
+import com.example.journey_datn.fragment.FragmentMedia;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -37,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private List<Fragment> fragmentList = new ArrayList<>();
     private BottomNavigationView navigationView;
-    private ImageView img_menu, img_search, img_cloud;
-    private int READ_EXTERNAL_STORAGE_CODE = 1, MY_CAMERA_PERMISSION_CODE = 2;
+    private ImageView img_search, img_cloud;
+    private int WRITE_EXTERNAL_STORAGE_CODE = 1, MY_CAMERA_PERMISSION_CODE = 2, READ_EXTERNAL_STORAGE_CODE = 3;
 
     private DrawerLayout mDrawerLayout;
 
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        permissions();
+//        permissions();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         init();
         fragmentList.add(new FragmentJourney());
+//        fragmentList.add(new FragmentMedia());
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragmentList);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -140,17 +142,19 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private  void permissions(){
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_CODE);
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_CODE);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == READ_EXTERNAL_STORAGE_CODE)
+        if (requestCode == WRITE_EXTERNAL_STORAGE_CODE)
         {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 Toast.makeText(this, "external permission granted", Toast.LENGTH_LONG).show();
@@ -163,6 +167,13 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
             else
                 Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+        }
+        if (requestCode == READ_EXTERNAL_STORAGE_CODE)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                Toast.makeText(this, "external permission granted", Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(this, "external permission denied", Toast.LENGTH_LONG).show();
         }
     }
 

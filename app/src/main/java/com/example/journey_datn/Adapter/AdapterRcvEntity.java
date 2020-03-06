@@ -4,16 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -23,40 +18,21 @@ import com.bumptech.glide.Glide;
 import com.example.journey_datn.Activity.ItemDetailActivity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.EntityDatabase;
-import com.example.journey_datn.db.EntityLocalDataSource;
 import com.example.journey_datn.db.EntityRepository;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.ViewHolder> {
     private Context context;
     private ArrayList<Entity> lstEntity;
     private OnItemClickListener listener;
-
-    public CompositeDisposable mCompositeDisposable;
-    public EntityRepository mEntityRepository;
-
+    private EntityRepository entityRepository;
 
     public AdapterRcvEntity(Context context, ArrayList<Entity> mEntity) {
         this.context = context;
         this.lstEntity = mEntity;
-
-        mCompositeDisposable = new CompositeDisposable();
-        EntityDatabase entityDatabase = EntityDatabase.getInMemoryDatabase(context);
-        mEntityRepository = EntityRepository.getInstance(EntityLocalDataSource.getInstance(entityDatabase.EntityDao()));
     }
 
     @NonNull
@@ -128,7 +104,10 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                deleteEntity(lstEntity.get(position));
+                entityRepository = new EntityRepository(context);
+                entityRepository.deleteEntity(lstEntity.get(position));
+                lstEntity.remove(position);
+                notifyItemRemoved(position);
                 dialogInterface.dismiss();
             }
         });
@@ -189,189 +168,5 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
             txt_temperature_item = itemView.findViewById(R.id.txt_temperature_item);
             const_item_layout_rcv = itemView.findViewById(R.id.const_item_layout_rcv);
         }
-    }
-
-    public void getData() {
-        Disposable disposable = mEntityRepository.getALlEntity()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<List<Entity>>() {
-                    @Override
-                    public void accept(List<Entity> entities) throws Exception {
-                        onGetAllUserSuccess(entities);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        onGetAllUserFailure(throwable.getMessage());
-                    }
-                });
-
-        mCompositeDisposable.add(disposable);
-
-    }
-
-    public void onGetAllUserFailure(String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-    }
-
-    public void onGetAllUserSuccess(List<Entity> entities) {
-        lstEntity.clear();
-        lstEntity.addAll(entities);
-        notifyDataSetChanged();
-    }
-
-    public void getItem(){
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                mEntityRepository.getCountItemEntity();
-                e.onComplete();
-            }
-        })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        //no ops
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        onGetAllUserFailure(throwable.getMessage());
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        getData();
-                    }
-                });
-
-        Log.d("count", mEntityRepository.toString());
-
-        mCompositeDisposable.add(disposable);
-    }
-
-
-
-    public void deleteAllEntity() {
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                mEntityRepository.deleteAllEntity();
-                e.onComplete();
-            }
-        })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        //no ops
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        onGetAllUserFailure(throwable.getMessage());
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        getData();
-                    }
-                });
-
-        mCompositeDisposable.add(disposable);
-    }
-
-    public void updateEntity(final Entity entity) {
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                mEntityRepository.updateEntity(entity);
-                e.onComplete();
-            }
-        })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        //no ops
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        onGetAllUserFailure(throwable.getMessage());
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        getData();
-                    }
-                });
-
-        mCompositeDisposable.add(disposable);
-    }
-
-    public void deleteEntity(final Entity entity) {
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                mEntityRepository.deleteEntity(entity);
-                e.onComplete();
-            }
-        })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        //no ops
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        onGetAllUserFailure(throwable.getMessage());
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        getData();
-                    }
-                });
-
-        mCompositeDisposable.add(disposable);
-    }
-
-    public void insertEntity(final Entity entity){
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                mEntityRepository.insertEntity(entity);
-                e.onComplete();
-            }
-        })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        //no ops
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        onGetAllUserFailure(throwable.getMessage());
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        getData();
-                    }
-                });
-
-        mCompositeDisposable.add(disposable);
     }
 }

@@ -16,17 +16,17 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface EntityDAO {
-    @Insert(onConflict = REPLACE)
+    @Insert
     void insertEntity(Entity entity);
 
-    @Update(onConflict = REPLACE)
+    @Update
     void updateEntity(Entity entity);
 
     @Query("DELETE FROM Entity")
     void deleteAll();
 
     @Query("SELECT * FROM Entity")
-    Flowable<List<Entity>> getAllEntity();
+    List<Entity> getAllEntity();
 
     @Query("SELECT * FROM Entity WHERE id = :entityID")
     Entity getEntityById(int entityID);

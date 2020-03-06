@@ -303,7 +303,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             case GALLERY_CODE:
                 Uri selectedImage = data.getData();
                 Glide.with(this).load(selectedImage).into(img_tag_add);
-                srcImage = selectedImage.toString();
+                srcImage = String.valueOf(selectedImage);
                 break;
         }
     }

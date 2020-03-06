@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,11 +24,13 @@ import com.example.journey_datn.Activity.AddDataActivity;
 import com.example.journey_datn.Adapter.AdapterRcvEntity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
+import com.example.journey_datn.db.EntityRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -38,15 +41,17 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class FragmentJourney extends Fragment  implements View.OnClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
+public class FragmentJourney extends Fragment implements View.OnClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
 
     private RecyclerView rcvJourney;
     private AdapterRcvEntity adapterRcvEntity;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
     private FloatingActionButton fabJourney;
-    private TextView txt_user_name, txt_day,txt_month, txt_year, txt_number_item;
+    private TextView txt_user_name, txt_day, txt_month, txt_year, txt_number_item;
 
     private ArrayList<Entity> lstEntity;
+
+    private EntityRepository entityRepository;
 
     @Nullable
     @Override
@@ -62,32 +67,27 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
             }
         });
 
-        lstEntity = new ArrayList<>();
+        entityRepository = new EntityRepository(getContext());
+
+        lstEntity = (ArrayList<Entity>) entityRepository.getEntity();
         adapterRcvEntity = new AdapterRcvEntity(getContext(), lstEntity);
         rcvJourney.setAdapter(adapterRcvEntity);
         rcvJourney.setLayoutManager(linearLayoutManager);
 
-        adapterRcvEntity.getData();
-
-//        adapterRcvEntity.deleteAllEntity();
         return view;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 911 && resultCode == 113){
+        if (requestCode == 911 && resultCode == 113) {
             Entity entity = data.getParcelableExtra("entity");
-            adapterRcvEntity.insertEntity(entity);
+//            entityRepository.deleteAllEntity();
+            entityRepository.insertEntity(entity);
+            lstEntity = (ArrayList<Entity>) entityRepository.getEntity();
+            adapterRcvEntity.setData(lstEntity);
         }
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        adapterRcvEntity.mCompositeDisposable.clear();
-    }
-
 
     private void initView(View view) {
         rcvJourney = view.findViewById(R.id.rcv_journey);
@@ -99,7 +99,7 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
         fabJourney = view.findViewById(R.id.fab_journey);
     }
 
-    private void getCalendar(){
+    private void getCalendar() {
         int mYear, mMonth, mDay;
         Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
@@ -109,66 +109,16 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
         txt_day.setText(mDay + "");
         txt_month.setText(mMonth + "");
         txt_year.setText(mYear + "");
-
     }
 
     @Override
     public void onClick(View v) {
 
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(ObservableEmitter<Object> e) throws Exception {
-//                Entity user = new Entity("Toan", " Doan " + new Random().nextInt());
-//                Place place = new Place("YB " + new Random().nextInt());
-//                user.setPlace(place);
-//                mUserRepository.insertUser(user);
-                e.onComplete();
-            }
-        })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        //no ops
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        adapterRcvEntity.onGetAllUserFailure(throwable.getMessage());
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        adapterRcvEntity.getData();
-                    }
-                });
-
-        adapterRcvEntity.mCompositeDisposable.add(disposable);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        final Entity entity = lstEntity.get(position);
-        final EditText editText = new EditText(getContext());
-//        editText.setText(entity.getLastName());
-//        editText.setHint(R.string.hint_last_name);
-        new AlertDialog.Builder(getContext()).setTitle("Edit")
-                .setMessage("Edit user last name")
-                .setView(editText)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (TextUtils.isEmpty(editText.getText().toString())) {
-                            return;
-                        }
-//                        entity.setLastName(editText.getText().toString());
-                        adapterRcvEntity.updateEntity(entity);
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .create()
-                .show();
+
     }
 
     @Override
@@ -179,7 +129,7 @@ public class FragmentJourney extends Fragment  implements View.OnClickListener, 
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        adapterRcvEntity.deleteEntity(entity);
+//                        adapterRcvEntity.deleteEntity(entity);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
