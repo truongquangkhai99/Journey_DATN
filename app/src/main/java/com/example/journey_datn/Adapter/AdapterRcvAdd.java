@@ -5,12 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.journey_datn.R;
-
 import java.util.ArrayList;
 
 public class AdapterRcvAdd extends RecyclerView.Adapter<AdapterRcvAdd.ViewHolder>{
@@ -18,7 +15,6 @@ public class AdapterRcvAdd extends RecyclerView.Adapter<AdapterRcvAdd.ViewHolder
     private Context context;
     private ArrayList<Integer> arrItem = new ArrayList<>();
     private OnItemClickListener listener;
-
 
     public AdapterRcvAdd(Context context){
         this.context = context;
@@ -32,7 +28,6 @@ public class AdapterRcvAdd extends RecyclerView.Adapter<AdapterRcvAdd.ViewHolder
         arrItem.add(R.drawable.ic_underlined_black_24dp);
         arrItem.add(R.drawable.ic_undo_black_24dp);
         arrItem.add(R.drawable.ic_redo_black_24dp);
-
     }
 
     public void updateItem(int position, int value){

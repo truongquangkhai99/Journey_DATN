@@ -4,50 +4,33 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.journey_datn.Activity.AddDataActivity;
+import com.example.journey_datn.Activity.ItemDetailActivity;
 import com.example.journey_datn.Adapter.AdapterRcvEntity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
 import com.example.journey_datn.db.EntityRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-
-public class FragmentJourney extends Fragment implements View.OnClickListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
+public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener{
 
     private RecyclerView rcvJourney;
     private AdapterRcvEntity adapterRcvEntity;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
     private FloatingActionButton fabJourney;
     private TextView txt_user_name, txt_day, txt_month, txt_year, txt_number_item;
+    private int REQUEST_CODE = 911;
 
     private ArrayList<Entity> lstEntity;
 
@@ -63,7 +46,8 @@ public class FragmentJourney extends Fragment implements View.OnClickListener, A
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), AddDataActivity.class);
-                startActivityForResult(intent, 911);
+                intent.putExtra("activity", 1);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
 
@@ -73,17 +57,27 @@ public class FragmentJourney extends Fragment implements View.OnClickListener, A
         adapterRcvEntity = new AdapterRcvEntity(getContext(), lstEntity);
         rcvJourney.setAdapter(adapterRcvEntity);
         rcvJourney.setLayoutManager(linearLayoutManager);
+        txt_number_item.setText("" + adapterRcvEntity.getItemCount());
 
+        adapterRcvEntity.setItemClickListener(this);
+        adapterRcvEntity.setItemLongClickListener(this);
         return view;
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 911 && resultCode == 113) {
+        if (requestCode == REQUEST_CODE && resultCode == AddDataActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");
-//            entityRepository.deleteAllEntity();
             entityRepository.insertEntity(entity);
+            lstEntity = (ArrayList<Entity>) entityRepository.getEntity();
+            adapterRcvEntity.setData(lstEntity);
+            txt_number_item.setText("" + adapterRcvEntity.getItemCount());
+        }
+        if (requestCode == REQUEST_CODE && resultCode == ItemDetailActivity.RESULT_CODE){
+            Entity entity = data.getParcelableExtra("entity");
+            entityRepository.updateEntity(entity);
             lstEntity = (ArrayList<Entity>) entityRepository.getEntity();
             adapterRcvEntity.setData(lstEntity);
         }
@@ -112,29 +106,47 @@ public class FragmentJourney extends Fragment implements View.OnClickListener, A
     }
 
     @Override
-    public void onClick(View v) {
-
+    public void onItemClick(int position) {
+        itemClick(position);
+    }
+    @Override
+    public void onItemLongClick(int position) {
+        itemLongClick(position);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+    private void itemClick(int position){
+        Intent intent = new Intent(getContext(), ItemDetailActivity.class);
+        intent.putExtra("entity",  lstEntity.get(position));
+        intent.putParcelableArrayListExtra("listEntity", lstEntity);
+        intent.putExtra("position", position);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        final Entity entity = lstEntity.get(position);
-        new AlertDialog.Builder(getContext()).setTitle("Delete")
-                .setMessage("Do you want to delete " + entity.toString())
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        adapterRcvEntity.deleteEntity(entity);
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .create()
-                .show();
-        return false;
+    private void itemLongClick(int position){
+        showDialog(position);
+    }
+
+    private void showDialog(final int position){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Delete");
+        builder.setMessage("Do you want to delete this journal entry?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                entityRepository.deleteEntity(adapterRcvEntity.getLstEntity().get(position));
+                adapterRcvEntity.getLstEntity().remove(position);
+                adapterRcvEntity.notifyItemRemoved(position);
+                txt_number_item.setText("" + adapterRcvEntity.getItemCount());
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

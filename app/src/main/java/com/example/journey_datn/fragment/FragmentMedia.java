@@ -5,20 +5,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.journey_datn.Activity.ItemDetailActivity;
 import com.example.journey_datn.Adapter.AdapterRcvEntity;
 import com.example.journey_datn.Adapter.AdapterRcvMedia;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 
 public class FragmentMedia extends Fragment {
@@ -48,9 +45,6 @@ public class FragmentMedia extends Fragment {
         adapterRcvMedia = new AdapterRcvMedia(getContext(), listEntity);
         recyclerView.setAdapter(adapterRcvMedia);
         recyclerView.setLayoutManager(gridLayoutManager);
-
-//        adapterRcvEntity.getData();
-
         return view;
     }
 

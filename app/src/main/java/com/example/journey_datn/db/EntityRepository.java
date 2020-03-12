@@ -3,12 +3,7 @@ package com.example.journey_datn.db;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.example.journey_datn.Model.Entity;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -116,7 +111,6 @@ public class EntityRepository {
 
             @Override
             protected Void doInBackground(Void... voids) {
-                //adding to database
                 DatabaseClient.getInstance(context).getAppDatabase()
                         .EntityDao()
                         .insertEntity(entity);
@@ -126,7 +120,6 @@ public class EntityRepository {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-//                Toast.makeText(context, "Inserted", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -138,7 +131,6 @@ public class EntityRepository {
 
         class UpdateTask extends AsyncTask<Void, Void, Void> {
 
-            @SuppressLint("WrongThread")
             @Override
             protected Void doInBackground(Void... voids) {
                 DatabaseClient.getInstance(context).getAppDatabase()
@@ -150,7 +142,6 @@ public class EntityRepository {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                Toast.makeText(context, "Updated", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -172,7 +163,6 @@ public class EntityRepository {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                Toast.makeText(context, "Deleted", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -194,7 +184,6 @@ public class EntityRepository {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                Toast.makeText(context, "Deleted All", Toast.LENGTH_LONG).show();
             }
         }
 

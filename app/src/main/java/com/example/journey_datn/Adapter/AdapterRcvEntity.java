@@ -1,25 +1,17 @@
 package com.example.journey_datn.Adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
-import com.example.journey_datn.Activity.ItemDetailActivity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.EntityRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +19,8 @@ import java.util.List;
 public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.ViewHolder> {
     private Context context;
     private ArrayList<Entity> lstEntity;
-    private OnItemClickListener listener;
-    private EntityRepository entityRepository;
+    private onItemClickListener listener;
+    private onItemLongClickListener longListener;
 
     public AdapterRcvEntity(Context context, ArrayList<Entity> mEntity) {
         this.context = context;
@@ -61,58 +53,25 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         Glide.with(context).load(pos.getSrcImage()).into(holder.img_item);
 
         holder.const_item_layout_rcv.setOnClickListener(new View.OnClickListener() {
-            int mpositon = position;
+
             @Override
             public void onClick(View v) {
-                itemClick(mpositon);
+                listener.onItemClick(position);
             }
         });
 
         holder.const_item_layout_rcv.setOnLongClickListener(new View.OnLongClickListener() {
-            int mposition = position;
             @Override
             public boolean onLongClick(View v) {
-                itemLongClick(mposition);
+                longListener.onItemLongClick(position);
                 return false;
             }
         });
 
     }
 
-    private void itemClick(int mposition){
-        Intent intent = new Intent(context, ItemDetailActivity.class);
-        intent.putExtra("entity",  lstEntity.get(mposition));
-        intent.putParcelableArrayListExtra("listEntity", lstEntity);
-        intent.putExtra("position", mposition);
-        context.startActivity(intent);
-    }
-
-    private void itemLongClick(int mposition){
-        showDialog(mposition);
-    }
-
-    private void showDialog(final int position){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Delete");
-        builder.setMessage("Do you want to delete this journal entry?");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-            }
-        });
-        builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                entityRepository = new EntityRepository(context);
-                entityRepository.deleteEntity(lstEntity.get(position));
-                lstEntity.remove(position);
-                notifyItemRemoved(position);
-                dialogInterface.dismiss();
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+    public ArrayList<Entity> getLstEntity() {
+        return lstEntity;
     }
 
     @Override
@@ -120,8 +79,11 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         return lstEntity.size();
     }
 
-    public void setListener(OnItemClickListener listener) {
+    public void setItemClickListener(onItemClickListener listener) {
         this.listener = listener;
+    }
+    public void setItemLongClickListener(onItemLongClickListener listener) {
+        this.longListener = listener;
     }
 
     public void setData(List<Entity> Entity) {
@@ -140,8 +102,12 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         }
     }
 
-    public interface OnItemClickListener {
-        void OnItemClick(String source, int position);
+    public interface onItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public  interface onItemLongClickListener{
+        void onItemLongClick(int position);
     }
 
 

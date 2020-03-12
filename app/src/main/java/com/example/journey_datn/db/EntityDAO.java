@@ -10,10 +10,6 @@ import com.example.journey_datn.Model.Entity;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
-
-import static androidx.room.OnConflictStrategy.REPLACE;
-
 @Dao
 public interface EntityDAO {
     @Insert

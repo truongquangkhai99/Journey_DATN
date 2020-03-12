@@ -2,25 +2,16 @@ package com.example.journey_datn.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-
-import java.io.Serializable;
 
 @androidx.room.Entity
 public class Entity implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-
-    private String content;
-    private String strPosition;
-    private int temperature, action, mood;
-    private int year, month, day, hour, minute;
-    private String th;
-    private String srcImage;
+    private int temperature, action, mood, year, month, day, hour, minute;
+    private String srcImage, th, content, strPosition;
 
     @Ignore
     public Entity(String content, int action, String strPosition, int temperature, int year, int month, int day, String th, int hour, int minute, int mood, String srcImage) {
@@ -35,6 +26,23 @@ public class Entity implements Parcelable {
         this.hour = hour;
         this.minute = minute;
         this.mood = mood;
+        this.srcImage = srcImage;
+    }
+
+    @Ignore
+    public Entity(int id, String content, int action, String strPosition, int temperature, int year, int month, int day, String th,  int hour, int minute,  int mood, String srcImage) {
+        this.id = id;
+        this.content = content;
+        this.strPosition = strPosition;
+        this.temperature = temperature;
+        this.action = action;
+        this.mood = mood;
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.hour = hour;
+        this.minute = minute;
+        this.th = th;
         this.srcImage = srcImage;
     }
 
