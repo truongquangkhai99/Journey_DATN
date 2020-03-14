@@ -34,6 +34,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.retrofit2:retrofit:2.0.2'
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha01'
@@ -52,4 +53,6 @@ dependencies {
     implementation 'com.ramesh.mypicker:pickerview:1.1'
     implementation 'androidx.appcompat:appcompat:1.2.0-alpha02'
 
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.4.0'
 }

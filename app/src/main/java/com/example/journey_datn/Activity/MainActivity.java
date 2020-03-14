@@ -20,7 +20,11 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.example.journey_datn.Adapter.SectionsPagerAdapter;
 import com.example.journey_datn.R;
+import com.example.journey_datn.fragment.FragmentAtlas;
+import com.example.journey_datn.fragment.FragmentCalendar;
 import com.example.journey_datn.fragment.FragmentJourney;
+import com.example.journey_datn.fragment.FragmentMedia;
+import com.example.journey_datn.fragment.Weather.FragmentWeather;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
@@ -51,7 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
         init();
         fragmentList.add(new FragmentJourney());
-//        fragmentList.add(new FragmentMedia());
+        fragmentList.add(new FragmentCalendar());
+        fragmentList.add(new FragmentMedia());
+        fragmentList.add(new FragmentAtlas());
+        fragmentList.add(new FragmentWeather());
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragmentList);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -70,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                     case  R.id.menu_atlas:
                         mViewPager.setCurrentItem(3);
                         return  true;
-                    case  R.id.menu_today:
+                    case  R.id.menu_weather:
                         mViewPager.setCurrentItem(4);
                         return  true;
                 }

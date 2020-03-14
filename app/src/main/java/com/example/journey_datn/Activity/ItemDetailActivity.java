@@ -61,6 +61,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UPDATE_REQUESTCODE && resultCode == AddDataActivity.RESULT_CODE){
             Entity entity = data.getParcelableExtra("entity");
+            
             Intent intent = getIntent();
             intent.putExtra("entity", entity);
             setResult(RESULT_CODE, intent);

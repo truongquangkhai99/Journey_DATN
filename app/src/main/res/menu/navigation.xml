@@ -21,8 +21,8 @@
         android:title="Atlas"
         />
     <item
-        android:id="@+id/menu_today"
-        android:icon="@drawable/ic_today_black_24dp"
-        android:title="Today"
+        android:id="@+id/menu_weather"
+        android:icon="@drawable/icons8_stormy_weather_60"
+        android:title="Weather"
         />
 </menu>
