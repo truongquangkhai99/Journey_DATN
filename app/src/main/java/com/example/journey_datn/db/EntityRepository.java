@@ -191,5 +191,92 @@ public class EntityRepository {
         dt.execute();
     }
 
+    public Entity getEntityById(final int id){
+        class GetTasks extends AsyncTask<Void, Void, Entity> implements CallbackReciever {
+            Context context;
+            public GetTasks(Context context){
+                this.context = context;
+            }
+            @Override
+            protected Entity doInBackground(Void... voids) {
+                Entity taskList = DatabaseClient
+                        .getInstance(context)
+                        .getAppDatabase()
+                        .EntityDao()
+                        .getEntityById(id);
+                return taskList;
+            }
 
+            @Override
+            protected void onPostExecute(Entity tasks) {
+                super.onPostExecute(tasks);
+            }
+
+            @Override
+            public void receiveData(int result) {
+
+            }
+        }
+
+        Entity entity1 = null;
+        try {
+            entity1 = new GetTasks(context){
+                @Override
+                public void receiveData(int result) {
+                    super.receiveData(result);
+                }
+            }.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return entity1;
+    }
+
+
+    public List<Entity> getEntityByContain(final String content){
+        class GetTasks extends AsyncTask<Void, Void, List<Entity>> implements CallbackReciever {
+            Context context;
+            public GetTasks(Context context){
+                this.context = context;
+            }
+            @Override
+            protected List<Entity> doInBackground(Void... voids) {
+                List<Entity> taskList = DatabaseClient
+                        .getInstance(context)
+                        .getAppDatabase()
+                        .EntityDao()
+                        .getEntityByContent(content);
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<Entity> tasks) {
+                super.onPostExecute(tasks);
+            }
+
+            @Override
+            public void receiveData(int result) {
+
+            }
+        }
+
+        List<Entity> lst = null;
+        try {
+            lst = new GetTasks(context){
+                @Override
+                public void receiveData(int result) {
+                    super.receiveData(result);
+                }
+            }.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return lst;
+    }
 }

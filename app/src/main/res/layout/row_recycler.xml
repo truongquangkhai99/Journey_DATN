@@ -8,7 +8,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_temp_max"
-        android:text="dfsvglkjdflkg"
+        android:text="max temp"
+        android:textStyle="italic"
         android:gravity="center"
         android:layout_margin="5dp"
         android:layout_weight=".5"/>
@@ -17,7 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_temp_min"
-        android:text="dfsvglkjdflkg"
+        android:text="min temp"
+        android:textStyle="italic"
         android:gravity="center"
         android:layout_margin="5dp"
         android:layout_weight=".5"/>
@@ -26,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_weather_date"
+        android:text="date"
         android:gravity="center"
         android:maxLines="1"
         android:layout_margin="5dp"

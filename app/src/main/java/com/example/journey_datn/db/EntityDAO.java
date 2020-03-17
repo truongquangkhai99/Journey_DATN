@@ -28,7 +28,7 @@ public interface EntityDAO {
     Entity getEntityById(int entityID);
 
     @Query("SELECT * FROM Entity WHERE content LIKE :content")
-    Entity getEntityByContent(String content);
+    List<Entity> getEntityByContent(String content);
 
     @Delete
     void deleteEntity(Entity entity);

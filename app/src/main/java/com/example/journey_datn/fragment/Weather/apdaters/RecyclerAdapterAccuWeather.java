@@ -13,13 +13,12 @@ import com.example.journey_datn.fragment.Weather.models.AccuWeather5DayModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class RecyclerAdapterAccuWeather extends RecyclerView.Adapter<RecyclerAdapterAccuWeather.RecyclerViewHolder>{
     private Context mContext;
-    private List<AccuWeather5DayModel.DailyForecast> mWeatherList = new ArrayList<>();
+    private List<AccuWeather5DayModel.DailyForecast> mWeatherList;
 
     public RecyclerAdapterAccuWeather(Context context, AccuWeather5DayModel model) {
         this.mContext = context;
@@ -35,15 +34,13 @@ public class RecyclerAdapterAccuWeather extends RecyclerView.Adapter<RecyclerAda
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
-
-
         try {
-            holder.tvWeatherDate.setText("-- " + setDateFormat(mWeatherList.get(position).getDate()));
+            holder.tvWeatherDate.setText("     " + setDateFormat(mWeatherList.get(position).getDate()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        holder.tvTempMin.setText("Min Temp - " + String.valueOf(mWeatherList.get(position).getTemperature().getMinimum().getValue()));
-        holder.tvTempMax.setText("Max Temp - " + String.valueOf(mWeatherList.get(position).getTemperature().getMaximum().getValue()));
+        holder.tvTempMin.setText("     Min:  " + mWeatherList.get(position).getTemperature().getMinimum().getValue());
+        holder.tvTempMax.setText("Max:  " + mWeatherList.get(position).getTemperature().getMaximum().getValue());
     }
 
     public String setDateFormat(String unformattedDate) throws ParseException {
@@ -57,16 +54,12 @@ public class RecyclerAdapterAccuWeather extends RecyclerView.Adapter<RecyclerAda
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-//        @BindView(R.id.tv_temp_max)
         TextView tvTempMax;
-//        @BindView(R.id.tv_weather_date)
         TextView tvWeatherDate;
-//        @BindView(R.id.tv_temp_min)
         TextView tvTempMin;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-//            ButterKnife.bind(this, itemView);
             tvTempMax = itemView.findViewById(R.id.tv_temp_max);
             tvWeatherDate = itemView.findViewById(R.id.tv_weather_date);
             tvTempMin = itemView.findViewById(R.id.tv_temp_min);

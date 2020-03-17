@@ -6,14 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.journey_datn.R;
 import com.example.journey_datn.fragment.Weather.apdaters.AutoCompleteAdapter;
@@ -26,30 +27,25 @@ import com.example.journey_datn.fragment.Weather.models.LocationSearchModel;
 import com.example.journey_datn.fragment.Weather.models.OpenWeather5DayModel;
 import com.example.journey_datn.fragment.Weather.models.OpenWeatherModel;
 import com.example.journey_datn.fragment.Weather.utils.ApiService;
+
 import java.text.ParseException;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import static com.example.journey_datn.fragment.Weather.constants.ProjectConstants.BASE_DEV_URL_ACCU_WEATHER;
 import static com.example.journey_datn.fragment.Weather.constants.ProjectConstants.BASE_URL_ACCU_WEATHER;
 import static com.example.journey_datn.fragment.Weather.constants.ProjectConstants.BASE_URL_OPEN_WEATHER;
 
 public class FragmentWeather extends Fragment{
-    TextView tvCity;
-    TextView tvCountry;
-    Button btnGet5DaysWeather;
-    ImageView ivWeatherIcon;
-    RecyclerView rvWeatherData;
-    AutoCompleteTextView etCityName;
-    Button btnGetCurrentWeather;
-
-    String OPEN_WEATHER_APP_ID = "b317aca2e83ad16e219ff2283ca837d5";
-    String ACCU_WEATHER_APP_ID = "87ad516d1d4842838fcfebe843d933b1";
-
-    LocationSearchModel mLocationSearchModel;
-    TextView tvWeather;
-
+    private TextView tvCity, tvCountry, tvWeather;
+    private ImageView ivWeatherIcon;
+    private RecyclerView rvWeatherData;
+    private AutoCompleteTextView etCityName;
+    private String ACCU_WEATHER_APP_ID = "87ad516d1d4842838fcfebe843d933b1";
+    private LocationSearchModel mLocationSearchModel;
     private static IWeatherApi mWeatherApi;
 
     @Nullable
@@ -62,21 +58,6 @@ public class FragmentWeather extends Fragment{
         etCityName.setAdapter(new AutoCompleteAdapter(getContext(), ACCU_WEATHER_APP_ID));
 
         rvWeatherData.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        btnGetCurrentWeather.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getOpenWeatherData(etCityName.getText().toString(), OPEN_WEATHER_APP_ID);
-            }
-        });
-
-        btnGet5DaysWeather.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getOpenWeatherData5Days(etCityName.getText().toString(), OPEN_WEATHER_APP_ID);
-            }
-        });
-
         etCityName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -92,11 +73,9 @@ public class FragmentWeather extends Fragment{
     private void init(View view){
         tvCity = view.findViewById(R.id.tv_city);
         tvCountry = view.findViewById(R.id.tv_country);
-        btnGet5DaysWeather = view.findViewById(R.id.btn_get_5_days_weather);
         ivWeatherIcon = view.findViewById(R.id.iv_weather_icon);
         rvWeatherData = view.findViewById(R.id.rv_weather_data);
         etCityName = view.findViewById(R.id.et_city_name);
-        btnGetCurrentWeather = view.findViewById(R.id.btn_get_weather);
         tvWeather = view.findViewById(R.id.tv_info);
     }
 
@@ -105,9 +84,9 @@ public class FragmentWeather extends Fragment{
             if (weatherModel instanceof OpenWeatherModel) {
 
                 OpenWeatherModel openWeatherModel = (OpenWeatherModel) weatherModel;
-                tvCountry.setText("Country -- " + openWeatherModel.getSys().getCountry());
-                tvCity.setText("City -- " + openWeatherModel.getName());
-                tvWeather.setText("Temperature -- " + openWeatherModel.getMain().getTemp());
+                tvCountry.setText("Country:  " + openWeatherModel.getSys().getCountry());
+                tvCity.setText("City:  " + openWeatherModel.getName());
+                tvWeather.setText("Temperature:  " + openWeatherModel.getMain().getTemp());
                 Glide.with(getContext())
                         .load("http://openweathermap.org/img/w/" + openWeatherModel.getWeather().get(0).getIcon() + ".png")
                         .into(ivWeatherIcon);
@@ -124,9 +103,9 @@ public class FragmentWeather extends Fragment{
             } else if (weatherModel instanceof AccuWeatherModel) {
 
                 AccuWeatherModel accuWeatherModel = (AccuWeatherModel) weatherModel;
-                tvWeather.setText("Current Temperature - " + String.valueOf(accuWeatherModel.getTemperature().getMetric().getValue()));
-                tvCity.setText("City - " + mLocationSearchModel.getLocalizedName());
-                tvCountry.setText("Country - " + mLocationSearchModel.getCountry().getLocalizedName());
+                tvWeather.setText("Current Temperature:  " + accuWeatherModel.getTemperature().getMetric().getValue());
+                tvCity.setText("City:  " + mLocationSearchModel.getLocalizedName());
+                tvCountry.setText("Country:  " + mLocationSearchModel.getCountry().getLocalizedName());
 
                 Glide.with(getContext())
                         .load("http://apidev.accuweather.com/developers/Media/Default/WeatherIcons/" + String.format("%02d", accuWeatherModel.getWeatherIcon()) + "-s" + ".png")

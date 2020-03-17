@@ -34,9 +34,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
         Object[] keyset = weatherList.keySet().toArray();
-        holder.tvWeatherDate.setText("-- "+String.valueOf(keyset[position]));
-        holder.tvTempMin.setText("Min Temp - " + String.valueOf(weatherList.get(String.valueOf(keyset[position])).get(0).getTempMin()));
-        holder.tvTempMax.setText("Max Temp - " + String.valueOf(weatherList.get(String.valueOf(keyset[position])).get(weatherList.get(String.valueOf(keyset[position])).size() - 1).getTempMax()));
+        holder.tvWeatherDate.setText("     " + keyset[position]);
+        holder.tvTempMin.setText("Min:   " + weatherList.get(String.valueOf(keyset[position])).get(0).getTempMin());
+        holder.tvTempMax.setText("Max:   " + weatherList.get(String.valueOf(keyset[position])).get(weatherList.get(String.valueOf(keyset[position])).size() - 1).getTempMax());
     }
 
     @Override
@@ -45,16 +45,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-//        @BindView(R.id.tv_temp_max)
         TextView tvTempMax;
-//        @BindView(R.id.tv_weather_date)
         TextView tvWeatherDate;
-//        @BindView(R.id.tv_temp_min)
         TextView tvTempMin;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-//            ButterKnife.bind(this, itemView);
             tvTempMax = itemView.findViewById(R.id.tv_temp_max);
             tvWeatherDate = itemView.findViewById(R.id.tv_weather_date);
             tvTempMin = itemView.findViewById(R.id.tv_temp_min);

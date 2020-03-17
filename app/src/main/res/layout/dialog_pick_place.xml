@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:text="Yen Hoa, Cau Giay, Ha Noi"
-        android:textSize="@dimen/dp_32"
+        android:textSize="@dimen/sp_16"
         android:textColor="@color/color_background_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

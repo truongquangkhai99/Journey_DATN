@@ -123,10 +123,11 @@
         <TextView
             android:id="@+id/txt_contain_item"
             app:layout_constraintTop_toBottomOf="@id/txt_hour_item"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/img_item"
             android:layout_marginTop="@dimen/dp_4"
             android:text="Di choi tam chuc"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
         <ImageView
@@ -140,18 +141,22 @@
         <TextView
             android:id="@+id/txt_position_item"
             app:layout_constraintTop_toBottomOf="@id/img_item"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/txt_temperature_item"
             android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginRight="@dimen/dp_8"
             android:paddingTop="@dimen/dp_4"
             android:paddingBottom="@dimen/dp_4"
             android:text="85 vu trong phung"
-            android:layout_width="match_parent"
+            android:textStyle="italic"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
         <ImageView
             android:id="@+id/img_icon_happy_item"
             app:layout_constraintTop_toTopOf="@id/txt_position_item"
-            app:layout_constraintRight_toLeftOf="@id/img_item"
+            app:layout_constraintBottom_toBottomOf="@id/txt_position_item"
+            app:layout_constraintRight_toRightOf="@id/img_item"
             android:layout_marginRight="@dimen/dp_8"
             android:layout_marginLeft="@dimen/dp_8"
             android:src="@drawable/ic_mood_black_24dp"
@@ -162,6 +167,7 @@
             android:id="@+id/img_icon_collect_item"
             android:src="@drawable/ic_action_black_24dp"
             app:layout_constraintTop_toTopOf="@id/txt_position_item"
+            app:layout_constraintBottom_toBottomOf="@id/txt_position_item"
             app:layout_constraintEnd_toStartOf="@id/img_icon_happy_item"
             android:layout_marginRight="@dimen/dp_8"
             android:layout_width="@dimen/dp_24"

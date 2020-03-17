@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Fragment> fragmentList = new ArrayList<>();
     private BottomNavigationView navigationView;
     private ImageView img_search, img_cloud;
-    private int WRITE_EXTERNAL_STORAGE_CODE = 1, MY_CAMERA_PERMISSION_CODE = 2, READ_EXTERNAL_STORAGE_CODE = 3;
+    private int WRITE_EXTERNAL_STORAGE_CODE = 1, MY_CAMERA_PERMISSION_CODE = 2, READ_EXTERNAL_STORAGE_CODE = 3, ACCESS_FINE_LOCATION_CODE = 4;
 
     private DrawerLayout mDrawerLayout;
 
