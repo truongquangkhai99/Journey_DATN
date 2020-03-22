@@ -52,13 +52,8 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-
         init();
-        fragmentList.add(new FragmentJourney());
-        fragmentList.add(new FragmentCalendar());
-        fragmentList.add(new FragmentMedia());
-        fragmentList.add(new FragmentAtlas());
-        fragmentList.add(new FragmentWeather());
+        loadFragment(new FragmentJourney());
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
