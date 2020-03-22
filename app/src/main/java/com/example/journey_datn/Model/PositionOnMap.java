@@ -1,4 +1,4 @@
-package com.example.journey_datn.fragment;
+package com.example.journey_datn.Model;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -9,30 +9,18 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 
-import com.example.journey_datn.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -40,26 +28,20 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
-    private GoogleMap mMap;
+public class PositionOnMap extends AppCompatActivity {
     private int PERMISSION_ID = 44;
     private double latitude, longtitude;
     private FusedLocationProviderClient mFusedLocationClient;
+    private Context context;
+    private String position;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_atlas, container, false);
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        return view;
-    }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+    public PositionOnMap(Context context) {
+        this.context = context;
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
         getLastLocation();
+
+//        Log.d("vitrip", "" + getLatitude() + " - " + getLongtitude());
     }
 
     @SuppressLint("MissingPermission")
@@ -76,12 +58,11 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
                                 } else {
                                     latitude = location.getLatitude();
                                     longtitude = location.getLongitude();
-                                    LatLng sydney = new LatLng(latitude, longtitude);
-                                    mMap.addMarker(new MarkerOptions().position(sydney).title("Current Location"));
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                                    setLatitude(location.getLatitude());
+                                    setLongtitude(location.getLatitude());
                                     Geocoder geocoder;
                                     List<Address> addresses;
-                                    geocoder = new Geocoder(getContext(), Locale.getDefault());
+                                    geocoder = new Geocoder(context, Locale.getDefault());
                                     try {
                                         String address, city, state, country, postalCode, knownName;
                                         addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -92,7 +73,7 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
                                         postalCode = addresses.get(0).getPostalCode();
                                         knownName = addresses.get(0).getFeatureName();
 
-//                                        position = address;
+                                        setPosition(address);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -104,7 +85,7 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
             } else {
 //                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
+                context.startActivity(intent);
             }
         } else {
             requestPermissions();
@@ -120,7 +101,7 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
         mLocationRequest.setFastestInterval(0);
         mLocationRequest.setNumUpdates(1);
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
         mFusedLocationClient.requestLocationUpdates(
                 mLocationRequest, mLocationCallback,
                 Looper.myLooper()
@@ -134,12 +115,14 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
             Location mLastLocation = locationResult.getLastLocation();
             latitude = mLastLocation.getLatitude();
             longtitude = mLastLocation.getLongitude();
+            setLatitude(mLastLocation.getLatitude());
+            setLongtitude(mLastLocation.getLatitude());
         }
     };
 
     private boolean checkPermissions() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
         return false;
@@ -147,14 +130,14 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
 
     private void requestPermissions() {
         ActivityCompat.requestPermissions(
-                getActivity(),
+                this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                 PERMISSION_ID
         );
     }
 
     private boolean isLocationEnabled() {
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
                 LocationManager.NETWORK_PROVIDER
         );
@@ -170,12 +153,36 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
         }
     }
 
-//    @Override
-//    public void onResume(){
-//        super.onResume();
-//        if (checkPermissions()) {
-//            getLastLocation();
-//        }
-//
-//    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (checkPermissions()) {
+            getLastLocation();
+        }
+
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongtitude() {
+        return longtitude;
+    }
+
+    public void setLongtitude(double longtitude) {
+        this.longtitude = longtitude;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
 }

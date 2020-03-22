@@ -83,6 +83,22 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     private double latitude, longtitude;
     private FusedLocationProviderClient mFusedLocationClient;
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongtitude() {
+        return longtitude;
+    }
+
+    public void setLongtitude(double longtitude) {
+        this.longtitude = longtitude;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +135,13 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
+
     }
+
+//    public AddDataActivity(Context context){
+//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        getLastLocation();
+//    }
 
     @SuppressLint("MissingPermission")
     private void getLastLocation(){
@@ -135,6 +157,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                                 } else {
                                     latitude = location.getLatitude();
                                     longtitude = location.getLongitude();
+                                    setLatitude(location.getLatitude());
+                                    setLongtitude(location.getLongitude());
                                     Geocoder geocoder;
                                     List<Address> addresses;
                                     geocoder = new Geocoder(AddDataActivity.this, Locale.getDefault());
@@ -167,7 +191,6 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     @SuppressLint("MissingPermission")
     private void requestNewLocationData(){
 
@@ -191,6 +214,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             Location mLastLocation = locationResult.getLastLocation();
             latitude = mLastLocation.getLatitude();
             longtitude = mLastLocation.getLongitude();
+            setLatitude(mLastLocation.getLatitude());
+            setLongtitude(mLastLocation.getLongitude());
         }
     };
 
@@ -235,7 +260,6 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         }
 
     }
-
 
     private void getCalendar() {
         Calendar c = Calendar.getInstance();

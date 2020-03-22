@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
@@ -17,8 +18,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-import com.example.journey_datn.Adapter.SectionsPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.journey_datn.R;
 import com.example.journey_datn.fragment.FragmentAtlas;
 import com.example.journey_datn.fragment.FragmentCalendar;
@@ -26,13 +27,12 @@ import com.example.journey_datn.fragment.FragmentJourney;
 import com.example.journey_datn.fragment.FragmentMedia;
 import com.example.journey_datn.fragment.Weather.FragmentWeather;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
+
     private List<Fragment> fragmentList = new ArrayList<>();
     private BottomNavigationView navigationView;
     private ImageView img_search, img_cloud;
@@ -59,29 +59,34 @@ public class MainActivity extends AppCompatActivity {
         fragmentList.add(new FragmentMedia());
         fragmentList.add(new FragmentAtlas());
         fragmentList.add(new FragmentWeather());
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragmentList);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.menu_journey:
-                        mViewPager.setCurrentItem(0);
-                        return  true;
-                    case  R.id.menu_calendar:
-                        mViewPager.setCurrentItem(1);
-                        return  true;
-                    case  R.id.menu_media:
-                        mViewPager.setCurrentItem(2);
-                        return  true;
-                    case  R.id.menu_atlas:
-                        mViewPager.setCurrentItem(3);
-                        return  true;
-                    case  R.id.menu_weather:
-                        mViewPager.setCurrentItem(4);
-                        return  true;
-                }
-                return false;
+                Fragment fragment;
+                        switch (menuItem.getItemId()) {
+                            case R.id.menu_journey:
+                                fragment = new FragmentJourney();
+                                loadFragment(fragment);
+                                return true;
+                            case R.id.menu_calendar:
+                                fragment = new FragmentCalendar();
+                                loadFragment(fragment);
+                                return true;
+                            case R.id.menu_media:
+                                fragment = new FragmentMedia();
+                                loadFragment(fragment);
+                                return true;
+                            case R.id.menu_atlas:
+                                fragment = new FragmentAtlas();
+                                loadFragment(fragment);
+                                return true;
+                            case R.id.menu_weather:
+                                fragment = new FragmentWeather();
+                                loadFragment(fragment);
+                                return true;
+                        }
+
+                        return false;
             }
         });
 
@@ -92,26 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-
-                        return true;
-                    }
-                });
 
 
         mDrawerLayout.addDrawerListener(
@@ -138,6 +123,15 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
+
+
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.framelayout_contain, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -178,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        mViewPager =  findViewById(R.id.viewPager_contain);
         navigationView = findViewById(R.id.navigation);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         img_search = findViewById(R.id.img_search);
