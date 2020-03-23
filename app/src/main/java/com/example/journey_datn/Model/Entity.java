@@ -12,9 +12,10 @@ public class Entity implements Parcelable {
     private int id;
     private int temperature, action, mood, year, month, day, hour, minute;
     private String srcImage, th, content, strPosition;
+    private double lat, lng;
 
     @Ignore
-    public Entity(String content, int action, String strPosition, int temperature, int year, int month, int day, String th, int hour, int minute, int mood, String srcImage) {
+    public Entity(String content, int action, String strPosition, int temperature, int year, int month, int day, String th, int hour, int minute, int mood, String srcImage, double lat, double lng) {
         this.content = content;
         this.action = action;
         this.strPosition = strPosition;
@@ -27,10 +28,12 @@ public class Entity implements Parcelable {
         this.minute = minute;
         this.mood = mood;
         this.srcImage = srcImage;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     @Ignore
-    public Entity(int id, String content, int action, String strPosition, int temperature, int year, int month, int day, String th,  int hour, int minute,  int mood, String srcImage) {
+    public Entity(int id, String content, int action, String strPosition, int temperature, int year, int month, int day, String th,  int hour, int minute,  int mood, String srcImage, double lat, double lng) {
         this.id = id;
         this.content = content;
         this.strPosition = strPosition;
@@ -44,6 +47,8 @@ public class Entity implements Parcelable {
         this.minute = minute;
         this.th = th;
         this.srcImage = srcImage;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public Entity(){
@@ -64,6 +69,32 @@ public class Entity implements Parcelable {
         minute = in.readInt();
         th = in.readString();
         srcImage = in.readString();
+        lat = in.readDouble();
+        lng = in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(content);
+        dest.writeString(strPosition);
+        dest.writeInt(temperature);
+        dest.writeInt(action);
+        dest.writeInt(mood);
+        dest.writeInt(year);
+        dest.writeInt(month);
+        dest.writeInt(day);
+        dest.writeInt(hour);
+        dest.writeInt(minute);
+        dest.writeString(th);
+        dest.writeString(srcImage);
+        dest.writeDouble(lat);
+        dest.writeDouble(lng);
     }
 
     public static final Creator<Entity> CREATOR = new Creator<Entity>() {
@@ -77,6 +108,7 @@ public class Entity implements Parcelable {
             return new Entity[size];
         }
     };
+
 
     public int getId() {
         return id;
@@ -183,25 +215,19 @@ public class Entity implements Parcelable {
         this.srcImage = srcImage;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public double getLat() {
+        return lat;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(content);
-        dest.writeString(strPosition);
-        dest.writeInt(temperature);
-        dest.writeInt(action);
-        dest.writeInt(mood);
-        dest.writeInt(year);
-        dest.writeInt(month);
-        dest.writeInt(day);
-        dest.writeInt(hour);
-        dest.writeInt(minute);
-        dest.writeString(th);
-        dest.writeString(srcImage);
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 }

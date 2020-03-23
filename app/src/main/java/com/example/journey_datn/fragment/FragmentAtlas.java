@@ -2,16 +2,21 @@ package com.example.journey_datn.fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +26,9 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
+import com.example.journey_datn.db.EntityRepository;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -31,20 +38,32 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private int PERMISSION_ID = 44;
     private double latitude, longtitude;
     private FusedLocationProviderClient mFusedLocationClient;
+
+    private ArrayList<Entity> lstEntity;
+    private EntityRepository entityRepository;
+    private String knownName = null, roadName = null;
+    private FloatingActionButton fabZoom;
+
 
     @Nullable
     @Override
@@ -52,6 +71,17 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_atlas, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        entityRepository = new EntityRepository(getContext());
+        lstEntity = (ArrayList<Entity>) entityRepository.getEntity();
+
+        fabZoom = view.findViewById(R.id.fab_enlarge);
+        fabZoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(6), 2000, null);
+            }
+        });
+
         return view;
     }
 
@@ -60,10 +90,11 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
         mMap = googleMap;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         getLastLocation();
+        getAllPosition();
     }
 
     @SuppressLint("MissingPermission")
-    private void getLastLocation(){
+    private void getLastLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
                 mFusedLocationClient.getLastLocation().addOnCompleteListener(
@@ -76,33 +107,18 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
                                 } else {
                                     latitude = location.getLatitude();
                                     longtitude = location.getLongitude();
-                                    LatLng sydney = new LatLng(latitude, longtitude);
-                                    mMap.addMarker(new MarkerOptions().position(sydney).title("Current Location"));
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-                                    Geocoder geocoder;
-                                    List<Address> addresses;
-                                    geocoder = new Geocoder(getContext(), Locale.getDefault());
-                                    try {
-                                        String address, city, state, country, postalCode, knownName;
-                                        addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                                        address = addresses.get(0).getAddressLine(0);
-                                        city = addresses.get(0).getLocality();
-                                        state = addresses.get(0).getAdminArea();
-                                        country = addresses.get(0).getCountryName();
-                                        postalCode = addresses.get(0).getPostalCode();
-                                        knownName = addresses.get(0).getFeatureName();
-
-//                                        position = address;
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-
+                                    getLatLng(latitude, longtitude);
+                                    LatLng currentLocation = new LatLng(latitude, longtitude);
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 13));
+                                    mMap.addMarker(new MarkerOptions()
+                                            .title("Current Location")
+                                            .snippet("" + knownName + ", " + roadName)
+                                            .position(currentLocation));
                                 }
                             }
                         }
                 );
             } else {
-//                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
             }
@@ -111,8 +127,60 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
         }
     }
 
+    private void getLatLng(double lat, double lng){
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(getContext(), Locale.getDefault());
+        try {
+            addresses = geocoder.getFromLocation(lat, lng, 1);
+            knownName = addresses.get(0).getFeatureName();
+            roadName = addresses.get(0).getThoroughfare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getAllPosition() {
+        List<LatLng> locations = new ArrayList<>();
+        for (Entity list : lstEntity) {
+            if (list.getStrPosition() != null) {
+                getLatLng(list.getLat(), list.getLng());
+                LatLng location = new LatLng(list.getLat(), list.getLng());
+                locations.add(location);
+                mMap.addMarker(new MarkerOptions()
+                        .title("Location")
+                        .snippet("" + knownName + ", " + roadName)
+                        .position(location)
+                        .icon(BitmapDescriptorFactory.fromBitmap(createMaker(getContext(), list.getSrcImage()))));
+            }
+        }
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(locations.get(0)); //point A
+        builder.include(locations.get(locations.size() - 1)); //point B
+        LatLngBounds bounds = builder.build();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
+    }
+
+    public static Bitmap createMaker(Context context, String resource) {
+        View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
+        CircleImageView markerImage = marker.findViewById(R.id.user_dp);
+        markerImage.setImageURI(Uri.parse(resource));
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        marker.setLayoutParams(new ViewGroup.LayoutParams(52, ViewGroup.LayoutParams.WRAP_CONTENT));
+        marker.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        marker.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+        marker.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(marker.getMeasuredWidth(), marker.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        marker.draw(canvas);
+
+        return bitmap;
+    }
+
     @SuppressLint("MissingPermission")
-    private void requestNewLocationData(){
+    private void requestNewLocationData() {
 
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -125,7 +193,6 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
                 mLocationRequest, mLocationCallback,
                 Looper.myLooper()
         );
-
     }
 
     private LocationCallback mLocationCallback = new LocationCallback() {
@@ -170,12 +237,4 @@ public class FragmentAtlas extends Fragment  implements OnMapReadyCallback {
         }
     }
 
-//    @Override
-//    public void onResume(){
-//        super.onResume();
-//        if (checkPermissions()) {
-//            getLastLocation();
-//        }
-//
-//    }
 }

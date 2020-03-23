@@ -28,12 +28,8 @@ import com.example.journey_datn.fragment.FragmentMedia;
 import com.example.journey_datn.fragment.Weather.FragmentWeather;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
-    private List<Fragment> fragmentList = new ArrayList<>();
     private BottomNavigationView navigationView;
     private ImageView img_search, img_cloud;
     private int WRITE_EXTERNAL_STORAGE_CODE = 1, MY_CAMERA_PERMISSION_CODE = 2, READ_EXTERNAL_STORAGE_CODE = 3, ACCESS_FINE_LOCATION_CODE = 4;
@@ -58,30 +54,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 Fragment fragment;
-                        switch (menuItem.getItemId()) {
-                            case R.id.menu_journey:
-                                fragment = new FragmentJourney();
-                                loadFragment(fragment);
-                                return true;
-                            case R.id.menu_calendar:
-                                fragment = new FragmentCalendar();
-                                loadFragment(fragment);
-                                return true;
-                            case R.id.menu_media:
-                                fragment = new FragmentMedia();
-                                loadFragment(fragment);
-                                return true;
-                            case R.id.menu_atlas:
-                                fragment = new FragmentAtlas();
-                                loadFragment(fragment);
-                                return true;
-                            case R.id.menu_weather:
-                                fragment = new FragmentWeather();
-                                loadFragment(fragment);
-                                return true;
-                        }
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_journey:
+                        fragment = new FragmentJourney();
+                        loadFragment(fragment);
+                        return true;
+                    case R.id.menu_calendar:
+                        fragment = new FragmentCalendar();
+                        loadFragment(fragment);
+                        return true;
+                    case R.id.menu_media:
+                        fragment = new FragmentMedia();
+                        loadFragment(fragment);
+                        return true;
+                    case R.id.menu_atlas:
+                        fragment = new FragmentAtlas();
+                        loadFragment(fragment);
+                        return true;
+                    case R.id.menu_weather:
+                        fragment = new FragmentWeather();
+                        loadFragment(fragment);
+                        return true;
+                }
 
-                        return false;
+                return false;
             }
         });
 
@@ -119,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
         );
 
 
-
     }
 
     private void loadFragment(Fragment fragment) {
@@ -130,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private  void permissions(){
+    private void permissions() {
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
@@ -140,25 +135,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == WRITE_EXTERNAL_STORAGE_CODE)
-        {
+        if (requestCode == WRITE_EXTERNAL_STORAGE_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 Toast.makeText(this, "external permission granted", Toast.LENGTH_LONG).show();
             else
                 Toast.makeText(this, "external permission denied", Toast.LENGTH_LONG).show();
         }
-        if (requestCode == MY_CAMERA_PERMISSION_CODE)
-        {
+        if (requestCode == MY_CAMERA_PERMISSION_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
             else
                 Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
         }
-        if (requestCode == READ_EXTERNAL_STORAGE_CODE)
-        {
+        if (requestCode == READ_EXTERNAL_STORAGE_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 Toast.makeText(this, "external permission granted", Toast.LENGTH_LONG).show();
             else
@@ -166,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void init(){
+    private void init() {
         navigationView = findViewById(R.id.navigation);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         img_search = findViewById(R.id.img_search);
