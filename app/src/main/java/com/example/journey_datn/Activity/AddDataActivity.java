@@ -22,6 +22,7 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -44,6 +45,9 @@ import com.bumptech.glide.Glide;
 import com.example.journey_datn.Adapter.AdapterRcvAdd;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
+import com.example.journey_datn.fragment.Weather.interfaces.IWeatherApi;
+import com.example.journey_datn.fragment.Weather.models.OpenWeatherModel;
+import com.example.journey_datn.fragment.Weather.utils.ApiService;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -54,6 +58,8 @@ import com.google.android.gms.tasks.Task;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.Normalizer;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,6 +67,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.example.journey_datn.fragment.Weather.constants.ProjectConstants.BASE_URL_OPEN_WEATHER;
 
 public class AddDataActivity extends AppCompatActivity implements View.OnClickListener, AdapterRcvAdd.OnItemClickListener {
 
@@ -83,21 +96,10 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     private double latitude, longtitude;
     private FusedLocationProviderClient mFusedLocationClient;
 
-    public double getLatitude() {
-        return latitude;
-    }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
+    private String OPEN_WEATHER_APP_ID = "b317aca2e83ad16e219ff2283ca837d5";
+    private static IWeatherApi mWeatherApi;
 
-    public double getLongtitude() {
-        return longtitude;
-    }
-
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +175,9 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                                         knownName = addresses.get(0).getFeatureName();
 
                                         position = address;
+
+                                        String tp = removeAccent(state);
+                                        getOpenWeatherData(tp, OPEN_WEATHER_APP_ID);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -189,6 +194,31 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         } else {
             requestPermissions();
         }
+    }
+
+    public void getOpenWeatherData(String city, String appId) {
+        mWeatherApi = ApiService.getRetrofitInstance(BASE_URL_OPEN_WEATHER).create(IWeatherApi.class);
+        Call<OpenWeatherModel> resForgotPasswordCall = mWeatherApi.getOpenWeatherData(appId, city);
+        resForgotPasswordCall.enqueue(new Callback<OpenWeatherModel>() {
+            @Override
+            public void onResponse(Call<OpenWeatherModel> call, Response<OpenWeatherModel> response) {
+                if (response.body() != null){
+                    OpenWeatherModel openWeatherModel = response.body();
+                    temperature = (int) openWeatherModel.getMain().getTemp();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OpenWeatherModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public static String removeAccent(String s) {
+        String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(temp).replaceAll("");
     }
 
     @SuppressLint("MissingPermission")
@@ -688,5 +718,21 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
     private void forwardClick() {
         Toast.makeText(AddDataActivity.this, "click forward", Toast.LENGTH_SHORT).show();
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongtitude() {
+        return longtitude;
+    }
+
+    public void setLongtitude(double longtitude) {
+        this.longtitude = longtitude;
     }
 }

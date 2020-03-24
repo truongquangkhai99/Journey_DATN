@@ -1,36 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:padding="@dimen/dp_10">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_temp_max"
-        android:text="max temp"
-        android:textStyle="italic"
-        android:gravity="center"
-        android:layout_margin="5dp"
-        android:layout_weight=".5"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_temp_min"
-        android:text="min temp"
-        android:textStyle="italic"
-        android:gravity="center"
-        android:layout_margin="5dp"
-        android:layout_weight=".5"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_weather_date"
+        android:id="@+id/txt_weather_date"
+        app:layout_constraintTop_toTopOf="parent"
         android:text="date"
-        android:gravity="center"
-        android:maxLines="1"
-        android:layout_margin="5dp"
-        android:layout_weight=".5"/>
-</LinearLayout>
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/txt_description"
+        android:text="mo ta"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txt_weather_date"
+        app:layout_constraintEnd_toStartOf="@id/const_temp_max_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const_temp_max_min"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txt_tem_min"
+            android:text="20"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txt_tem_min_C"
+            android:text="ºC"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txt_tem_min"
+            android:layout_marginLeft="@dimen/dp_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txt_gach"
+            android:text="/"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txt_tem_min_C"
+            android:layout_marginLeft="@dimen/dp_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txt_tem_max"
+            android:text="30"
+            android:layout_marginLeft="@dimen/dp_2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txt_gach"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txt_tem_max_C"
+            android:text="ºC"
+
+            android:layout_marginLeft="@dimen/dp_2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txt_tem_max"
+            android:layout_marginRight="@dimen/dp_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

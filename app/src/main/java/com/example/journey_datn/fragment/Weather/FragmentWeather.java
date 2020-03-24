@@ -1,6 +1,8 @@
 package com.example.journey_datn.fragment.Weather;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +30,10 @@ import com.example.journey_datn.fragment.Weather.models.OpenWeather5DayModel;
 import com.example.journey_datn.fragment.Weather.models.OpenWeatherModel;
 import com.example.journey_datn.fragment.Weather.utils.ApiService;
 
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,31 +44,34 @@ import static com.example.journey_datn.fragment.Weather.constants.ProjectConstan
 import static com.example.journey_datn.fragment.Weather.constants.ProjectConstants.BASE_URL_OPEN_WEATHER;
 
 public class FragmentWeather extends Fragment{
-    private TextView tvCity, tvCountry, tvWeather;
+    private TextView tvCity, tvCountry, tvTemp, tvDescription, tvSpeed;
+    private TextView tv,tvC, tvKmh;
     private ImageView ivWeatherIcon;
     private RecyclerView rvWeatherData;
     private AutoCompleteTextView etCityName;
-    private String ACCU_WEATHER_APP_ID = "87ad516d1d4842838fcfebe843d933b1";
+    private String ACCU_WEATHER_APP_ID = "87ad516d1d4842838fcfebe843d933b1",  OPEN_WEATHER_APP_ID = "b317aca2e83ad16e219ff2283ca837d5";
     private LocationSearchModel mLocationSearchModel;
     private static IWeatherApi mWeatherApi;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
         init(view);
-
         etCityName.setThreshold(2);
         etCityName.setAdapter(new AutoCompleteAdapter(getContext(), ACCU_WEATHER_APP_ID));
-
         rvWeatherData.setLayoutManager(new LinearLayoutManager(getContext()));
         etCityName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mLocationSearchModel = (LocationSearchModel) adapterView.getAdapter().getItem(i);
                 etCityName.setText(mLocationSearchModel.getLocalizedName());
-                getAccuWeatherData(mLocationSearchModel.getKey(), ACCU_WEATHER_APP_ID, true);
-                getAccuWeatherData5Days(mLocationSearchModel.getKey(), ACCU_WEATHER_APP_ID, true);
+                getOpenWeatherData(etCityName.getText().toString(),  OPEN_WEATHER_APP_ID);
+                getOpenWeatherData5Days(etCityName.getText().toString(),  OPEN_WEATHER_APP_ID);
+//                getAccuWeatherData(mLocationSearchModel.getKey(), ACCU_WEATHER_APP_ID, true);
+//                getAccuWeatherData5Days(mLocationSearchModel.getKey(), ACCU_WEATHER_APP_ID, true);
+                etCityName.setText("");
             }
         });
         return view;
@@ -76,21 +83,31 @@ public class FragmentWeather extends Fragment{
         ivWeatherIcon = view.findViewById(R.id.iv_weather_icon);
         rvWeatherData = view.findViewById(R.id.rv_weather_data);
         etCityName = view.findViewById(R.id.et_city_name);
-        tvWeather = view.findViewById(R.id.tv_info);
+        tvTemp = view.findViewById(R.id.tv_temp);
+        tvDescription = view.findViewById(R.id.tv_description);
+        tvSpeed = view.findViewById(R.id.tv_speed);
+        tv = view.findViewById(R.id.tv);
+        tvC = view.findViewById(R.id.tv_C);
+        tvKmh = view.findViewById(R.id.tv_kmh);
+
     }
+
 
     public void getWeatherData(Object weatherModel, Boolean success, String errorMsg) {
         if (success) {
             if (weatherModel instanceof OpenWeatherModel) {
-
+                tv.setVisibility(View.VISIBLE);
+                tvC.setVisibility(View.VISIBLE);
+                tvKmh.setVisibility(View.VISIBLE);
                 OpenWeatherModel openWeatherModel = (OpenWeatherModel) weatherModel;
-                tvCountry.setText("Country:  " + openWeatherModel.getSys().getCountry());
-                tvCity.setText("City:  " + openWeatherModel.getName());
-                tvWeather.setText("Temperature:  " + openWeatherModel.getMain().getTemp());
+                tvCountry.setText("" + openWeatherModel.getSys().getCountry());
+                tvCity.setText("" + openWeatherModel.getName());
+                tvTemp.setText("" + openWeatherModel.getMain().getTemp());
+                tvDescription.setText("" + openWeatherModel.getWeather().get(0).getDescription());
+                tvSpeed.setText("" + openWeatherModel.getWind().getSpeed());
                 Glide.with(getContext())
                         .load("http://openweathermap.org/img/w/" + openWeatherModel.getWeather().get(0).getIcon() + ".png")
                         .into(ivWeatherIcon);
-
             } else if (weatherModel instanceof OpenWeather5DayModel) {
 
                 OpenWeather5DayModel weatherBean = (OpenWeather5DayModel) weatherModel;
@@ -103,7 +120,7 @@ public class FragmentWeather extends Fragment{
             } else if (weatherModel instanceof AccuWeatherModel) {
 
                 AccuWeatherModel accuWeatherModel = (AccuWeatherModel) weatherModel;
-                tvWeather.setText("Current Temperature:  " + accuWeatherModel.getTemperature().getMetric().getValue());
+                tvTemp.setText("Current Temperature:  " + accuWeatherModel.getTemperature().getMetric().getValue());
                 tvCity.setText("City:  " + mLocationSearchModel.getLocalizedName());
                 tvCountry.setText("Country:  " + mLocationSearchModel.getCountry().getLocalizedName());
 

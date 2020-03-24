@@ -462,23 +462,23 @@ public class OpenWeather5DayModel {
 
     }
 
-    public HashMap<String, ArrayList<OpenWeather5DayModel.Main>> getMinMaxTemp() throws ParseException {
+    public HashMap<String, ArrayList<OpenWeather5DayModel.List>> getMinMaxTemp() throws ParseException {
 
-        ArrayList<List> arrayList = new ArrayList<>();
+        ArrayList<OpenWeather5DayModel.List> arrayList = new ArrayList<>();
         arrayList.addAll(getList());
         return getDateWise(arrayList);
 
     }
 
 
-    private HashMap<String, ArrayList<OpenWeather5DayModel.Main>> getDateWise(ArrayList<OpenWeather5DayModel.List> arrayList) throws ParseException {
+    private HashMap<String, ArrayList<OpenWeather5DayModel.List>> getDateWise(ArrayList<OpenWeather5DayModel.List> arrayList) throws ParseException {
         ArrayList<Double> arrayListTemp;
-        HashMap<String, ArrayList<OpenWeather5DayModel.Main>> tempListDateWise = new HashMap<>();
-        ArrayList<OpenWeather5DayModel.Main> arrayList1 = new ArrayList<>();
-        ArrayList<OpenWeather5DayModel.Main> arrayList2 = new ArrayList<>();
-        ArrayList<OpenWeather5DayModel.Main> arrayList3 = new ArrayList<>();
-        ArrayList<OpenWeather5DayModel.Main> arrayList4 = new ArrayList<>();
-        ArrayList<OpenWeather5DayModel.Main> arrayList5 = new ArrayList<>();
+        HashMap<String, ArrayList<OpenWeather5DayModel.List>> tempListDateWise = new HashMap<>();
+        ArrayList<OpenWeather5DayModel.List> arrayList1 = new ArrayList<>();
+        ArrayList<OpenWeather5DayModel.List> arrayList2 = new ArrayList<>();
+        ArrayList<OpenWeather5DayModel.List> arrayList3 = new ArrayList<>();
+        ArrayList<OpenWeather5DayModel.List> arrayList4 = new ArrayList<>();
+        ArrayList<OpenWeather5DayModel.List> arrayList5 = new ArrayList<>();
         String dateSecondDay = "", dateFirstDay = "", dateThirdDay = "", dateFourthDay = "", dateFiveDay = "";
         for (int i = 0; i < arrayList.size(); i++) {
             arrayListTemp = new ArrayList<>();
@@ -510,15 +510,15 @@ public class OpenWeather5DayModel {
 
 
             if (dateString.equals(dateFirstDay)) {
-                arrayList1.add(arrayList.get(i).getMain());
+                arrayList1.add(arrayList.get(i));
             } else if (dateString.equals(dateSecondDay)) {
-                arrayList2.add(arrayList.get(i).getMain());
+                arrayList2.add(arrayList.get(i));
             } else if (dateString.equals(dateThirdDay)) {
-                arrayList3.add(arrayList.get(i).getMain());
+                arrayList3.add(arrayList.get(i));
             } else if (dateString.equals(dateFourthDay)) {
-                arrayList4.add(arrayList.get(i).getMain());
+                arrayList4.add(arrayList.get(i));
             } else if (dateString.equals(dateFiveDay)) {
-                arrayList5.add(arrayList.get(i).getMain());
+                arrayList5.add(arrayList.get(i));
             }
         }
 
@@ -539,11 +539,11 @@ public class OpenWeather5DayModel {
 
     }
 
-    private class Comparator implements java.util.Comparator<OpenWeather5DayModel.Main> {
+    private class Comparator implements java.util.Comparator<OpenWeather5DayModel.List> {
 
         @Override
-        public int compare(OpenWeather5DayModel.Main t1, OpenWeather5DayModel.Main t2) {
-            return (int) (t1.getTempMax() - t2.getTempMax());
+        public int compare(OpenWeather5DayModel.List t1, OpenWeather5DayModel.List t2) {
+            return (int) (t1.getMain().getTempMax() - t2.getMain().getTempMax());
         }
     }
 

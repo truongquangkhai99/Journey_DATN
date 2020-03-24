@@ -60,9 +60,9 @@ public class RecyclerAdapterAccuWeather extends RecyclerView.Adapter<RecyclerAda
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-            tvTempMax = itemView.findViewById(R.id.tv_temp_max);
-            tvWeatherDate = itemView.findViewById(R.id.tv_weather_date);
-            tvTempMin = itemView.findViewById(R.id.tv_temp_min);
+            tvTempMax = itemView.findViewById(R.id.txt_tem_max);
+            tvWeatherDate = itemView.findViewById(R.id.txt_weather_date);
+            tvTempMin = itemView.findViewById(R.id.txt_tem_min);
         }
     }
 }
