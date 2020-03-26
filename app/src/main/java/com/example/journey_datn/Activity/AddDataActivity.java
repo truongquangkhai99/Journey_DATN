@@ -45,6 +45,7 @@ import com.bumptech.glide.Glide;
 import com.example.journey_datn.Adapter.AdapterRcvAdd;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
+import com.example.journey_datn.db.EntityRepository;
 import com.example.journey_datn.fragment.Weather.interfaces.IWeatherApi;
 import com.example.journey_datn.fragment.Weather.models.OpenWeatherModel;
 import com.example.journey_datn.fragment.Weather.utils.ApiService;
@@ -85,20 +86,17 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
     private int mYear, mMonth, mDay, mHour, mMinute, positionUpdate, id =  -1;
     private Entity entityUpdate;
-
     private String position = "", srcImage = "", th, contain, urri_random;
     private int day, month, year, hour, minute, temperature = 0, action = R.drawable.ic_action_black_24dp, mood = R.drawable.ic_mood_black_24dp;
     private static final int CAMERA_CODE = 0, GALLERY_CODE = 1;
     private int mposition;
     public static int RESULT_CODE = 113;
-
     private int PERMISSION_ID = 44;
     private double latitude, longtitude;
     private FusedLocationProviderClient mFusedLocationClient;
-
-
     private String OPEN_WEATHER_APP_ID = "b317aca2e83ad16e219ff2283ca837d5";
     private static IWeatherApi mWeatherApi;
+    private boolean checkUpdate = false;
 
 
     @Override
@@ -135,15 +133,11 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
         getDataFromDetail();
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        getLastLocation();
-
+        if (!checkUpdate){
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            getLastLocation();
+        }
     }
-
-//    public AddDataActivity(Context context){
-//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-//        getLastLocation();
-//    }
 
     @SuppressLint("MissingPermission")
     private void getLastLocation(){
@@ -173,9 +167,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                                         country = addresses.get(0).getCountryName();
                                         postalCode = addresses.get(0).getPostalCode();
                                         knownName = addresses.get(0).getFeatureName();
-
                                         position = address;
-
                                         String tp = removeAccent(state);
                                         getOpenWeatherData(tp, OPEN_WEATHER_APP_ID);
                                     } catch (IOException e) {
@@ -509,6 +501,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = getIntent();
         int activity = intent.getIntExtra("activity", 0);
         if(activity == 2){
+            checkUpdate = true;
             entityUpdate = intent.getParcelableExtra("entityUpdate");
             positionUpdate = intent.getIntExtra("positionUpdate", 0);
             id = entityUpdate.getId();

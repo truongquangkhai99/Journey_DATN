@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHolder> {
 
     private Context context;
-    private AdapterRcvMedia.OnItemClickListener listener;
+    private AdapterRcvMedia.OnItemClickMediaListener listener;
     private ArrayList<Entity> listEntity;
 
     public AdapterRcvMedia(Context context,  ArrayList<Entity> listEntity){
@@ -32,7 +32,7 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        Glide.with(context).load(listEntity.get(position).getSrcImage());
+        Glide.with(context).load(listEntity.get(position).getSrcImage()).into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,11 +46,11 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
         return listEntity.size();
     }
 
-    public void setListener(AdapterRcvMedia.OnItemClickListener listener) {
+    public void setListener(AdapterRcvMedia.OnItemClickMediaListener listener) {
         this.listener = listener;
     }
 
-    public interface OnItemClickListener {
+    public interface OnItemClickMediaListener {
         void OnItemClick(int position);
     }
 

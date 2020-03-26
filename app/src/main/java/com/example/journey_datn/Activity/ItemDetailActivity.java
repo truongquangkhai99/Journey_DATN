@@ -4,26 +4,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
+
 import com.example.journey_datn.Adapter.AdapterPagerDetail;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.EntityRepository;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 public class ItemDetailActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private AdapterPagerDetail adapterPagerDetail;
     private ArrayList<Entity> lstEntity;
     private int position;
-    private  Entity entity;
-    private ImageView img_back_detail,img_star_detail,img_share_detail,img_print_detail,img_update_detail,img_menu_detail;
+    private Entity entity;
+    private ImageView img_back_detail, img_star_detail, img_share_detail, img_print_detail, img_update_detail, img_menu_detail;
     private final static int UPDATE_REQUESTCODE = 114;
     public static int RESULT_CODE = 115;
-    private EntityRepository entityRepository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item_detail);
         getDataIntent();
         init();
-        entityRepository = new EntityRepository(ItemDetailActivity.this);
+
         adapterPagerDetail = new AdapterPagerDetail(getSupportFragmentManager(), lstEntity);
         mViewPager.setAdapter(adapterPagerDetail);
         mViewPager.setCurrentItem(position);
@@ -39,7 +40,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         img_back_detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                   finish();
+                finish();
             }
         });
 
@@ -59,9 +60,8 @@ public class ItemDetailActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == UPDATE_REQUESTCODE && resultCode == AddDataActivity.RESULT_CODE){
+        if (requestCode == UPDATE_REQUESTCODE && resultCode == AddDataActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");
-            
             Intent intent = getIntent();
             intent.putExtra("entity", entity);
             setResult(RESULT_CODE, intent);
@@ -78,24 +78,25 @@ public class ItemDetailActivity extends AppCompatActivity {
         this.position = position;
     }
 
-    public void getDataIntent(){
+    public void getDataIntent() {
         Intent intent = getIntent();
         Entity entity = intent.getParcelableExtra("entity");
-        lstEntity =  intent.getParcelableArrayListExtra("listEntity");
+        lstEntity = intent.getParcelableArrayListExtra("listEntity");
         position = intent.getIntExtra("position", 0);
         setEntity(entity);
         setPosition(position);
+
     }
 
-    public Entity getEntity(){
-        return  entity;
+    public Entity getEntity() {
+        return entity;
     }
 
     public void setEntity(Entity entity) {
         this.entity = entity;
     }
 
-    private  void init(){
+    private void init() {
         mViewPager = findViewById(R.id.viewpager_detail);
         img_back_detail = findViewById(R.id.img_back_detail);
         img_star_detail = findViewById(R.id.img_star_detail);
