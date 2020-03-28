@@ -84,7 +84,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     private RecyclerView rcv_add;
     private AdapterRcvAdd adapterRcvAdd;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-    private int mYear, mMonth, mDay, mHour, mMinute, positionUpdate, id =  -1;
+    private int mYear, mMonth, mDay, mHour, mMinute, positionUpdate, id = -1;
     private Entity entityUpdate;
     private String position = "", srcImage = "", th, contain, urri_random;
     private int day, month, year, hour, minute, temperature = 0, action = R.drawable.ic_action_black_24dp, mood = R.drawable.ic_mood_black_24dp;
@@ -96,7 +96,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     private FusedLocationProviderClient mFusedLocationClient;
     private String OPEN_WEATHER_APP_ID = "b317aca2e83ad16e219ff2283ca837d5";
     private static IWeatherApi mWeatherApi;
-    private boolean checkUpdate = false;
+    private boolean checkUpdate;
 
 
     @Override
@@ -105,6 +105,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_add_data);
 
         init();
+        checkUpdate = false;
         adapterRcvAdd = new AdapterRcvAdd(this);
         adapterRcvAdd.setListener(this);
         rcv_add.setLayoutManager(linearLayoutManager);
@@ -133,58 +134,53 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
         getDataFromDetail();
 
-        if (!checkUpdate){
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-            getLastLocation();
-        }
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        getLastLocation();
     }
 
     @SuppressLint("MissingPermission")
-    private void getLastLocation(){
-        if (checkPermissions()) {
-            if (isLocationEnabled()) {
-                mFusedLocationClient.getLastLocation().addOnCompleteListener(
-                        new OnCompleteListener<Location>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Location> task) {
-                                Location location = task.getResult();
-                                if (location == null) {
-                                    requestNewLocationData();
-                                } else {
-                                    latitude = location.getLatitude();
-                                    longtitude = location.getLongitude();
-                                    setLatitude(location.getLatitude());
-                                    setLongtitude(location.getLongitude());
-                                    Geocoder geocoder;
-                                    List<Address> addresses;
-                                    geocoder = new Geocoder(AddDataActivity.this, Locale.getDefault());
-                                    try {
-                                        String address, city, state, country, postalCode, knownName;
-                                        addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                                        address = addresses.get(0).getAddressLine(0);
-                                        city = addresses.get(0).getLocality();
-                                        state = addresses.get(0).getAdminArea();
-                                        country = addresses.get(0).getCountryName();
-                                        postalCode = addresses.get(0).getPostalCode();
-                                        knownName = addresses.get(0).getFeatureName();
-                                        position = address;
-                                        String tp = removeAccent(state);
-                                        getOpenWeatherData(tp, OPEN_WEATHER_APP_ID);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+    private void getLastLocation() {
+        if (!checkUpdate) {
+            if (checkPermissions()) {
+                if (isLocationEnabled()) {
+                    mFusedLocationClient.getLastLocation().addOnCompleteListener(
+                            new OnCompleteListener<Location>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Location> task) {
+                                    Location location = task.getResult();
+                                    if (location == null) {
+                                        requestNewLocationData();
+                                    } else {
+                                        latitude = location.getLatitude();
+                                        longtitude = location.getLongitude();
+                                        setLatitude(location.getLatitude());
+                                        setLongtitude(location.getLongitude());
+                                        Geocoder geocoder;
+                                        List<Address> addresses;
+                                        geocoder = new Geocoder(AddDataActivity.this, Locale.getDefault());
+                                        try {
+                                            String address, state;
+                                            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                            address = addresses.get(0).getAddressLine(0);
+                                            state = addresses.get(0).getAdminArea();
+                                            position = address;
+                                            String tp = removeAccent(state);
+                                            getOpenWeatherData(tp, OPEN_WEATHER_APP_ID);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-
                                 }
                             }
-                        }
-                );
+                    );
+                } else {
+                    Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
             } else {
-                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
+                requestPermissions();
             }
-        } else {
-            requestPermissions();
         }
     }
 
@@ -194,7 +190,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         resForgotPasswordCall.enqueue(new Callback<OpenWeatherModel>() {
             @Override
             public void onResponse(Call<OpenWeatherModel> call, Response<OpenWeatherModel> response) {
-                if (response.body() != null){
+                if (response.body() != null) {
                     OpenWeatherModel openWeatherModel = response.body();
                     temperature = (int) openWeatherModel.getMain().getTemp();
                 }
@@ -214,7 +210,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @SuppressLint("MissingPermission")
-    private void requestNewLocationData(){
+    private void requestNewLocationData() {
 
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -275,7 +271,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         if (checkPermissions()) {
             getLastLocation();
@@ -295,10 +291,34 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getDayofMonth(int day, int month, int year) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
         day = day - 1;
         Date date = new Date(year, month, day);
-        th = sdf.format(date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (dayOfWeek) {
+            case Calendar.SUNDAY:
+                th = "Sunday";
+                break;
+            case Calendar.MONDAY:
+                th = "Monday";
+                break;
+            case Calendar.TUESDAY:
+                th = "Tuesday";
+                break;
+            case Calendar.WEDNESDAY:
+                th = "Wednesday";
+                break;
+            case Calendar.THURSDAY:
+                th = "Thursday";
+                break;
+            case Calendar.FRIDAY:
+                th = "Friday";
+                break;
+            case Calendar.SATURDAY:
+                th = "Saturday";
+                break;
+        }
     }
 
     private void dateTimePicker() {
@@ -500,7 +520,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     private void getDataFromDetail() {
         Intent intent = getIntent();
         int activity = intent.getIntExtra("activity", 0);
-        if(activity == 2){
+        if (activity == 2) {
             checkUpdate = true;
             entityUpdate = intent.getParcelableExtra("entityUpdate");
             positionUpdate = intent.getIntExtra("positionUpdate", 0);

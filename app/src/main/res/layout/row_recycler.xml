@@ -9,6 +9,7 @@
         android:id="@+id/txt_weather_date"
         app:layout_constraintTop_toTopOf="parent"
         android:text="date"
+        android:textColor="@color/color_black"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,6 +18,7 @@
     <TextView
         android:id="@+id/txt_description"
         android:text="mo ta"
+        android:textColor="@color/color_black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/txt_weather_date"
         app:layout_constraintEnd_toStartOf="@id/const_temp_max_min"
@@ -33,6 +35,7 @@
         <TextView
             android:id="@+id/txt_tem_min"
             android:text="20"
+            android:textColor="@color/color_black"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_width="wrap_content"
@@ -40,7 +43,7 @@
         <TextView
             android:id="@+id/txt_tem_min_C"
             android:text="ºC"
-
+            android:textColor="@color/color_black"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/txt_tem_min"
             android:layout_marginLeft="@dimen/dp_2"
@@ -50,7 +53,7 @@
         <TextView
             android:id="@+id/txt_gach"
             android:text="/"
-
+            android:textColor="@color/color_black"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/txt_tem_min_C"
             android:layout_marginLeft="@dimen/dp_2"
@@ -60,6 +63,7 @@
         <TextView
             android:id="@+id/txt_tem_max"
             android:text="30"
+            android:textColor="@color/color_black"
             android:layout_marginLeft="@dimen/dp_2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/txt_gach"
@@ -68,7 +72,7 @@
         <TextView
             android:id="@+id/txt_tem_max_C"
             android:text="ºC"
-
+            android:textColor="@color/color_black"
             android:layout_marginLeft="@dimen/dp_2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/txt_tem_max"

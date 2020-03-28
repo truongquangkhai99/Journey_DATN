@@ -127,7 +127,7 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void getLatLng(double lat, double lng){
+    private void getLatLng(double lat, double lng) {
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(getContext(), Locale.getDefault());
@@ -141,25 +141,27 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
     }
 
     private void getAllPosition() {
-        List<LatLng> locations = new ArrayList<>();
-        for (Entity list : lstEntity) {
-            if (list.getStrPosition() != null) {
-                getLatLng(list.getLat(), list.getLng());
-                LatLng location = new LatLng(list.getLat(), list.getLng());
-                locations.add(location);
-                mMap.addMarker(new MarkerOptions()
-                        .title("Location")
-                        .snippet("" + knownName + ", " + roadName)
-                        .position(location)
-                        .icon(BitmapDescriptorFactory.fromBitmap(createMaker(getContext(), list.getSrcImage()))));
+        if (lstEntity.size() > 0) {
+            List<LatLng> locations = new ArrayList<>();
+            for (Entity list : lstEntity) {
+                if (list.getStrPosition() != null) {
+                    getLatLng(list.getLat(), list.getLng());
+                    LatLng location = new LatLng(list.getLat(), list.getLng());
+                    locations.add(location);
+                    mMap.addMarker(new MarkerOptions()
+                            .title("Location")
+                            .snippet("" + knownName + ", " + roadName)
+                            .position(location)
+                            .icon(BitmapDescriptorFactory.fromBitmap(createMaker(getContext(), list.getSrcImage()))));
+                }
             }
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(locations.get(0)); //point A
+            builder.include(locations.get(locations.size() - 1)); //point B
+            LatLngBounds bounds = builder.build();
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
         }
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(locations.get(0)); //point A
-        builder.include(locations.get(locations.size() - 1)); //point B
-        LatLngBounds bounds = builder.build();
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
     }
 
     public static Bitmap createMaker(Context context, String resource) {

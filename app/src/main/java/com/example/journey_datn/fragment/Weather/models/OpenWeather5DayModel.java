@@ -1,5 +1,7 @@
 package com.example.journey_datn.fragment.Weather.models;
 
+import android.util.Log;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -489,7 +491,6 @@ public class OpenWeather5DayModel {
             String dateString = arrayList.get(i).getDtTxt();
             dateString = dateString.substring(0, dateString.indexOf(" "));
 
-
             Date dateformat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(Calendar.getInstance().getTime().toString());
             Calendar c = Calendar.getInstance();
             c.setTime(dateformat);
@@ -528,7 +529,6 @@ public class OpenWeather5DayModel {
         Collections.sort(arrayList4, new Comparator());
         Collections.sort(arrayList5, new Comparator());
 
-
         tempListDateWise.put(dateFirstDay, arrayList1);
         tempListDateWise.put(dateSecondDay, arrayList2);
         tempListDateWise.put(dateThirdDay, arrayList3);
@@ -536,7 +536,6 @@ public class OpenWeather5DayModel {
         tempListDateWise.put(dateFiveDay, arrayList5);
 
         return tempListDateWise;
-
     }
 
     private class Comparator implements java.util.Comparator<OpenWeather5DayModel.List> {

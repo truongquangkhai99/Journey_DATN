@@ -22,6 +22,7 @@ import com.example.journey_datn.db.EntityRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener{
 
@@ -29,7 +30,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
     private AdapterRcvEntity adapterRcvEntity;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
     private FloatingActionButton fabJourney;
-    private TextView txt_user_name, txt_day, txt_month, txt_year, txt_number_item;
+    private TextView txt_user_name, txt_day, txt_month, txt_year, txt_number_item, txtDayOfWeek;
     private int REQUEST_CODE = 911;
 
     private ArrayList<Entity> lstEntity;
@@ -90,6 +91,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         txt_year = view.findViewById(R.id.txt_year);
         txt_number_item = view.findViewById(R.id.txt_number_item);
         fabJourney = view.findViewById(R.id.fab_journey);
+        txtDayOfWeek = view.findViewById(R.id.txt_dayOfWeek);
     }
 
     private void getCalendar() {
@@ -98,10 +100,41 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
+        getDayofMonth(mDay, mMonth, mYear);
         mMonth = mMonth + 1;
         txt_day.setText(mDay + "");
         txt_month.setText(mMonth + "");
         txt_year.setText(mYear + "");
+    }
+    private void getDayofMonth(int day, int month, int year) {
+        day = day - 1;
+        Date date = new Date(year, month, day);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (dayOfWeek) {
+            case Calendar.SUNDAY:
+                txtDayOfWeek.setText("Sunday");
+                break;
+            case Calendar.MONDAY:
+                txtDayOfWeek.setText("Monday");
+                break;
+            case Calendar.TUESDAY:
+                txtDayOfWeek.setText("Tuesday");
+                break;
+            case Calendar.WEDNESDAY:
+                txtDayOfWeek.setText("Wednesday");
+                break;
+            case Calendar.THURSDAY:
+                txtDayOfWeek.setText("Thursday");
+                break;
+            case Calendar.FRIDAY:
+                txtDayOfWeek.setText("Friday");
+                break;
+            case Calendar.SATURDAY:
+                txtDayOfWeek.setText("Saturday");
+                break;
+        }
     }
 
     @Override

@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-     android:id="@+id/menu_journey"
-     android:icon="@drawable/ic_journey_black_24dp"
-     android:title="Journey"
-        />
+        android:id="@+id/menu_journey"
+        android:icon="@drawable/ic_journey_black_24dp"
+        android:textColor="@color/color_black"
+        android:title="Journey" />
     <item
         android:id="@+id/menu_calendar"
         android:icon="@drawable/ic_calendar_black_24dp"
-        android:title="Calendar"
-        />
+        android:textColor="@color/color_black"
+        android:title="Calendar" />
     <item
         android:id="@+id/menu_media"
         android:icon="@drawable/ic_insert_photo_black_24dp"
-        android:title="Media"
-        />
+        android:textColor="@color/color_black"
+        android:title="Media" />
     <item
         android:id="@+id/menu_atlas"
         android:icon="@drawable/ic_map_black_24dp"
-        android:title="Atlas"
-        />
+        android:textColor="@color/color_black"
+        android:title="Atlas" />
     <item
         android:id="@+id/menu_weather"
         android:icon="@drawable/icons8_stormy_weather_60"
-        android:title="Weather"
-        />
+        android:textColor="@color/color_black"
+        android:title="Weather" />
 </menu>

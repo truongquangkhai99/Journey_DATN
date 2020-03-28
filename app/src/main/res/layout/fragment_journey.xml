@@ -31,34 +31,36 @@
                    app:layout_constraintTop_toTopOf="parent"
                    app:layout_constraintLeft_toLeftOf="parent"
                    android:src="@drawable/ic_account_box_blue_24dp"
-                   android:paddingLeft="@dimen/dp_16"
                    android:layout_width="@dimen/dp_48"
                    android:layout_height="@dimen/dp_48"/>
 
                <TextView
                    android:id="@+id/txt_hi"
                    android:text="Hi"
-                   android:textSize="@dimen/sp_32"
+                   android:textSize="@dimen/sp_24"
+                   android:textColor="@color/color_white"
                    android:layout_marginLeft="@dimen/dp_16"
                    app:layout_constraintTop_toTopOf="parent"
-                  app:layout_constraintLeft_toRightOf="@id/img_account"
+                   app:layout_constraintLeft_toRightOf="@id/img_account"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"/>
 
                <TextView
                    android:id="@+id/txt_user_name"
                    android:text="Nguyen Van Quan"
+                   android:textColor="@color/color_white"
                    app:layout_constraintTop_toTopOf="parent"
-                   app:layout_constraintLeft_toRightOf="@id/txt_hi"
-                   android:textSize="@dimen/dp_32"
+                   app:layout_constraintStart_toEndOf="@id/txt_hi"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   android:textSize="@dimen/sp_24"
                    android:layout_marginLeft="@dimen/dp_8"
-                   android:layout_width="wrap_content"
+                   android:layout_width="0dp"
                    android:layout_height="wrap_content"/>
 
                <androidx.constraintlayout.widget.ConstraintLayout
                    android:layout_marginTop="@dimen/dp_8"
                    android:id="@+id/const_calendar"
-                   app:layout_constraintTop_toBottomOf="@id/txt_hi"
+                   app:layout_constraintTop_toBottomOf="@id/txt_user_name"
                    app:layout_constraintStart_toStartOf="@id/txt_hi"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content">
@@ -67,25 +69,33 @@
                        app:layout_constraintTop_toTopOf="parent"
                        app:layout_constraintLeft_toLeftOf="parent"
                        android:id="@+id/txt_day"
+                       android:textColor="@color/color_white"
                        android:text="20"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"/>
+                   <TextView
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:layout_constraintLeft_toRightOf="@id/txt_day"
+                       android:id="@+id/txt_dash1"
+                       android:textColor="@color/color_white"
+                       android:text="-"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"/>
 
                    <TextView
+                       android:id="@+id/txt_month"
+                       android:text="2"
+                       android:textColor="@color/color_white"
                        app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintLeft_toRightOf="@id/txt_day"
-                       android:id="@+id/txt_th"
-                       android:layout_marginLeft="@dimen/dp_4"
-                       app:layout_constraintStart_toEndOf="@id/txt_day"
-                       android:text="tháng"
+                       app:layout_constraintLeft_toRightOf="@id/txt_dash1"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"/>
                    <TextView
-                       android:id="@+id/txt_month"
-                       android:text="2"
                        app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintLeft_toRightOf="@id/txt_th"
-                       android:layout_marginLeft="@dimen/dp_4"
+                       app:layout_constraintLeft_toRightOf="@id/txt_month"
+                       android:id="@+id/txt_dash2"
+                       android:textColor="@color/color_white"
+                       android:text="-"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"/>
 
@@ -93,8 +103,17 @@
                        android:id="@+id/txt_year"
                        android:text="2020"
                        app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintLeft_toRightOf="@id/txt_month"
-                       android:layout_marginLeft="@dimen/dp_4"
+                       app:layout_constraintLeft_toRightOf="@id/txt_dash2"
+                       android:textColor="@color/color_white"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"/>
+                   <TextView
+                       android:id="@+id/txt_dayOfWeek"
+                       android:text="Monday"
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:layout_constraintLeft_toRightOf="@id/txt_year"
+                       android:layout_marginLeft="@dimen/dp_8"
+                       android:textColor="@color/color_white"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"/>
                </androidx.constraintlayout.widget.ConstraintLayout>
@@ -112,6 +131,7 @@
                        app:layout_constraintLeft_toLeftOf="parent"
                        android:id="@+id/txt_number_item"
                        android:text="5"
+                       android:textColor="@color/color_white"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"/>
 
@@ -121,6 +141,7 @@
                        android:id="@+id/txt_entries"
                        android:layout_marginLeft="@dimen/dp_4"
                        android:text="entries"
+                       android:textColor="@color/color_white"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"/>
                </androidx.constraintlayout.widget.ConstraintLayout>
@@ -132,6 +153,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedView"
+        android:layout_marginTop="@dimen/dp_8"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
