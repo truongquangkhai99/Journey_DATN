@@ -279,4 +279,48 @@ public class EntityRepository {
 
         return lst;
     }
+
+    public List<Entity> getEntityByTime(final int day, int month, int year){
+        class GetTasks extends AsyncTask<Void, Void, List<Entity>> implements CallbackReciever {
+            Context context;
+            public GetTasks(Context context){
+                this.context = context;
+            }
+            @Override
+            protected List<Entity> doInBackground(Void... voids) {
+                List<Entity> taskList = DatabaseClient
+                        .getInstance(context)
+                        .getAppDatabase()
+                        .EntityDao()
+                        .getEntityByTime(day, month, year);
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<Entity> tasks) {
+                super.onPostExecute(tasks);
+            }
+
+            @Override
+            public void receiveData(int result) {
+
+            }
+        }
+
+        List<Entity> lst = null;
+        try {
+            lst = new GetTasks(context){
+                @Override
+                public void receiveData(int result) {
+                    super.receiveData(result);
+                }
+            }.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return lst;
+    }
 }
