@@ -32,6 +32,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
     private FloatingActionButton fabJourney;
     private TextView txt_user_name, txt_day, txt_month, txt_year, txt_number_item, txtDayOfWeek;
     private int REQUEST_CODE = 911;
+    private int pos;
 
     private ArrayList<Entity> lstEntity;
 
@@ -71,15 +72,13 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         if (requestCode == REQUEST_CODE && resultCode == AddDataActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");
             entityRepository.insertEntity(entity);
-            lstEntity = (ArrayList<Entity>) entityRepository.getEntity();
-            adapterRcvEntity.setData(lstEntity);
+            adapterRcvEntity.addData(entity);
             txt_number_item.setText("" + adapterRcvEntity.getItemCount());
         }
         if (requestCode == REQUEST_CODE && resultCode == ItemDetailActivity.RESULT_CODE){
             Entity entity = data.getParcelableExtra("entity");
             entityRepository.updateEntity(entity);
-            lstEntity = (ArrayList<Entity>) entityRepository.getEntity();
-            adapterRcvEntity.setData(lstEntity);
+            adapterRcvEntity.setData(entity, pos);
         }
     }
 
@@ -147,6 +146,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
     }
 
     private void itemClick(int position){
+        pos = position;
         Intent intent = new Intent(getContext(), ItemDetailActivity.class);
         intent.putExtra("entity",  lstEntity.get(position));
         intent.putParcelableArrayListExtra("listEntity", lstEntity);

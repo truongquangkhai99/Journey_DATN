@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHolder> {
 
@@ -48,6 +49,21 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
 
     public void setListener(AdapterRcvMedia.OnItemClickMediaListener listener) {
         this.listener = listener;
+    }
+
+    public void setData(Entity Entity, int position) {
+        if (Entity != null) {
+            listEntity.remove(position);
+            listEntity.add(position, Entity);
+            notifyDataSetChanged();
+        }
+    }
+
+    public void addData(Entity Entity) {
+        if (Entity != null) {
+            listEntity.add(Entity);
+            notifyDataSetChanged();
+        }
     }
 
     public interface OnItemClickMediaListener {

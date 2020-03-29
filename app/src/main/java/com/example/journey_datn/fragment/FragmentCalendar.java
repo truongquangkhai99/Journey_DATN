@@ -7,6 +7,9 @@
 //}
 package com.example.journey_datn.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -23,24 +26,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+import com.example.journey_datn.Activity.AddDataActivity;
+import com.example.journey_datn.Activity.ItemDetailActivity;
 import com.example.journey_datn.Adapter.AdapterRcvEntity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
 import com.example.journey_datn.db.EntityRepository;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-public class FragmentCalendar extends Fragment {
+public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener{
     private EntityRepository entityRepository;
     private  ArrayList<Entity> list = new ArrayList<>();
     private  ArrayList<Entity> listItem = new ArrayList<>();
     private RecyclerView rcvCalendar;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
     private AdapterRcvEntity adapterRcvEntity;
-    private  int day, month, year;
+    private  int day, month, year, pos;
+    private int REQUEST_CODE1 = 10, REQUEST_CODE2 = 20;
+    private FloatingActionButton fabCalendar;
 
     @Nullable
     @Override
@@ -49,6 +57,14 @@ public class FragmentCalendar extends Fragment {
         CalendarView calendarView =  v.findViewById(R.id.calendarView);
         entityRepository = new EntityRepository(getContext());
         rcvCalendar = v.findViewById(R.id.rcvCalendar);
+        fabCalendar = v.findViewById(R.id.fab_calendar);
+        fabCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AddDataActivity.class);
+                startActivityForResult(intent, REQUEST_CODE2);
+            }
+        });
         list = (ArrayList<Entity>) entityRepository.getEntity();
 
         List<EventDay> events = new ArrayList<>();
@@ -76,6 +92,9 @@ public class FragmentCalendar extends Fragment {
             }
         });
 
+        adapterRcvEntity.setItemClickListener(this);
+        adapterRcvEntity.setItemLongClickListener(this);
+
         return v;
     }
 
@@ -102,5 +121,68 @@ public class FragmentCalendar extends Fragment {
             calendars.add(calendar);
         }
         return calendars;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        itemClick(position);
+
+    }
+
+    @Override
+    public void onItemLongClick(int position) {
+        itemLongClick(position);
+
+    }
+
+    private void itemClick(int position){
+        pos = position;
+        Intent intent = new Intent(getContext(), ItemDetailActivity.class);
+        intent.putExtra("entity",  listItem.get(position));
+        intent.putParcelableArrayListExtra("listEntity", listItem);
+        intent.putExtra("position", position);
+        startActivityForResult(intent, REQUEST_CODE1);
+    }
+
+    private void itemLongClick(int position){
+        showDialog(position);
+    }
+
+    private void showDialog(final int position){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Delete");
+        builder.setMessage("Do you want to delete this journal entry?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                entityRepository.deleteEntity(adapterRcvEntity.getLstEntity().get(position));
+                adapterRcvEntity.getLstEntity().remove(position);
+                adapterRcvEntity.notifyItemRemoved(position);
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE1 && resultCode == ItemDetailActivity.RESULT_CODE){
+            Entity entity = data.getParcelableExtra("entity");
+            entityRepository.updateEntity(entity);
+            adapterRcvEntity.setData(entity, pos);
+        }
+        if (requestCode == REQUEST_CODE2 && resultCode == AddDataActivity.RESULT_CODE){
+            Entity entity = data.getParcelableExtra("entity");
+            entityRepository.insertEntity(entity);
+            adapterRcvEntity.addData(entity);
+        }
     }
 }

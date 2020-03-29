@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,6 +108,7 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
                                 } else {
                                     latitude = location.getLatitude();
                                     longtitude = location.getLongitude();
+                                    Log.d("aaa", latitude + " " + longtitude + "; ");
                                     getLatLng(latitude, longtitude);
                                     LatLng currentLocation = new LatLng(latitude, longtitude);
                                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 13));

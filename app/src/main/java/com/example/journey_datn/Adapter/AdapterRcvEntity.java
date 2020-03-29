@@ -86,19 +86,18 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         this.longListener = listener;
     }
 
-    public void setData(List<Entity> Entity) {
-        if (Entity != null && Entity.size() > 0) {
-            lstEntity.clear();
-            lstEntity.addAll(Entity);
+    public void setData(Entity Entity, int position) {
+        if (Entity != null) {
+            lstEntity.remove(position);
+            lstEntity.add(position, Entity);
             notifyDataSetChanged();
         }
     }
 
-    public void addData(List<Entity> Entity) {
-        if (Entity != null && Entity.size() > 0) {
-            int oldSize = lstEntity.size();
-            lstEntity.addAll(Entity);
-            notifyItemRangeChanged(oldSize, Entity.size());
+    public void addData(Entity Entity) {
+        if (Entity != null) {
+            lstEntity.add(Entity);
+            notifyDataSetChanged();
         }
     }
 

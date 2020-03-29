@@ -2,6 +2,7 @@ package com.example.journey_datn.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
     private FloatingActionButton fabMedia;
     private ArrayList<Entity> listEntity;
     private EntityRepository entityRepository;
+    private int pos;
 
 
     @Nullable
@@ -61,6 +63,7 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
 
     @Override
     public void OnItemClick(int position) {
+        pos = position;
         Intent intent = new Intent(getContext(), ItemDetailActivity.class);
         intent.putExtra("entity",  listEntity.get(position));
         intent.putParcelableArrayListExtra("listEntity", listEntity);
@@ -74,10 +77,12 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
         if (requestCode == 10 && resultCode == ItemDetailActivity.RESULT_CODE){
             Entity entity = data.getParcelableExtra("entity");
             entityRepository.updateEntity(entity);
+            adapterRcvMedia.setData(entity, pos);
         }
         if (requestCode == 911 && resultCode == AddDataActivity.RESULT_CODE){
             Entity entity = data.getParcelableExtra("entity");
             entityRepository.insertEntity(entity);
+            adapterRcvMedia.addData(entity);
         }
     }
 }
