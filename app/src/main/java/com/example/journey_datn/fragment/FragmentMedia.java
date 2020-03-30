@@ -47,9 +47,21 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
         });
 
         listEntity = new ArrayList<>();
+        ArrayList<itemMedia> arrItemMedia = new ArrayList<>();
         entityRepository = new EntityRepository(getContext());
         listEntity = (ArrayList<Entity>) entityRepository.getEntity();
-        adapterRcvMedia = new AdapterRcvMedia(getContext(), listEntity);
+        for (Entity entity : listEntity){
+            String arrSrc = entity.getSrcImage();
+            String[] separated = arrSrc.split(";");
+            if (separated.length == 1){
+                arrItemMedia.add(new itemMedia(entity.getId(), arrSrc));
+            }else {
+                for (String str : separated){
+                    arrItemMedia.add(new itemMedia(entity.getId(), str));
+                }
+            }
+        }
+        adapterRcvMedia = new AdapterRcvMedia(getContext(), listEntity, arrItemMedia);
         recyclerView.setAdapter(adapterRcvMedia);
         recyclerView.setLayoutManager(gridLayoutManager);
         adapterRcvMedia.setListener(this);
@@ -62,12 +74,17 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
     }
 
     @Override
-    public void OnItemClick(int position) {
-        pos = position;
+    public void OnItemClick(int id) {
+        for (int i = 0; i < listEntity.size(); i++){
+            if (listEntity.get(i).getId() == id){
+                pos = i;
+                break;
+            }
+        }
         Intent intent = new Intent(getContext(), ItemDetailActivity.class);
-        intent.putExtra("entity",  listEntity.get(position));
+        intent.putExtra("entity",  listEntity.get(pos));
         intent.putParcelableArrayListExtra("listEntity", listEntity);
-        intent.putExtra("position", position);
+        intent.putExtra("position", pos);
         startActivityForResult(intent, 10);
     }
 
@@ -83,6 +100,32 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
             Entity entity = data.getParcelableExtra("entity");
             entityRepository.insertEntity(entity);
             adapterRcvMedia.addData(entity);
+        }
+    }
+
+    public class itemMedia{
+        private int idMedia;
+        private String strMedia;
+
+        public itemMedia(int idMedia, String strMedia) {
+            this.idMedia = idMedia;
+            this.strMedia = strMedia;
+        }
+
+        public int getIdMedia() {
+            return idMedia;
+        }
+
+        public void setIdMedia(int idMedia) {
+            this.idMedia = idMedia;
+        }
+
+        public String getStrMedia() {
+            return strMedia;
+        }
+
+        public void setStrMedia(String strMedia) {
+            this.strMedia = strMedia;
         }
     }
 }

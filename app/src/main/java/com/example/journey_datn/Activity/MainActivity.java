@@ -33,8 +33,13 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigationView;
     private ImageView img_search, img_cloud;
     private int WRITE_EXTERNAL_STORAGE_CODE = 1, MY_CAMERA_PERMISSION_CODE = 2, READ_EXTERNAL_STORAGE_CODE = 3, ACCESS_FINE_LOCATION_CODE = 4;
-
     private DrawerLayout mDrawerLayout;
+    private FragmentJourney fragmentJourney;
+    private FragmentCalendar fragmentCalendar;
+    private FragmentMedia fragmentMedia;
+    private FragmentAtlas fragmentAtlas;
+    private FragmentWeather fragmentWeather;
+    private Toolbar toolbar;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -42,13 +47,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         permissions();
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        init();
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-        init();
         loadFragment(new FragmentJourney());
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -76,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
                         loadFragment(fragment);
                         return true;
                 }
-
                 return false;
             }
         });
@@ -115,6 +118,12 @@ public class MainActivity extends AppCompatActivity {
         );
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        loadFragment(new FragmentJourney());
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     private void loadFragment(Fragment fragment) {
@@ -162,6 +171,13 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         img_search = findViewById(R.id.img_search);
         img_cloud = findViewById(R.id.img_cloud);
+        toolbar = findViewById(R.id.toolbar);
+
+//        fragmentJourney = new FragmentJourney();
+//        fragmentCalendar = new FragmentCalendar();
+//        fragmentMedia = new FragmentMedia();
+//        fragmentAtlas = new FragmentAtlas();
+//        fragmentWeather = new FragmentWeather();
     }
 
     @Override

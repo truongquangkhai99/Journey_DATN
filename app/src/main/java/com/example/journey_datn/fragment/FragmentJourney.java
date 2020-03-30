@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener{
 
@@ -154,11 +156,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         startActivityForResult(intent, REQUEST_CODE);
     }
 
-    private void itemLongClick(int position){
-        showDialog(position);
-    }
-
-    private void showDialog(final int position){
+    private void itemLongClick(final int pos){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete");
         builder.setMessage("Do you want to delete this journal entry?");
@@ -171,9 +169,9 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                entityRepository.deleteEntity(adapterRcvEntity.getLstEntity().get(position));
-                adapterRcvEntity.getLstEntity().remove(position);
-                adapterRcvEntity.notifyItemRemoved(position);
+                entityRepository.deleteEntity(adapterRcvEntity.getLstEntity().get(pos));
+                adapterRcvEntity.getLstEntity().remove(pos);
+                adapterRcvEntity.notifyItemRemoved(pos);
                 txt_number_item.setText("" + adapterRcvEntity.getItemCount());
                 dialogInterface.dismiss();
             }

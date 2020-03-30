@@ -62,7 +62,7 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
 
     private ArrayList<Entity> lstEntity;
     private EntityRepository entityRepository;
-    private String knownName = null, roadName = null;
+    private String knownName = "", roadName = "";
     private FloatingActionButton fabZoom;
 
 
@@ -74,7 +74,6 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
         entityRepository = new EntityRepository(getContext());
         lstEntity = (ArrayList<Entity>) entityRepository.getEntity();
-
         fabZoom = view.findViewById(R.id.fab_enlarge);
         fabZoom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +107,6 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
                                 } else {
                                     latitude = location.getLatitude();
                                     longtitude = location.getLongitude();
-                                    Log.d("aaa", latitude + " " + longtitude + "; ");
                                     getLatLng(latitude, longtitude);
                                     LatLng currentLocation = new LatLng(latitude, longtitude);
                                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 13));
@@ -150,11 +148,22 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
                     getLatLng(list.getLat(), list.getLng());
                     LatLng location = new LatLng(list.getLat(), list.getLng());
                     locations.add(location);
-                    mMap.addMarker(new MarkerOptions()
-                            .title("Location")
-                            .snippet("" + knownName + ", " + roadName)
-                            .position(location)
-                            .icon(BitmapDescriptorFactory.fromBitmap(createMaker(getContext(), list.getSrcImage()))));
+
+                    String arrSrc = list.getSrcImage();
+                    String[] separated = arrSrc.split(";");
+                    if (separated.length == 1){
+                        mMap.addMarker(new MarkerOptions()
+                                .title("Location")
+                                .snippet("" + knownName + ", " + roadName)
+                                .position(location)
+                                .icon(BitmapDescriptorFactory.fromBitmap(createMaker(getContext(), arrSrc))));
+                    }else {
+                        mMap.addMarker(new MarkerOptions()
+                                .title("Location")
+                                .snippet("" + knownName + ", " + roadName)
+                                .position(location)
+                                .icon(BitmapDescriptorFactory.fromBitmap(createMaker(getContext(), separated[0]))));
+                    }
                 }
             }
             LatLngBounds.Builder builder = new LatLngBounds.Builder();

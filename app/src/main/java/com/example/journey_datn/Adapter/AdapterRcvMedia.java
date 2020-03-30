@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
+import com.example.journey_datn.fragment.FragmentMedia;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +20,12 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
     private Context context;
     private AdapterRcvMedia.OnItemClickMediaListener listener;
     private ArrayList<Entity> listEntity;
+    private ArrayList<FragmentMedia.itemMedia> listStr;
 
-    public AdapterRcvMedia(Context context,  ArrayList<Entity> listEntity){
+    public AdapterRcvMedia(Context context,  ArrayList<Entity> listEntity, ArrayList<FragmentMedia.itemMedia> listStr){
         this.context = context;
         this.listEntity = listEntity;
+        this.listStr = listStr;
     }
 
     @NonNull
@@ -33,18 +37,19 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        Glide.with(context).load(listEntity.get(position).getSrcImage()).into(holder.imageView);
+        String arrSrc = listStr.get(position).getStrMedia();
+        Glide.with(context).load(arrSrc).into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.OnItemClick(position);
+                listener.OnItemClick(listStr.get(position).getIdMedia());
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return listEntity.size();
+        return listStr.size();
     }
 
     public void setListener(AdapterRcvMedia.OnItemClickMediaListener listener) {
@@ -67,7 +72,7 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
     }
 
     public interface OnItemClickMediaListener {
-        void OnItemClick(int position);
+        void OnItemClick(int id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

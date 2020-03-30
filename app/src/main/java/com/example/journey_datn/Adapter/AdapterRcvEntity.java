@@ -50,7 +50,13 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
 
         Glide.with(context).load(pos.getMood()).into(holder.img_mood);
         Glide.with(context).load(pos.getAction()).into(holder.img_action);
-        Glide.with(context).load(pos.getSrcImage()).into(holder.img_item);
+        String arrSrc = pos.getSrcImage();
+        String[] separated = arrSrc.split(";");
+        if (separated.length == 1){
+            Glide.with(context).load(arrSrc).into(holder.img_item);
+        }else {
+            Glide.with(context).load(separated[0]).into(holder.img_item);
+        }
 
         holder.const_item_layout_rcv.setOnClickListener(new View.OnClickListener() {
 

@@ -6,10 +6,12 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,6 +26,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -153,14 +156,14 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                                     } else {
                                         latitude = location.getLatitude();
                                         longtitude = location.getLongitude();
-                                        setLatitude(location.getLatitude());
-                                        setLongtitude(location.getLongitude());
+                                        setLatitude(latitude);
+                                        setLongtitude(longtitude);
                                         Geocoder geocoder;
                                         List<Address> addresses;
                                         geocoder = new Geocoder(AddDataActivity.this, Locale.getDefault());
                                         try {
                                             String address, state;
-                                            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                            addresses = geocoder.getFromLocation(latitude, longtitude, 1);
                                             address = addresses.get(0).getAddressLine(0);
                                             state = addresses.get(0).getAdminArea();
                                             position = address;
@@ -397,9 +400,9 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             Intent intent = getIntent();
             Entity entity;
             if (id == -1)
-                entity = new Entity(contain, action, position, temperature, year, month, day, th, hour, minute, mood, srcImage, latitude, longtitude);
+                entity = new Entity(contain, action, position, temperature, year, month, day, th, hour, minute, mood, srcImage, getLatitude(), getLongtitude());
             else
-                entity = new Entity(id, contain, action, position, temperature, year, month, day, th, hour, minute, mood, srcImage, latitude, longtitude);
+                entity = new Entity(id, contain, action, position, temperature, year, month, day, th, hour, minute, mood, srcImage, getLatitude(), getLongtitude());
             intent.putExtra("entity", entity);
             setResult(RESULT_CODE, intent);
             finish();
@@ -458,8 +461,11 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto, GALLERY_CODE);
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_CODE);
                 dialog.dismiss();
             }
         });
@@ -499,6 +505,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -510,9 +517,44 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 srcImage = uri.toString();
                 break;
             case GALLERY_CODE:
-                Uri selectedImage = data.getData();
-                Glide.with(this).load(selectedImage).into(img_tag_add);
-                srcImage = String.valueOf(selectedImage);
+                try {
+                    if (null != data) {
+                        srcImage = "";
+                        if (data.getData() != null) {
+
+                            Uri mImageUri = data.getData();
+                            ArrayList<Uri> mArrayUri = new ArrayList<>();
+                            mArrayUri.add(mImageUri);
+                            for (Uri uri1 : mArrayUri) {
+                                srcImage = srcImage + uri1.toString();
+                            }
+                            Glide.with(this).load(srcImage).into(img_tag_add);
+
+                        } else {
+                            if (data.getClipData() != null) {
+                                ClipData mClipData = data.getClipData();
+                                ArrayList<Uri> mArrayUri = new ArrayList<>();
+                                for (int i = 0; i < mClipData.getItemCount(); i++) {
+                                    ClipData.Item item = mClipData.getItemAt(i);
+                                    Uri uri2 = item.getUri();
+                                    mArrayUri.add(uri2);
+                                }
+                                for (Uri uri1 : mArrayUri) {
+                                    srcImage = srcImage + uri1.toString() + ";";
+                                }
+                                String[] separated = srcImage.split(";");
+                                Glide.with(this).load(separated[0]).into(img_tag_add);
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, "You haven't picked Image",
+                                Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                            .show();
+                }
+                super.onActivityResult(requestCode, resultCode, data);
                 break;
         }
     }
@@ -542,7 +584,12 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
             adapterRcvAdd.updateItem(3, action);
             adapterRcvAdd.updateItem(4, mood);
-            Glide.with(this).load(srcImage).into(img_tag_add);
+            String[] separated = srcImage.split(";");
+            if (separated.length == 1){
+                Glide.with(this).load(srcImage).into(img_tag_add);
+            }else {
+                Glide.with(this).load(separated[0]).into(img_tag_add);
+            }
         }
     }
 

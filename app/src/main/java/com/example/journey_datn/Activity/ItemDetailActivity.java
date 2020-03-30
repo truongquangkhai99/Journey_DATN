@@ -57,6 +57,16 @@ public class ItemDetailActivity extends AppCompatActivity {
 
     }
 
+    private void init() {
+        mViewPager = findViewById(R.id.viewpager_detail);
+        img_back_detail = findViewById(R.id.img_back_detail);
+        img_star_detail = findViewById(R.id.img_star_detail);
+        img_share_detail = findViewById(R.id.img_share_detail);
+        img_print_detail = findViewById(R.id.img_print_detail);
+        img_update_detail = findViewById(R.id.img_update_detail);
+        img_menu_detail = findViewById(R.id.img_menu_detail);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -70,22 +80,14 @@ public class ItemDetailActivity extends AppCompatActivity {
         }
     }
 
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
 
     public void getDataIntent() {
         Intent intent = getIntent();
         Entity entity = intent.getParcelableExtra("entity");
         lstEntity = intent.getParcelableArrayListExtra("listEntity");
-        position = intent.getIntExtra("position", 0);
+        position = intent.getIntExtra("position", -1);
         setEntity(entity);
         setPosition(position);
-
     }
 
     public Entity getEntity() {
@@ -96,13 +98,12 @@ public class ItemDetailActivity extends AppCompatActivity {
         this.entity = entity;
     }
 
-    private void init() {
-        mViewPager = findViewById(R.id.viewpager_detail);
-        img_back_detail = findViewById(R.id.img_back_detail);
-        img_star_detail = findViewById(R.id.img_star_detail);
-        img_share_detail = findViewById(R.id.img_share_detail);
-        img_print_detail = findViewById(R.id.img_print_detail);
-        img_update_detail = findViewById(R.id.img_update_detail);
-        img_menu_detail = findViewById(R.id.img_menu_detail);
+    public int getPosition() {
+        return position;
     }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
 }

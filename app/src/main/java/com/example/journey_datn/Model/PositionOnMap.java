@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Looper;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,8 +41,6 @@ public class PositionOnMap extends AppCompatActivity {
         this.context = context;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
         getLastLocation();
-
-//        Log.d("vitrip", "" + getLatitude() + " - " + getLongtitude());
     }
 
     @SuppressLint("MissingPermission")
@@ -83,7 +82,7 @@ public class PositionOnMap extends AppCompatActivity {
                         }
                 );
             } else {
-//                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 context.startActivity(intent);
             }
