@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.journey_datn.Model.bsimagepicker.widget.FitWidthRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/black"
+    app:view_aspectRatio="1">
+    <ImageView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/picker_icon_camera"
+        android:layout_centerInParent="true"/>
+
+</com.example.journey_datn.Model.bsimagepicker.widget.FitWidthRelativeLayout>

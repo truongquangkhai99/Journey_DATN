@@ -47,6 +47,7 @@ import com.bigkoo.pickerview.MyOptionsPickerView;
 import com.bumptech.glide.Glide;
 import com.example.journey_datn.Adapter.AdapterRcvAdd;
 import com.example.journey_datn.Model.Entity;
+import com.example.journey_datn.Model.bsimagepicker.BSImagePicker;
 import com.example.journey_datn.R;
 import com.example.journey_datn.db.EntityRepository;
 import com.example.journey_datn.fragment.Weather.interfaces.IWeatherApi;
@@ -79,7 +80,8 @@ import retrofit2.Response;
 
 import static com.example.journey_datn.fragment.Weather.constants.ProjectConstants.BASE_URL_OPEN_WEATHER;
 
-public class AddDataActivity extends AppCompatActivity implements View.OnClickListener, AdapterRcvAdd.OnItemClickListener {
+public class AddDataActivity extends AppCompatActivity implements View.OnClickListener, AdapterRcvAdd.OnItemClickListener, BSImagePicker.OnSingleImageSelectedListener,
+        BSImagePicker.OnMultiImageSelectedListener, BSImagePicker.ImageLoaderDelegate, BSImagePicker.OnSelectImageCancelledListener  {
 
     private ImageView img_mark, img_calendar_add, img_tag_add, img_three_dots_add;
     private TextView txt_day_add, txt_month_add, txt_year_add, txt_hour_add, txt_minute_add;
@@ -461,11 +463,13 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_CODE);
+                BSImagePicker pickerDialog = new BSImagePicker.Builder("com.asksira.imagepickersheetdemo.fileprovider")
+                        .setMaximumDisplayingImages(Integer.MAX_VALUE)
+                        .isMultiSelect()
+                        .setMinimumMultiSelectCount(2)
+                        .setMaximumMultiSelectCount(6)
+                        .build();
+                pickerDialog.show(getSupportFragmentManager(), "picker");
                 dialog.dismiss();
             }
         });
@@ -477,6 +481,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 dialog.dismiss();
             }
         });
+
         imgPhoto.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -486,6 +491,9 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 Uri uri = FileProvider.getUriForFile(AddDataActivity.this, AddDataActivity.this.getApplicationContext().getPackageName() + ".provider", file);
                 m_intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
                 startActivityForResult(m_intent, CAMERA_CODE);
+//                BSImagePicker pickerDialog = new BSImagePicker.Builder("com.asksira.imagepickersheetdemo.fileprovider")
+//                        .build();
+//                pickerDialog.show(getSupportFragmentManager(), "picker");
                 dialog.dismiss();
             }
         });
@@ -516,47 +524,33 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 Glide.with(this).load(uri).into(img_tag_add);
                 srcImage = uri.toString();
                 break;
-            case GALLERY_CODE:
-                try {
-                    if (null != data) {
-                        srcImage = "";
-                        if (data.getData() != null) {
-
-                            Uri mImageUri = data.getData();
-                            ArrayList<Uri> mArrayUri = new ArrayList<>();
-                            mArrayUri.add(mImageUri);
-                            for (Uri uri1 : mArrayUri) {
-                                srcImage = srcImage + uri1.toString();
-                            }
-                            Glide.with(this).load(srcImage).into(img_tag_add);
-
-                        } else {
-                            if (data.getClipData() != null) {
-                                ClipData mClipData = data.getClipData();
-                                ArrayList<Uri> mArrayUri = new ArrayList<>();
-                                for (int i = 0; i < mClipData.getItemCount(); i++) {
-                                    ClipData.Item item = mClipData.getItemAt(i);
-                                    Uri uri2 = item.getUri();
-                                    mArrayUri.add(uri2);
-                                }
-                                for (Uri uri1 : mArrayUri) {
-                                    srcImage = srcImage + uri1.toString() + ";";
-                                }
-                                String[] separated = srcImage.split(";");
-                                Glide.with(this).load(separated[0]).into(img_tag_add);
-                            }
-                        }
-                    } else {
-                        Toast.makeText(this, "You haven't picked Image",
-                                Toast.LENGTH_LONG).show();
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
-                            .show();
-                }
-                super.onActivityResult(requestCode, resultCode, data);
-                break;
         }
+    }
+
+    @Override
+    public void onSingleImageSelected(Uri uri, String tag) {
+//        Glide.with(this).load(uri).into(img_tag_add);
+    }
+
+    @Override
+    public void onMultiImageSelected(List<Uri> uriList, String tag) {
+        srcImage = "";
+        for (int i=0; i < uriList.size(); i++) {
+            if (i >= 6) return;
+            srcImage = srcImage + uriList.get(i).toString() + ";";
+
+        }
+        Glide.with(this).load(uriList.get(0)).into(img_tag_add);
+    }
+
+    @Override
+    public void loadImage(Uri imageUri, ImageView ivImage) {
+        Glide.with(AddDataActivity.this).load(imageUri).into(ivImage);
+    }
+
+    @Override
+    public void onCancelled(boolean isMultiSelecting, String tag) {
+        Toast.makeText(this, "Selection is cancelled, Multi-selection is " + isMultiSelecting, Toast.LENGTH_SHORT).show();
     }
 
     private void getDataFromDetail() {

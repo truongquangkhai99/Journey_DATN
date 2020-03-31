@@ -49,12 +49,13 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
     private  int day, month, year, pos;
     private int REQUEST_CODE1 = 10, REQUEST_CODE2 = 20;
     private FloatingActionButton fabCalendar;
+    private CalendarView calendarView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_calendar,container,false);
-        CalendarView calendarView =  v.findViewById(R.id.calendarView);
+        calendarView =  v.findViewById(R.id.calendarView);
         entityRepository = new EntityRepository(getContext());
         rcvCalendar = v.findViewById(R.id.rcvCalendar);
         fabCalendar = v.findViewById(R.id.fab_calendar);
@@ -65,6 +66,13 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
                 startActivityForResult(intent, REQUEST_CODE2);
             }
         });
+
+        loadDataCalendar();
+
+        return v;
+    }
+
+    private void  loadDataCalendar(){
         list = (ArrayList<Entity>) entityRepository.getEntity();
 
         List<EventDay> events = new ArrayList<>();
@@ -81,21 +89,25 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
                 String strDay          = (String) DateFormat.format("dd",   date);
                 String strMonthNumber  = (String) DateFormat.format("MM",   date);
                 String strYear         = (String) DateFormat.format("yyyy", date);
-                 day = Integer.parseInt(strDay);
-                 month = Integer.parseInt(strMonthNumber);
-                 year = Integer.parseInt(strYear);
+                day = Integer.parseInt(strDay);
+                month = Integer.parseInt(strMonthNumber);
+                year = Integer.parseInt(strYear);
 
-                listItem = (ArrayList<Entity>) entityRepository.getEntityByTime(day, month, year);
-                adapterRcvEntity = new AdapterRcvEntity(getContext(), listItem);
-                rcvCalendar.setAdapter(adapterRcvEntity);
-                rcvCalendar.setLayoutManager(linearLayoutManager);
+                setRcvCalendar();
             }
         });
 
         adapterRcvEntity.setItemClickListener(this);
         adapterRcvEntity.setItemLongClickListener(this);
+    }
 
-        return v;
+    private  void setRcvCalendar(){
+        listItem = (ArrayList<Entity>) entityRepository.getEntityByTime(day, month, year);
+        adapterRcvEntity = new AdapterRcvEntity(getContext(), listItem);
+        rcvCalendar.setAdapter(adapterRcvEntity);
+        rcvCalendar.setLayoutManager(linearLayoutManager);
+        adapterRcvEntity.setItemClickListener(this);
+        adapterRcvEntity.setItemLongClickListener(this);
     }
 
     private void getCalendar() {
@@ -184,5 +196,7 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
             entityRepository.insertEntity(entity);
             adapterRcvEntity.addData(entity);
         }
+
+        loadDataCalendar();
     }
 }
