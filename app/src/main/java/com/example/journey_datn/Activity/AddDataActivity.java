@@ -479,7 +479,11 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 File file = new File(Environment.getExternalStorageDirectory(), urri_random);
                 Uri uri = FileProvider.getUriForFile(AddDataActivity.this, AddDataActivity.this.getApplicationContext().getPackageName() + ".provider", file);
                 m_intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
-                startActivityForResult(m_intent, CAMERA_CODE);
+                try {
+                    startActivityForResult(m_intent, CAMERA_CODE);
+                }catch (Exception e){
+
+                }
                 dialog.dismiss();
             }
         });
@@ -748,4 +752,5 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     public void setLongtitude(double longtitude) {
         this.longtitude = longtitude;
     }
+
 }

@@ -41,7 +41,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener{
     private EntityRepository entityRepository;
-    private  ArrayList<Entity> list = new ArrayList<>();
     private  ArrayList<Entity> listItem = new ArrayList<>();
     private RecyclerView rcvCalendar;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -65,15 +64,16 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
                 startActivityForResult(intent, REQUEST_CODE2);
             }
         });
-        list = (ArrayList<Entity>) entityRepository.getEntity();
-
+//        listItem =  (ArrayList<Entity>) entityRepository.getEntityByTime(day, month, year);
         List<EventDay> events = new ArrayList<>();
         List<Calendar> arrCr = getSelectedDays();
         for(int i = 0;i<arrCr.size();i++){
-            events.add(new EventDay(arrCr.get(i), null,R.drawable.night_sky));
+            events.add(new EventDay(arrCr.get(i), null,R.color.colorPrimary));
         }
         calendarView.setEvents(events);
         getCalendar();
+        adapterRcvEntity.setItemClickListener(this);
+        adapterRcvEntity.setItemLongClickListener(this);
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(EventDay eventDay) {
@@ -86,14 +86,11 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
                  year = Integer.parseInt(strYear);
 
                 listItem = (ArrayList<Entity>) entityRepository.getEntityByTime(day, month, year);
-                adapterRcvEntity = new AdapterRcvEntity(getContext(), listItem);
-                rcvCalendar.setAdapter(adapterRcvEntity);
-                rcvCalendar.setLayoutManager(linearLayoutManager);
+                adapterRcvEntity.loadData(listItem);
             }
         });
 
-        adapterRcvEntity.setItemClickListener(this);
-        adapterRcvEntity.setItemLongClickListener(this);
+
 
         return v;
     }
@@ -113,11 +110,11 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
     }
     private List<Calendar> getSelectedDays() {
         List<Calendar> calendars = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < listItem.size(); i++) {
             Calendar calendar = new GregorianCalendar();
-            calendar.set(Calendar.DAY_OF_MONTH, list.get(i).getDay());
-            calendar.set(Calendar.MONTH,list.get(i).getMonth()-1);
-            calendar.set(Calendar.YEAR, list.get(i).getYear());
+            calendar.set(Calendar.DAY_OF_MONTH, listItem.get(i).getDay());
+            calendar.set(Calendar.MONTH,listItem.get(i).getMonth()-1);
+            calendar.set(Calendar.YEAR, listItem.get(i).getYear());
             calendars.add(calendar);
         }
         return calendars;

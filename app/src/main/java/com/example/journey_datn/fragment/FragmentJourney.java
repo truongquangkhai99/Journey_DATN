@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.journey_datn.Activity.AddDataActivity;
 import com.example.journey_datn.Activity.ItemDetailActivity;
+import com.example.journey_datn.Activity.SearchActivity;
 import com.example.journey_datn.Adapter.AdapterRcvEntity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
@@ -27,7 +28,7 @@ import java.util.Date;
 public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener{
 
     private RecyclerView rcvJourney;
-    private AdapterRcvEntity adapterRcvEntity;
+    public AdapterRcvEntity adapterRcvEntity;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
     private FloatingActionButton fabJourney;
     private TextView txt_user_name, txt_day, txt_month, txt_year, txt_number_item, txtDayOfWeek;
@@ -80,6 +81,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
             entityRepository.updateEntity(entity);
             adapterRcvEntity.setData(entity, pos);
         }
+
     }
 
     private void initView(View view) {

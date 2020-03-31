@@ -61,7 +61,6 @@ public class EntityRepository {
         return  sl;
     }
 
-
     public List<Entity> getEntity(){
         class GetTasks extends AsyncTask<Void, Void, List<Entity>> implements CallbackReciever {
             Context context;

@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.journey_datn.Adapter.AdapterPagerDetail;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
+import com.example.journey_datn.db.EntityRepository;
 
 import java.util.ArrayList;
 public class ItemDetailActivity extends AppCompatActivity {
@@ -62,6 +63,16 @@ public class ItemDetailActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UPDATE_REQUESTCODE && resultCode == AddDataActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");
+
+            Intent intent = getIntent();
+            intent.putExtra("entity", entity);
+            setResult(RESULT_CODE, intent);
+            finish();
+            setEntity(entity);
+//            adapterPagerDetail.notifyDataSetChanged();
+        }
+        if (requestCode == UPDATE_REQUESTCODE && resultCode == SearchActivity.REQUEST_CODE) {
+            Entity entity = data.getParcelableExtra("entity");
             Intent intent = getIntent();
             intent.putExtra("entity", entity);
             setResult(RESULT_CODE, intent);
@@ -80,12 +91,11 @@ public class ItemDetailActivity extends AppCompatActivity {
 
     public void getDataIntent() {
         Intent intent = getIntent();
+        position = intent.getIntExtra("position",0);
         Entity entity = intent.getParcelableExtra("entity");
         lstEntity = intent.getParcelableArrayListExtra("listEntity");
-        position = intent.getIntExtra("position", 0);
         setEntity(entity);
         setPosition(position);
-
     }
 
     public Entity getEntity() {

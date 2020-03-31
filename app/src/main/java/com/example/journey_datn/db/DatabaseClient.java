@@ -10,10 +10,14 @@ public class DatabaseClient {
     public static final String DATABASE_NAME = "Journey11";
 
     private EntityDatabase entityDatabase;
+    private ImageDatabase imageDatabase;
+
+
 
     private DatabaseClient(Context mCtx) {
         this.mCtx = mCtx;
         entityDatabase = Room.databaseBuilder(mCtx, EntityDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
+        imageDatabase = Room.databaseBuilder(mCtx, ImageDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
     }
 
     public static synchronized DatabaseClient getInstance(Context mCtx) {
@@ -25,5 +29,8 @@ public class DatabaseClient {
 
     public EntityDatabase getAppDatabase() {
         return entityDatabase;
+    }
+    public ImageDatabase getImageDatabase() {
+        return imageDatabase;
     }
 }

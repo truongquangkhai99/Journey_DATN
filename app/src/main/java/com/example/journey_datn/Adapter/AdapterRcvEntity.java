@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -13,18 +15,31 @@ import com.bumptech.glide.Glide;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
 import java.util.ArrayList;
-import java.util.List;
 
 
-public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.ViewHolder> {
+public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.ViewHolder> implements Filterable {
     private Context context;
+    private ArrayList<Entity> lstFillter = new ArrayList<>();
+    private ArrayList<Entity> lstTempFillter = new ArrayList<>();
+    private ValueFilter valueFilter;
     private ArrayList<Entity> lstEntity;
     private onItemClickListener listener;
     private onItemLongClickListener longListener;
 
+    public ArrayList<Entity> getLstFillter() {
+        return lstTempFillter;
+    }
+
+
+    public void loadData(ArrayList<Entity> lstEntity){
+        this.lstEntity = lstEntity;
+        this.notifyDataSetChanged();
+    }
+
     public AdapterRcvEntity(Context context, ArrayList<Entity> mEntity) {
         this.context = context;
         this.lstEntity = mEntity;
+        this.lstFillter = lstEntity;
     }
 
     @NonNull
@@ -132,6 +147,67 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
             txt_position_item = itemView.findViewById(R.id.txt_position_item);
             txt_temperature_item = itemView.findViewById(R.id.txt_temperature_item);
             const_item_layout_rcv = itemView.findViewById(R.id.const_item_layout_rcv);
+        }
+    }
+    @Override
+    public Filter getFilter() {
+
+        if(valueFilter==null) {
+
+            valueFilter=new ValueFilter();
+        }
+
+        return valueFilter;
+    }
+
+
+    private class ValueFilter extends Filter {
+
+
+        //Invoked in a worker thread to filter the data according to the constraint.
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            FilterResults results =new FilterResults();
+
+            if(constraint!=null && constraint.length()>0){
+
+                ArrayList<Entity> filterList=new ArrayList<Entity>();
+
+                for(int i = 0; i< lstFillter.size(); i++){
+
+                    if(lstFillter.get(i).getContent().contains(constraint)) {
+
+                        filterList.add(lstFillter.get(i));
+
+                    }
+                }
+
+
+                results.count=filterList.size();
+
+                results.values=filterList;
+
+            }else{
+
+                results.count= lstFillter.size();
+
+                results.values= lstFillter;
+
+            }
+
+            return results;
+        }
+
+
+        //Invoked in the UI thread to publish the filtering results in the user interface.
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint,
+                                      FilterResults results) {
+            lstEntity=(ArrayList<Entity>) results.values;
+            lstTempFillter = lstEntity;
+            notifyDataSetChanged();
         }
     }
 }

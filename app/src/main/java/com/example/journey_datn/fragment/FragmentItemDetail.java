@@ -53,7 +53,7 @@ public class FragmentItemDetail extends Fragment {
     }
 
     private void setData(){
-//        Glide.with(getContext()).load(Uri.parse(getEntity().getSrcImage())).into(img_item_detail);
+//        Glide.with(getContext()).load(Uri.parse(getListImages().getSrcImage())).into(img_item_detail);
         Glide.with(getContext()).load(getEntity().getSrcImage()).into(img_item_detail);
         Glide.with(getContext()).load(getEntity().getMood()).into(img_mood_detail);
         Glide.with(getContext()).load(getEntity().getAction()).into(img_action_detail);
@@ -67,4 +67,5 @@ public class FragmentItemDetail extends Fragment {
         txt_position_detail.setText(getEntity().getStrPosition());
         txt_contain_detail.setText(getEntity().getContent());
     }
+    
 }

@@ -30,6 +30,9 @@ public interface EntityDAO {
     @Query("SELECT * FROM Entity WHERE content LIKE :content")
     List<Entity> getEntityByContent(String content);
 
+    @Query("Select strPosition FROM Entity Where id = :id")
+    int getPosition(int id);
+
     @Query("SELECT * FROM Entity WHERE day = :day AND month = :month AND year = :year")
     List<Entity> getEntityByTime(int day, int month, int year);
 

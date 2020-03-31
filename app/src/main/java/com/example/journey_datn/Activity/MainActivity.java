@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +19,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
 import com.example.journey_datn.fragment.FragmentAtlas;
 import com.example.journey_datn.fragment.FragmentCalendar;
@@ -32,8 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView navigationView;
     private ImageView img_search, img_cloud;
+    private static int REQUEST_CODE = 001;
     private int WRITE_EXTERNAL_STORAGE_CODE = 1, MY_CAMERA_PERMISSION_CODE = 2, READ_EXTERNAL_STORAGE_CODE = 3, ACCESS_FINE_LOCATION_CODE = 4;
-
+    public Fragment fragmentJourney,fragmentCalendar,fragmentMedia,fragmentAtlas,fragmentWeather;
+    private  FragmentTransaction transaction;
+    private FragmentManager fragmentManager = getSupportFragmentManager();
     private DrawerLayout mDrawerLayout;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -41,7 +47,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        permissions();
+        try {
+            permissions();
+        }catch (Exception e){
+        }
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -49,31 +58,31 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         init();
-        loadFragment(new FragmentJourney());
+        loadFragment(fragmentJourney);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Fragment fragment;
                 switch (menuItem.getItemId()) {
                     case R.id.menu_journey:
-                        fragment = new FragmentJourney();
-                        loadFragment(fragment);
+                        fragmentJourney = new FragmentJourney();
+                        loadFragment(fragmentJourney);
                         return true;
                     case R.id.menu_calendar:
-                        fragment = new FragmentCalendar();
-                        loadFragment(fragment);
+                        fragmentCalendar = new FragmentCalendar();
+                        loadFragment(fragmentCalendar);
+//                        fragmentManager.popBackStack("Calendar",0);
                         return true;
                     case R.id.menu_media:
-                        fragment = new FragmentMedia();
-                        loadFragment(fragment);
+                        fragmentMedia = new FragmentMedia();
+                        loadFragment(fragmentMedia);
                         return true;
                     case R.id.menu_atlas:
-                        fragment = new FragmentAtlas();
-                        loadFragment(fragment);
+                        fragmentAtlas = new FragmentAtlas();
+                        loadFragment(fragmentAtlas);
                         return true;
                     case R.id.menu_weather:
-                        fragment = new FragmentWeather();
-                        loadFragment(fragment);
+                        fragmentWeather = new FragmentWeather();
+                        loadFragment(fragmentWeather);
                         return true;
                 }
 
@@ -85,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,REQUEST_CODE);
             }
         });
 
@@ -118,11 +127,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.framelayout_contain, fragment);
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.framelayout_contain,fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void permissions() {
@@ -132,6 +142,15 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == SearchActivity.RESULT_CODE){
+            fragmentJourney  = new FragmentJourney();
+            loadFragment(fragmentJourney);
+        }
     }
 
     @Override
@@ -162,6 +181,23 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         img_search = findViewById(R.id.img_search);
         img_cloud = findViewById(R.id.img_cloud);
+        fragmentJourney = new FragmentJourney();
+
+//        transaction.add(R.id.framelayout_contain,fragmentJourney,"fragmentJounrey");
+//        transaction.addToBackStack("Jounrey");
+//        transaction.commit();
+//        transaction = fragmentManager.beginTransaction();
+//        transaction.add(R.id.framelayout_contain,fragmentCalendar,"fragmentCalendar");
+//        transaction.addToBackStack("Calendar");
+//        transaction.commit();
+//        transaction = fragmentManager.beginTransaction();
+//        transaction.add(R.id.framelayout_contain,fragmentMedia,"fragmentMedia");
+//        transaction.addToBackStack("Media");
+//        transaction.commit();
+//        transaction = fragmentManager.beginTransaction();
+//        transaction.add(R.id.framelayout_contain,fragmentWeather,"fragmentWeather");
+//        transaction.addToBackStack("Weather");
+//        transaction.commit();
     }
 
     @Override
@@ -172,6 +208,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
     }
 }
 
