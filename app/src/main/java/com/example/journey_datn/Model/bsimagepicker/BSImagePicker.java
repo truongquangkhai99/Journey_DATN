@@ -417,8 +417,7 @@ public class BSImagePicker extends BottomSheetDialogFragment implements LoaderMa
             adapter = new ImageTileAdapter(getContext(),
                     imageLoaderDelegate,
                     isMultiSelection,
-                    showCameraTile,
-                    showGalleryTile);
+                    showCameraTile);
             adapter.setMaximumSelectionCount(maximumMultiSelectCount);
             adapter.setCameraTileOnClickListener(new View.OnClickListener() {
                 @Override

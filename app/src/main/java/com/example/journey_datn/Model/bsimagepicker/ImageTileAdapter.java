@@ -16,7 +16,6 @@ import java.util.List;
 
 public class ImageTileAdapter  extends RecyclerView.Adapter<ImageTileAdapter.BaseViewHolder>{
     private static final int VIEWTYPE_CAMERA = 101;
-    private static final int VIEWTYPE_GALLERY = 102;
     private static final int VIEWTYPE_IMAGE = 103;
     private static final int VIEWTYPE_DUMMY = 104;
     private static final int VIEWTYPE_BOTTOM_SPACE = 105;
@@ -28,7 +27,6 @@ public class ImageTileAdapter  extends RecyclerView.Adapter<ImageTileAdapter.Bas
     protected int maximumSelectionCount = Integer.MAX_VALUE;
     protected int nonListItemCount;
     private boolean showCameraTile;
-    private boolean showGalleryTile;
 
     private View.OnClickListener cameraTileOnClickListener;
     private View.OnClickListener galleryTileOnClickListener;
@@ -51,25 +49,15 @@ public class ImageTileAdapter  extends RecyclerView.Adapter<ImageTileAdapter.Bas
             Context context,
             BSImagePicker.ImageLoaderDelegate imageLoaderDelegate,
             boolean isMultiSelect,
-            boolean showCameraTile,
-            boolean showGalleryTile) {
+            boolean showCameraTile) {
         super();
         this.context = context;
         this.isMultiSelect = isMultiSelect;
         selectedFiles = new ArrayList<>();
         this.showCameraTile = showCameraTile;
-        this.showGalleryTile = showGalleryTile;
         this.imageLoaderDelegate = imageLoaderDelegate;
         if (isMultiSelect) {
             nonListItemCount = 0;
-        } else {
-            if (showCameraTile && showGalleryTile) {
-                nonListItemCount = 2;
-            } else if (showCameraTile || showGalleryTile) {
-                nonListItemCount = 1;
-            } else {
-                nonListItemCount = 0;
-            }
         }
     }
 
@@ -78,8 +66,6 @@ public class ImageTileAdapter  extends RecyclerView.Adapter<ImageTileAdapter.Bas
         switch (viewType) {
             case VIEWTYPE_CAMERA:
                 return new CameraTileViewHolder(LayoutInflater.from(context).inflate(R.layout.item_picker_camera_tile, parent, false));
-            case VIEWTYPE_GALLERY:
-                return new GalleryTileViewHolder(LayoutInflater.from(context).inflate(R.layout.item_picker_gallery_tile, parent, false));
             case VIEWTYPE_DUMMY:
                 return new DummyViewHolder(LayoutInflater.from(context).inflate(R.layout.item_picker_dummy_tile, parent, false));
             case VIEWTYPE_BOTTOM_SPACE:
@@ -113,13 +99,10 @@ public class ImageTileAdapter  extends RecyclerView.Adapter<ImageTileAdapter.Bas
                 case 0:
                     if (showCameraTile) {
                         return VIEWTYPE_CAMERA;
-                    } else if (showGalleryTile) {
-                        return VIEWTYPE_GALLERY;
-                    } else {
+                    }
+                    else {
                         return imageList == null ? VIEWTYPE_DUMMY : VIEWTYPE_IMAGE;
                     }
-                case 1:
-                    return (showCameraTile && showGalleryTile) ? VIEWTYPE_GALLERY : (imageList == null ? VIEWTYPE_DUMMY : VIEWTYPE_IMAGE);
                 default:
                     return imageList == null ? VIEWTYPE_DUMMY : VIEWTYPE_IMAGE;
             }

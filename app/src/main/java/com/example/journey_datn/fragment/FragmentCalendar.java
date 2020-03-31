@@ -74,10 +74,9 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
 
     private void  loadDataCalendar(){
         list = (ArrayList<Entity>) entityRepository.getEntity();
-
         List<EventDay> events = new ArrayList<>();
         List<Calendar> arrCr = getSelectedDays();
-        for(int i = 0;i<arrCr.size();i++){
+        for(int i = 0; i < arrCr.size(); i++){
             events.add(new EventDay(arrCr.get(i), null,R.drawable.night_sky));
         }
         calendarView.setEvents(events);
@@ -93,7 +92,7 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
                 month = Integer.parseInt(strMonthNumber);
                 year = Integer.parseInt(strYear);
 
-                setRcvCalendar();
+                setRcvCalendar(day, month, year);
             }
         });
 
@@ -101,13 +100,37 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
         adapterRcvEntity.setItemLongClickListener(this);
     }
 
-    private  void setRcvCalendar(){
-        listItem = (ArrayList<Entity>) entityRepository.getEntityByTime(day, month, year);
+    private  void setRcvCalendar(int mDay, int mMonth, int mYear){
+        listItem = (ArrayList<Entity>) entityRepository.getEntityByTime(mDay, mMonth, mYear);
         adapterRcvEntity = new AdapterRcvEntity(getContext(), listItem);
         rcvCalendar.setAdapter(adapterRcvEntity);
         rcvCalendar.setLayoutManager(linearLayoutManager);
         adapterRcvEntity.setItemClickListener(this);
         adapterRcvEntity.setItemLongClickListener(this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE1 && resultCode == ItemDetailActivity.RESULT_CODE){
+            Entity entity = data.getParcelableExtra("entity");
+            entityRepository.updateEntity(entity);
+            adapterRcvEntity.setData(entity, pos);
+        }
+        if (requestCode == REQUEST_CODE2 && resultCode == AddDataActivity.RESULT_CODE){
+            Entity entity = data.getParcelableExtra("entity");
+            entityRepository.insertEntity(entity);
+            adapterRcvEntity.addData(entity);
+        }
+
+        list = (ArrayList<Entity>) entityRepository.getEntity();
+        List<EventDay> events = new ArrayList<>();
+        List<Calendar> arrCr = getSelectedDays();
+        for(int i = 0; i < arrCr.size(); i++){
+            events.add(new EventDay(arrCr.get(i), null,R.drawable.night_sky));
+        }
+        calendarView.setEvents(events);
+        setRcvCalendar(day, month, year);
     }
 
     private void getCalendar() {
@@ -181,22 +204,5 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE1 && resultCode == ItemDetailActivity.RESULT_CODE){
-            Entity entity = data.getParcelableExtra("entity");
-            entityRepository.updateEntity(entity);
-            adapterRcvEntity.setData(entity, pos);
-        }
-        if (requestCode == REQUEST_CODE2 && resultCode == AddDataActivity.RESULT_CODE){
-            Entity entity = data.getParcelableExtra("entity");
-            entityRepository.insertEntity(entity);
-            adapterRcvEntity.addData(entity);
-        }
-
-        loadDataCalendar();
     }
 }

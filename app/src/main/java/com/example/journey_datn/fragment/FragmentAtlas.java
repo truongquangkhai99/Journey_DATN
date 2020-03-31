@@ -144,7 +144,7 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
         if (lstEntity.size() > 0) {
             List<LatLng> locations = new ArrayList<>();
             for (Entity list : lstEntity) {
-                if (list.getStrPosition() != null) {
+                if (!list.getStrPosition().equals("") && !list.getSrcImage().equals("")) {
                     getLatLng(list.getLat(), list.getLng());
                     LatLng location = new LatLng(list.getLat(), list.getLng());
                     locations.add(location);
@@ -154,24 +154,27 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
                     if (separated.length == 1){
                         mMap.addMarker(new MarkerOptions()
                                 .title("Location")
-                                .snippet("" + knownName + ", " + roadName)
+                                .snippet(knownName + ", " + roadName)
                                 .position(location)
                                 .icon(BitmapDescriptorFactory.fromBitmap(createMaker(getContext(), arrSrc))));
                     }else {
                         mMap.addMarker(new MarkerOptions()
                                 .title("Location")
-                                .snippet("" + knownName + ", " + roadName)
+                                .snippet(knownName + ", " + roadName)
                                 .position(location)
                                 .icon(BitmapDescriptorFactory.fromBitmap(createMaker(getContext(), separated[0]))));
                     }
+                    Log.d("aaa", "src fff : " + list.getSrcImage());
                 }
             }
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            builder.include(locations.get(0)); //point A
-            builder.include(locations.get(locations.size() - 1)); //point B
-            LatLngBounds bounds = builder.build();
-            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
+            if (locations.size() > 0){
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                builder.include(locations.get(0)); //point A
+                builder.include(locations.get(locations.size() - 1)); //point B
+                LatLngBounds bounds = builder.build();
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
+            }
         }
     }
 

@@ -91,9 +91,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
     private int mYear, mMonth, mDay, mHour, mMinute, positionUpdate, id = -1;
     private Entity entityUpdate;
-    private String position = "", srcImage = "", th, contain, urri_random;
+    private String position = "", srcImage = "", th, contain;
     private int day, month, year, hour, minute, temperature = 0, action = R.drawable.ic_action_black_24dp, mood = R.drawable.ic_mood_black_24dp;
-    private static final int CAMERA_CODE = 0, GALLERY_CODE = 1;
     private int mposition;
     public static int RESULT_CODE = 113;
     private int PERMISSION_ID = 44;
@@ -135,7 +134,6 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         txt_year_add.setText(mYear + "");
         txt_hour_add.setText(mHour + "");
         txt_minute_add.setText(mMinute + "");
-        urri_random = UUID.randomUUID() + ".jpg";
 
         getDataFromDetail();
 
@@ -463,7 +461,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BSImagePicker pickerDialog = new BSImagePicker.Builder("com.asksira.imagepickersheetdemo.fileprovider")
+                BSImagePicker pickerDialog = new BSImagePicker.Builder("com.example.journey_datn.provider")
                         .setMaximumDisplayingImages(Integer.MAX_VALUE)
                         .isMultiSelect()
                         .setMinimumMultiSelectCount(2)
@@ -486,14 +484,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                Intent m_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File file = new File(Environment.getExternalStorageDirectory(), urri_random);
-                Uri uri = FileProvider.getUriForFile(AddDataActivity.this, AddDataActivity.this.getApplicationContext().getPackageName() + ".provider", file);
-                m_intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
-                startActivityForResult(m_intent, CAMERA_CODE);
-//                BSImagePicker pickerDialog = new BSImagePicker.Builder("com.asksira.imagepickersheetdemo.fileprovider")
-//                        .build();
-//                pickerDialog.show(getSupportFragmentManager(), "picker");
+                BSImagePicker pickerDialog = new BSImagePicker.Builder("com.example.journey_datn.provider").build();
+                pickerDialog.show(getSupportFragmentManager(), "picker");
                 dialog.dismiss();
             }
         });
@@ -513,32 +505,18 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case CAMERA_CODE:
-                File file = new File(Environment.getExternalStorageDirectory(), urri_random);
-                Uri uri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", file);
-                Glide.with(this).load(uri).into(img_tag_add);
-                srcImage = uri.toString();
-                break;
-        }
-    }
-
     @Override
     public void onSingleImageSelected(Uri uri, String tag) {
-//        Glide.with(this).load(uri).into(img_tag_add);
+        Glide.with(this).load(uri).into(img_tag_add);
+        srcImage = uri.toString();
     }
 
     @Override
     public void onMultiImageSelected(List<Uri> uriList, String tag) {
         srcImage = "";
-        for (int i=0; i < uriList.size(); i++) {
+        for (int i = 0; i < uriList.size(); i++) {
             if (i >= 6) return;
             srcImage = srcImage + uriList.get(i).toString() + ";";
-
         }
         Glide.with(this).load(uriList.get(0)).into(img_tag_add);
     }
@@ -550,7 +528,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onCancelled(boolean isMultiSelecting, String tag) {
-        Toast.makeText(this, "Selection is cancelled, Multi-selection is " + isMultiSelecting, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Selection is cancelled ", Toast.LENGTH_SHORT).show();
     }
 
     private void getDataFromDetail() {
@@ -575,6 +553,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             action = entityUpdate.getAction();
             mood = entityUpdate.getMood();
             th = entityUpdate.getTh();
+            latitude = entityUpdate.getLat();
+            longtitude = entityUpdate.getLng();
 
             adapterRcvAdd.updateItem(3, action);
             adapterRcvAdd.updateItem(4, mood);

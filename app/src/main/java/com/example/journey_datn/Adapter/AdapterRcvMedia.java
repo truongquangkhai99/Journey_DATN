@@ -1,12 +1,15 @@
 package com.example.journey_datn.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
@@ -20,12 +23,20 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
     private Context context;
     private AdapterRcvMedia.OnItemClickMediaListener listener;
     private ArrayList<Entity> listEntity;
-    private ArrayList<FragmentMedia.itemMedia> listStr;
+    private ArrayList<FragmentMedia.itemMedia> listMedia;
+    private ArrayList<itemStr> listStr = new ArrayList<>();
 
-    public AdapterRcvMedia(Context context,  ArrayList<Entity> listEntity, ArrayList<FragmentMedia.itemMedia> listStr){
-        this.context = context;
-        this.listEntity = listEntity;
-        this.listStr = listStr;
+    public AdapterRcvMedia(Context mContext, ArrayList<Entity> mListEntity, ArrayList<FragmentMedia.itemMedia> mListMedia) {
+        this.context = mContext;
+        this.listEntity = mListEntity;
+        this.listMedia = mListMedia;
+        setStr();
+    }
+
+    private void setStr() {
+        for (FragmentMedia.itemMedia itemMedia : listMedia)
+            if (!itemMedia.getStrMedia().equals(""))
+                listStr.add(new itemStr(itemMedia.getIdMedia(), itemMedia.getStrMedia()));
     }
 
     @NonNull
@@ -37,12 +48,12 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        String arrSrc = listStr.get(position).getStrMedia();
+        String arrSrc = listStr.get(position).getSource();
         Glide.with(context).load(arrSrc).into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.OnItemClick(listStr.get(position).getIdMedia());
+                listener.OnItemClick(listStr.get(position).getIdSource());
             }
         });
     }
@@ -77,9 +88,36 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.image_item_media);
+        }
+    }
+
+    private class itemStr{
+        private int idSource;
+        private String source;
+
+        public itemStr(int idSource, String source) {
+            this.idSource = idSource;
+            this.source = source;
+        }
+
+        public int getIdSource() {
+            return idSource;
+        }
+
+        public void setIdSource(int idSource) {
+            this.idSource = idSource;
+        }
+
+        public String getSource() {
+            return source;
+        }
+
+        public void setSource(String source) {
+            this.source = source;
         }
     }
 }
