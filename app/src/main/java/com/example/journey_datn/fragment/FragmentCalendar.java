@@ -160,30 +160,17 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
 
     @Override
     public void onItemClick(int position) {
-        itemClick(position);
-
-    }
-
-    @Override
-    public void onItemLongClick(int position) {
-        itemLongClick(position);
-
-    }
-
-    private void itemClick(int position){
         pos = position;
         Intent intent = new Intent(getContext(), ItemDetailActivity.class);
         intent.putExtra("entity",  listItem.get(position));
         intent.putParcelableArrayListExtra("listEntity", listItem);
         intent.putExtra("position", position);
         startActivityForResult(intent, REQUEST_CODE1);
+
     }
 
-    private void itemLongClick(int position){
-        showDialog(position);
-    }
-
-    private void showDialog(final int position){
+    @Override
+    public void onItemLongClick(int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete");
         builder.setMessage("Do you want to delete this journal entry?");
@@ -204,5 +191,6 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+
     }
 }

@@ -140,14 +140,6 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
 
     @Override
     public void onItemClick(int position) {
-        itemClick(position);
-    }
-    @Override
-    public void onItemLongClick(int position) {
-        itemLongClick(position);
-    }
-
-    private void itemClick(int position){
         pos = position;
         Intent intent = new Intent(getContext(), ItemDetailActivity.class);
         intent.putExtra("entity",  lstEntity.get(position));
@@ -155,8 +147,8 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         intent.putExtra("position", position);
         startActivityForResult(intent, REQUEST_CODE);
     }
-
-    private void itemLongClick(final int pos){
+    @Override
+    public void onItemLongClick(int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete");
         builder.setMessage("Do you want to delete this journal entry?");
@@ -169,9 +161,9 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                entityRepository.deleteEntity(adapterRcvEntity.getLstEntity().get(pos));
-                adapterRcvEntity.getLstEntity().remove(pos);
-                adapterRcvEntity.notifyItemRemoved(pos);
+                entityRepository.deleteEntity(adapterRcvEntity.getLstEntity().get(position));
+                adapterRcvEntity.getLstEntity().remove(position);
+                adapterRcvEntity.notifyItemRemoved(position);
                 txt_number_item.setText("" + adapterRcvEntity.getItemCount());
                 dialogInterface.dismiss();
             }

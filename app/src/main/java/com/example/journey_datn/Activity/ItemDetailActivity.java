@@ -2,6 +2,7 @@ package com.example.journey_datn.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -24,6 +25,7 @@ public class ItemDetailActivity extends AppCompatActivity {
     private ImageView img_back_detail, img_star_detail, img_share_detail, img_print_detail, img_update_detail, img_menu_detail;
     private final static int UPDATE_REQUESTCODE = 114;
     public static int RESULT_CODE = 115;
+    private boolean checkUpdateforSearch = false;
 
 
     @Override
@@ -54,7 +56,11 @@ public class ItemDetailActivity extends AppCompatActivity {
                 startActivityForResult(intent, UPDATE_REQUESTCODE);
             }
         });
+    }
 
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     private void init() {
@@ -71,12 +77,14 @@ public class ItemDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UPDATE_REQUESTCODE && resultCode == AddDataActivity.RESULT_CODE) {
+            checkUpdateforSearch = true;
             Entity entity = data.getParcelableExtra("entity");
             Intent intent = getIntent();
             intent.putExtra("entity", entity);
+            intent.putExtra("checkUpdate", checkUpdateforSearch);
             setResult(RESULT_CODE, intent);
             finish();
-            setEntity(entity);
+//            setEntity(entity);
         }
     }
 

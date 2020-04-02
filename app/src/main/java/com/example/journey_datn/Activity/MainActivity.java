@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,18 +30,16 @@ import com.example.journey_datn.fragment.FragmentMedia;
 import com.example.journey_datn.fragment.Weather.FragmentWeather;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import static com.example.journey_datn.Activity.SearchActivity.RESULT_CODE;
+
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView navigationView;
     private ImageView img_search, img_cloud;
     private int WRITE_EXTERNAL_STORAGE_CODE = 1, MY_CAMERA_PERMISSION_CODE = 2, READ_EXTERNAL_STORAGE_CODE = 3, ACCESS_FINE_LOCATION_CODE = 4;
     private DrawerLayout mDrawerLayout;
-    private FragmentJourney fragmentJourney;
-    private FragmentCalendar fragmentCalendar;
-    private FragmentMedia fragmentMedia;
-    private FragmentAtlas fragmentAtlas;
-    private FragmentWeather fragmentWeather;
     private Toolbar toolbar;
+    private int idClick, idFragment;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         loadFragment(new FragmentJourney());
+        idFragment = 1;
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -62,18 +63,22 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.menu_journey:
                         fragment = new FragmentJourney();
                         loadFragment(fragment);
+                        idFragment = 1;
                         return true;
                     case R.id.menu_calendar:
                         fragment = new FragmentCalendar();
                         loadFragment(fragment);
+                        idFragment = 2;
                         return true;
                     case R.id.menu_media:
                         fragment = new FragmentMedia();
                         loadFragment(fragment);
+                        idFragment = 3;
                         return true;
                     case R.id.menu_atlas:
                         fragment = new FragmentAtlas();
                         loadFragment(fragment);
+                        idFragment = 4;
                         return true;
                     case R.id.menu_weather:
                         fragment = new FragmentWeather();
@@ -87,8 +92,9 @@ public class MainActivity extends AppCompatActivity {
         img_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                idClick = idFragment;
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 10);
             }
         });
 
@@ -118,6 +124,35 @@ public class MainActivity extends AppCompatActivity {
         );
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 10 && resultCode == RESULT_CODE){
+            boolean check = data.getBooleanExtra("checkUpdate", false);
+            if (check){
+                Fragment fragment;
+                switch (idClick){
+                    case 1:
+                        fragment = new FragmentJourney();
+                        loadFragment(fragment);
+                        return;
+                    case 2:
+                        fragment = new FragmentCalendar();
+                        loadFragment(fragment);
+                        return;
+                    case 3:
+                        fragment = new FragmentMedia();
+                        loadFragment(fragment);
+                        return;
+                    case 4:
+                        fragment = new FragmentAtlas();
+                        loadFragment(fragment);
+                        return;
+                }
+            }
+        }
     }
 
     @Override
@@ -172,12 +207,6 @@ public class MainActivity extends AppCompatActivity {
         img_search = findViewById(R.id.img_search);
         img_cloud = findViewById(R.id.img_cloud);
         toolbar = findViewById(R.id.toolbar);
-
-//        fragmentJourney = new FragmentJourney();
-//        fragmentCalendar = new FragmentCalendar();
-//        fragmentMedia = new FragmentMedia();
-//        fragmentAtlas = new FragmentAtlas();
-//        fragmentWeather = new FragmentWeather();
     }
 
     @Override
