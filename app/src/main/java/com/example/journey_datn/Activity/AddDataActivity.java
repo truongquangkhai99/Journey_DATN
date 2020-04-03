@@ -400,9 +400,9 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             Intent intent = getIntent();
             Entity entity;
             if (id == -1)
-                entity = new Entity(contain, action, position, temperature, year, month, day, th, hour, minute, mood, srcImage, getLatitude(), getLongtitude());
+                entity = new Entity(contain, action, position, temperature, year, month, day, th, hour, minute, mood, srcImage, getLatitude(), getLongtitude(), MainActivity.userId);
             else
-                entity = new Entity(id, contain, action, position, temperature, year, month, day, th, hour, minute, mood, srcImage, getLatitude(), getLongtitude());
+                entity = new Entity(id, contain, action, position, temperature, year, month, day, th, hour, minute, mood, srcImage, getLatitude(), getLongtitude(), MainActivity.userId);
             intent.putExtra("entity", entity);
             setResult(RESULT_CODE, intent);
             finish();

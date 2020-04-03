@@ -28,6 +28,7 @@ import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.journey_datn.Activity.AddDataActivity;
 import com.example.journey_datn.Activity.ItemDetailActivity;
+import com.example.journey_datn.Activity.MainActivity;
 import com.example.journey_datn.Adapter.AdapterRcvEntity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
@@ -73,7 +74,7 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
     }
 
     private void  loadDataCalendar(){
-        list = (ArrayList<Entity>) entityRepository.getEntity();
+        list = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
         List<EventDay> events = new ArrayList<>();
         List<Calendar> arrCr = getSelectedDays();
         for(int i = 0; i < arrCr.size(); i++){
@@ -101,7 +102,7 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
     }
 
     private  void setRcvCalendar(int mDay, int mMonth, int mYear){
-        listItem = (ArrayList<Entity>) entityRepository.getEntityByTime(mDay, mMonth, mYear);
+        listItem = (ArrayList<Entity>) entityRepository.getEntityByTime(mDay, mMonth, mYear, MainActivity.userId);
         adapterRcvEntity = new AdapterRcvEntity(getContext(), listItem);
         rcvCalendar.setAdapter(adapterRcvEntity);
         rcvCalendar.setLayoutManager(linearLayoutManager);
@@ -123,7 +124,7 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
             adapterRcvEntity.addData(entity);
         }
 
-        list = (ArrayList<Entity>) entityRepository.getEntity();
+        list = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
         List<EventDay> events = new ArrayList<>();
         List<Calendar> arrCr = getSelectedDays();
         for(int i = 0; i < arrCr.size(); i++){
@@ -141,7 +142,7 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
         mMonth  = mMonth + 1;
-        listItem = (ArrayList<Entity>) entityRepository.getEntityByTime(mDay, mMonth, mYear);
+        listItem = (ArrayList<Entity>) entityRepository.getEntityByTime(mDay, mMonth, mYear, MainActivity.userId);
         adapterRcvEntity = new AdapterRcvEntity(getContext(), listItem);
         rcvCalendar.setAdapter(adapterRcvEntity);
         rcvCalendar.setLayoutManager(linearLayoutManager);

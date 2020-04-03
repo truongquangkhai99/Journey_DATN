@@ -52,7 +52,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
 
         entityRepository = new EntityRepository(SearchActivity.this);
         entityRepository = new EntityRepository(this);
-        lstEntity = (ArrayList<Entity>) entityRepository.getEntity();
+        lstEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
         adapterRcvEntity = new AdapterRcvEntity(SearchActivity.this, lstEntity);
         rcvJourney.setAdapter(adapterRcvEntity);
         rcvJourney.setLayoutManager(linearLayoutManager);

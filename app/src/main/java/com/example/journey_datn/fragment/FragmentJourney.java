@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.journey_datn.Activity.AddDataActivity;
 import com.example.journey_datn.Activity.ItemDetailActivity;
+import com.example.journey_datn.Activity.MainActivity;
 import com.example.journey_datn.Adapter.AdapterRcvEntity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
@@ -57,7 +58,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
 
         entityRepository = new EntityRepository(getContext());
 
-        lstEntity = (ArrayList<Entity>) entityRepository.getEntity();
+        lstEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
         adapterRcvEntity = new AdapterRcvEntity(getContext(), lstEntity);
         rcvJourney.setAdapter(adapterRcvEntity);
         rcvJourney.setLayoutManager(linearLayoutManager);
@@ -93,6 +94,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         txt_number_item = view.findViewById(R.id.txt_number_item);
         fabJourney = view.findViewById(R.id.fab_journey);
         txtDayOfWeek = view.findViewById(R.id.txt_dayOfWeek);
+        txt_user_name.setText(MainActivity.lastName + " " + MainActivity.firstName);
     }
 
     private void getCalendar() {

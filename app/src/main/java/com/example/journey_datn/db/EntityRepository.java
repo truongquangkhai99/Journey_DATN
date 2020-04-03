@@ -3,14 +3,17 @@ package com.example.journey_datn.db;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
+
 import com.example.journey_datn.Model.Entity;
+import com.example.journey_datn.Model.User;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class EntityRepository {
     private Context context;
 
-    public  EntityRepository(Context context){
+    public EntityRepository(Context context) {
         this.context = context;
     }
 
@@ -18,18 +21,20 @@ public class EntityRepository {
         public void receiveData(int result);
     }
 
-    public int getItemCount() {
+    public int getItemCount(int userId) {
 
         class getItemEntity extends AsyncTask<Void, Void, Integer> implements CallbackReciever {
             Context context;
-            public getItemEntity(Context context){
+
+            public getItemEntity(Context context) {
                 this.context = context;
             }
+
             @Override
             protected Integer doInBackground(Void... voids) {
-                int count =  DatabaseClient.getInstance(context).getAppDatabase()
+                int count = DatabaseClient.getInstance(context).getAppDatabase()
                         .EntityDao()
-                        .getCountItem();
+                        .getCountItem(userId);
                 return count;
             }
 
@@ -46,7 +51,7 @@ public class EntityRepository {
 
         int sl = 0;
         try {
-            sl = new getItemEntity(context){
+            sl = new getItemEntity(context) {
                 @Override
                 public void receiveData(int result) {
                     super.receiveData(result);
@@ -58,23 +63,25 @@ public class EntityRepository {
             e.printStackTrace();
         }
 
-        return  sl;
+        return sl;
     }
 
 
-    public List<Entity> getEntity(){
+    public List<Entity> getEntity(int userId) {
         class GetTasks extends AsyncTask<Void, Void, List<Entity>> implements CallbackReciever {
             Context context;
-            public GetTasks(Context context){
+
+            public GetTasks(Context context) {
                 this.context = context;
             }
+
             @Override
             protected List<Entity> doInBackground(Void... voids) {
                 List<Entity> taskList = DatabaseClient
                         .getInstance(context)
                         .getAppDatabase()
                         .EntityDao()
-                        .getAllEntity();
+                        .getAllEntity(userId);
                 return taskList;
             }
 
@@ -91,7 +98,7 @@ public class EntityRepository {
 
         List<Entity> lst = null;
         try {
-            lst = new GetTasks(context){
+            lst = new GetTasks(context) {
                 @Override
                 public void receiveData(int result) {
                     super.receiveData(result);
@@ -106,7 +113,7 @@ public class EntityRepository {
         return lst;
     }
 
-    public void insertEntity(final Entity entity){
+    public void insertEntity(final Entity entity) {
         class SaveTask extends AsyncTask<Void, Void, Void> {
 
             @Override
@@ -127,7 +134,7 @@ public class EntityRepository {
         st.execute();
     }
 
-    public void updateEntity(final Entity entity){
+    public void updateEntity(final Entity entity) {
 
         class UpdateTask extends AsyncTask<Void, Void, Void> {
 
@@ -149,7 +156,7 @@ public class EntityRepository {
         ut.execute();
     }
 
-    public void deleteEntity(final Entity entity){
+    public void deleteEntity(final Entity entity) {
         class DeleteTask extends AsyncTask<Void, Void, Void> {
 
             @Override
@@ -170,7 +177,7 @@ public class EntityRepository {
         dt.execute();
     }
 
-    public void deleteAllEntity(){
+    public void deleteAllEntity() {
         class DeleteAllTask extends AsyncTask<Void, Void, Void> {
 
             @Override
@@ -191,19 +198,21 @@ public class EntityRepository {
         dt.execute();
     }
 
-    public Entity getEntityById(final int id){
+    public Entity getEntityById(final int id, int userId) {
         class GetTasks extends AsyncTask<Void, Void, Entity> implements CallbackReciever {
             Context context;
-            public GetTasks(Context context){
+
+            public GetTasks(Context context) {
                 this.context = context;
             }
+
             @Override
             protected Entity doInBackground(Void... voids) {
                 Entity taskList = DatabaseClient
                         .getInstance(context)
                         .getAppDatabase()
                         .EntityDao()
-                        .getEntityById(id);
+                        .getEntityById(id, userId);
                 return taskList;
             }
 
@@ -220,7 +229,7 @@ public class EntityRepository {
 
         Entity entity1 = null;
         try {
-            entity1 = new GetTasks(context){
+            entity1 = new GetTasks(context) {
                 @Override
                 public void receiveData(int result) {
                     super.receiveData(result);
@@ -236,19 +245,21 @@ public class EntityRepository {
     }
 
 
-    public List<Entity> getEntityByContain(final String content){
+    public List<Entity> getEntityByContain(final String content, int userId) {
         class GetTasks extends AsyncTask<Void, Void, List<Entity>> implements CallbackReciever {
             Context context;
-            public GetTasks(Context context){
+
+            public GetTasks(Context context) {
                 this.context = context;
             }
+
             @Override
             protected List<Entity> doInBackground(Void... voids) {
                 List<Entity> taskList = DatabaseClient
                         .getInstance(context)
                         .getAppDatabase()
                         .EntityDao()
-                        .getEntityByContent(content);
+                        .getEntityByContent(content, userId);
                 return taskList;
             }
 
@@ -265,7 +276,7 @@ public class EntityRepository {
 
         List<Entity> lst = null;
         try {
-            lst = new GetTasks(context){
+            lst = new GetTasks(context) {
                 @Override
                 public void receiveData(int result) {
                     super.receiveData(result);
@@ -280,19 +291,21 @@ public class EntityRepository {
         return lst;
     }
 
-    public List<Entity> getEntityByTime(final int day, int month, int year){
+    public List<Entity> getEntityByTime(final int day, int month, int year, int userId) {
         class GetTasks extends AsyncTask<Void, Void, List<Entity>> implements CallbackReciever {
             Context context;
-            public GetTasks(Context context){
+
+            public GetTasks(Context context) {
                 this.context = context;
             }
+
             @Override
             protected List<Entity> doInBackground(Void... voids) {
                 List<Entity> taskList = DatabaseClient
                         .getInstance(context)
                         .getAppDatabase()
                         .EntityDao()
-                        .getEntityByTime(day, month, year);
+                        .getEntityByTime(day, month, year, userId);
                 return taskList;
             }
 
@@ -309,7 +322,7 @@ public class EntityRepository {
 
         List<Entity> lst = null;
         try {
-            lst = new GetTasks(context){
+            lst = new GetTasks(context) {
                 @Override
                 public void receiveData(int result) {
                     super.receiveData(result);

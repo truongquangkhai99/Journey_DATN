@@ -29,6 +29,7 @@ import com.example.journey_datn.fragment.FragmentJourney;
 import com.example.journey_datn.fragment.FragmentMedia;
 import com.example.journey_datn.fragment.Weather.FragmentWeather;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import static com.example.journey_datn.Activity.SearchActivity.RESULT_CODE;
 
@@ -40,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private Toolbar toolbar;
     private int idClick, idFragment;
+    public static int userId;
+    public static String firstName, lastName;
+    private NavigationView navi;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -207,6 +211,12 @@ public class MainActivity extends AppCompatActivity {
         img_search = findViewById(R.id.img_search);
         img_cloud = findViewById(R.id.img_cloud);
         toolbar = findViewById(R.id.toolbar);
+        navi = findViewById(R.id.nav_view);
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("userId", -1);
+        firstName = intent.getStringExtra("firstName");
+        lastName = intent.getStringExtra("lastName");
+        navi.getMenu().getItem(0).setTitle(lastName + " " + firstName);
     }
 
     @Override

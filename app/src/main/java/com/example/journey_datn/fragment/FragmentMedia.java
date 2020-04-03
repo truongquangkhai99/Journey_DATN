@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.journey_datn.Activity.AddDataActivity;
 import com.example.journey_datn.Activity.ItemDetailActivity;
+import com.example.journey_datn.Activity.MainActivity;
 import com.example.journey_datn.Adapter.AdapterRcvEntity;
 import com.example.journey_datn.Adapter.AdapterRcvMedia;
 import com.example.journey_datn.Model.Entity;
@@ -49,7 +50,7 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
         listEntity = new ArrayList<>();
         ArrayList<itemMedia> arrItemMedia = new ArrayList<>();
         entityRepository = new EntityRepository(getContext());
-        listEntity = (ArrayList<Entity>) entityRepository.getEntity();
+        listEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
         for (Entity entity : listEntity){
             String arrSrc = entity.getSrcImage();
             String[] separated = arrSrc.split(";");

@@ -2,6 +2,8 @@ package com.example.journey_datn.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
@@ -13,9 +15,10 @@ public class Entity implements Parcelable {
     private int temperature, action, mood, year, month, day, hour, minute;
     private String srcImage, th, content, strPosition;
     private double lat, lng;
+    private int userId;
 
     @Ignore
-    public Entity(String content, int action, String strPosition, int temperature, int year, int month, int day, String th, int hour, int minute, int mood, String srcImage, double lat, double lng) {
+    public Entity(String content, int action, String strPosition, int temperature, int year, int month, int day, String th, int hour, int minute, int mood, String srcImage, double lat, double lng, int userId) {
         this.content = content;
         this.action = action;
         this.strPosition = strPosition;
@@ -30,10 +33,11 @@ public class Entity implements Parcelable {
         this.srcImage = srcImage;
         this.lat = lat;
         this.lng = lng;
+        this.userId = userId;
     }
 
     @Ignore
-    public Entity(int id, String content, int action, String strPosition, int temperature, int year, int month, int day, String th,  int hour, int minute,  int mood, String srcImage, double lat, double lng) {
+    public Entity(int id, String content, int action, String strPosition, int temperature, int year, int month, int day, String th,  int hour, int minute,  int mood, String srcImage, double lat, double lng, int userId) {
         this.id = id;
         this.content = content;
         this.strPosition = strPosition;
@@ -49,6 +53,7 @@ public class Entity implements Parcelable {
         this.srcImage = srcImage;
         this.lat = lat;
         this.lng = lng;
+        this.userId = userId;
     }
 
     public Entity(){
@@ -71,6 +76,7 @@ public class Entity implements Parcelable {
         srcImage = in.readString();
         lat = in.readDouble();
         lng = in.readDouble();
+        userId = in.readInt();
     }
 
     @Override
@@ -95,6 +101,7 @@ public class Entity implements Parcelable {
         dest.writeString(srcImage);
         dest.writeDouble(lat);
         dest.writeDouble(lng);
+        dest.writeInt(userId);
     }
 
     public static final Creator<Entity> CREATOR = new Creator<Entity>() {
@@ -229,5 +236,13 @@ public class Entity implements Parcelable {
 
     public void setLng(double lng) {
         this.lng = lng;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

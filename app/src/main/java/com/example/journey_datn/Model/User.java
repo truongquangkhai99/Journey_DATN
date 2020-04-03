@@ -1,35 +1,57 @@
 package com.example.journey_datn.Model;
 
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@androidx.room.Entity
 public class User {
-    private String srcAvatar;
-    private String username;
-    private int dayUser, monthUser, yearUser;
 
-    public User(String srcAvatar, String username) {
-        this.srcAvatar = srcAvatar;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private String firstName, lastName, username, password;
+
+    @Ignore
+    public User(int id, String firstName, String lastName, String username, String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
+        this.password = password;
     }
 
-    public User(int dayUser, int monthUser, int yearUser) {
-        this.dayUser = dayUser;
-        this.monthUser = monthUser;
-        this.yearUser = yearUser;
-    }
-
-    public User(String srcAvatar, String username, int dayUser, int monthUser, int yearUser) {
-        this.srcAvatar = srcAvatar;
+    @Ignore
+    public User(String firstName, String lastName, String username, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
-        this.dayUser = dayUser;
-        this.monthUser = monthUser;
-        this.yearUser = yearUser;
+        this.password = password;
     }
 
-    public String getSrcAvatar() {
-        return srcAvatar;
+    public User() {
     }
 
-    public void setSrcAvatar(String srcAvatar) {
-        this.srcAvatar = srcAvatar;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getUsername() {
@@ -40,27 +62,11 @@ public class User {
         this.username = username;
     }
 
-    public int getDayUser() {
-        return dayUser;
+    public String getPassword() {
+        return password;
     }
 
-    public void setDayUser(int dayUser) {
-        this.dayUser = dayUser;
-    }
-
-    public int getMonthUser() {
-        return monthUser;
-    }
-
-    public void setMonthUser(int monthUser) {
-        this.monthUser = monthUser;
-    }
-
-    public int getYearUser() {
-        return yearUser;
-    }
-
-    public void setYearUser(int yearUser) {
-        this.yearUser = yearUser;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

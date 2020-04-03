@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_16"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtCreate_acc"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="Create Account"
+        android:textSize="@dimen/dp_24"
+        android:textColor="#0461A8"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt_first_name"
+        app:layout_constraintTop_toBottomOf="@id/txtCreate_acc"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="First name:"
+        android:textStyle="italic"
+        android:textColor="@color/color_blue"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/edt_first_nameAc"
+        app:layout_constraintTop_toBottomOf="@id/txt_first_name"
+        android:layout_marginTop="@dimen/dp_4"
+        app:layout_constraintStart_toStartOf="@id/txt_first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt_last_name"
+        app:layout_constraintTop_toBottomOf="@id/edt_first_nameAc"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Last name:"
+        android:textStyle="italic"
+        android:textColor="@color/color_blue"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/edt_last_nameAc"
+        app:layout_constraintTop_toBottomOf="@id/txt_last_name"
+        android:layout_marginTop="@dimen/dp_4"
+        app:layout_constraintStart_toStartOf="@id/txt_first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt_username"
+        app:layout_constraintTop_toBottomOf="@id/edt_last_nameAc"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Username:"
+        android:textStyle="italic"
+        android:textColor="@color/color_blue"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/edt_usernameAc"
+        app:layout_constraintTop_toBottomOf="@id/txt_username"
+        android:layout_marginTop="@dimen/dp_4"
+        app:layout_constraintStart_toStartOf="@id/txt_first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt_password"
+        app:layout_constraintTop_toBottomOf="@id/edt_usernameAc"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Password:"
+        android:textStyle="italic"
+        android:textColor="@color/color_blue"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/edt_passwordAc"
+        app:layout_constraintTop_toBottomOf="@id/txt_password"
+        android:layout_marginTop="@dimen/dp_4"
+        android:password="true"
+        app:layout_constraintStart_toStartOf="@id/txt_first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/img_show_password"
+        app:layout_constraintTop_toTopOf="@id/edt_passwordAc"
+        app:layout_constraintBottom_toBottomOf="@id/edt_passwordAc"
+        app:layout_constraintEnd_toEndOf="@id/edt_passwordAc"
+        android:src="@drawable/ic_remove_red_eye_black_24dp"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"/>
+
+    <TextView
+        android:id="@+id/txt_confirm_password"
+        app:layout_constraintTop_toBottomOf="@id/edt_passwordAc"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Confirm password:"
+        android:textStyle="italic"
+        android:textColor="@color/color_blue"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/edt_confirm_passwordAc"
+        app:layout_constraintTop_toBottomOf="@id/txt_confirm_password"
+        android:layout_marginTop="@dimen/dp_4"
+        android:password="true"
+        app:layout_constraintStart_toStartOf="@id/txt_first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/img_show_confirm_password"
+        app:layout_constraintTop_toTopOf="@id/edt_confirm_passwordAc"
+        app:layout_constraintBottom_toBottomOf="@id/edt_confirm_passwordAc"
+        app:layout_constraintEnd_toEndOf="@id/edt_confirm_passwordAc"
+        android:src="@drawable/ic_remove_red_eye_black_24dp"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@id/edt_confirm_passwordAc"
+        android:layout_marginTop="@dimen/dp_24"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        app:cardCornerRadius="@dimen/dp_24"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <Button
+            android:id="@+id/button_create_account"
+            android:text="Create account"
+            android:textColor="@color/color_white"
+            android:background="#0461A8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

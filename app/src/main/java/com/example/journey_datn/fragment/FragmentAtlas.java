@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.journey_datn.Activity.MainActivity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
 import com.example.journey_datn.db.EntityRepository;
@@ -73,7 +74,7 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         entityRepository = new EntityRepository(getContext());
-        lstEntity = (ArrayList<Entity>) entityRepository.getEntity();
+        lstEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
         fabZoom = view.findViewById(R.id.fab_enlarge);
         fabZoom.setOnClickListener(new View.OnClickListener() {
             @Override
