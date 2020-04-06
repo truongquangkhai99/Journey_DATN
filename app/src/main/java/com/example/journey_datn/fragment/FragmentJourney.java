@@ -22,6 +22,8 @@ import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
 import com.example.journey_datn.db.EntityRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,7 +35,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
     private AdapterRcvEntity adapterRcvEntity;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
     private FloatingActionButton fabJourney;
-    private TextView txt_user_name, txt_day, txt_month, txt_year, txt_number_item, txtDayOfWeek;
+    private TextView txt_user_name, txtDate, txt_number_item, txtDayOfWeek;
     private int REQUEST_CODE = 911;
     private int pos;
 
@@ -88,26 +90,27 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
     private void initView(View view) {
         rcvJourney = view.findViewById(R.id.rcv_journey);
         txt_user_name = view.findViewById(R.id.txt_user_name);
-        txt_day = view.findViewById(R.id.txt_day);
-        txt_month = view.findViewById(R.id.txt_month);
-        txt_year = view.findViewById(R.id.txt_year);
+        txtDate = view.findViewById(R.id.txt_date);
         txt_number_item = view.findViewById(R.id.txt_number_item);
         fabJourney = view.findViewById(R.id.fab_journey);
         txtDayOfWeek = view.findViewById(R.id.txt_dayOfWeek);
-        txt_user_name.setText(MainActivity.lastName + " " + MainActivity.firstName);
+        String firstName = MainActivity.firstName;
+        String lastName = MainActivity.lastName;
+        txt_user_name.setText(lastName + " " + firstName);
     }
 
     private void getCalendar() {
-        int mYear, mMonth, mDay;
         Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
+        Date date = c.getTime();
+        SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
+        String today = format1.format(date);
+        txtDate.setText(today);
+        String arrToDay[] = today.split("-");
+        int mDay = Integer.parseInt(arrToDay[0]);
+        int mMonth = Integer.parseInt(arrToDay[1]);
+        int mYear = Integer.parseInt(arrToDay[2]);
         getDayofMonth(mDay, mMonth, mYear);
-        mMonth = mMonth + 1;
-        txt_day.setText(mDay + "");
-        txt_month.setText(mMonth + "");
-        txt_year.setText(mYear + "");
+
     }
     private void getDayofMonth(int day, int month, int year) {
         day = day - 1;

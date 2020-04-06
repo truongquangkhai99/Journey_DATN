@@ -2,16 +2,17 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_journey"
         android:layout_width="match_parent"
+        android:layout_height="180dp"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:layout_height="180dp">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout_journey"
@@ -21,159 +22,110 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-           <androidx.constraintlayout.widget.ConstraintLayout
-               android:layout_width="match_parent"
-               android:paddingTop="@dimen/dp_16"
-               android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dp_16">
 
-               <ImageView
-                   android:id="@+id/img_account"
-                   app:layout_constraintTop_toTopOf="parent"
-                   app:layout_constraintLeft_toLeftOf="parent"
-                   android:src="@drawable/ic_account_box_blue_24dp"
-                   android:layout_width="@dimen/dp_48"
-                   android:layout_height="@dimen/dp_48"/>
+                <ImageView
+                    android:id="@+id/img_account"
+                    android:layout_width="@dimen/dp_48"
+                    android:layout_height="@dimen/dp_48"
+                    android:src="@drawable/ic_account_box_blue_24dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-               <TextView
-                   android:id="@+id/txt_hi"
-                   android:text="Hi"
-                   android:textSize="@dimen/sp_24"
-                   android:textColor="@color/color_white"
-                   android:layout_marginLeft="@dimen/dp_16"
-                   app:layout_constraintTop_toTopOf="parent"
-                   app:layout_constraintLeft_toRightOf="@id/img_account"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/txt_hi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:text="Hi"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/sp_24"
+                    app:layout_constraintLeft_toRightOf="@id/img_account"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-               <TextView
-                   android:id="@+id/txt_user_name"
-                   android:text="Nguyen Van Quan"
-                   android:textColor="@color/color_white"
-                   app:layout_constraintTop_toTopOf="parent"
-                   app:layout_constraintStart_toEndOf="@id/txt_hi"
-                   app:layout_constraintEnd_toEndOf="parent"
-                   android:textSize="@dimen/sp_24"
-                   android:layout_marginLeft="@dimen/dp_8"
-                   android:layout_width="0dp"
-                   android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/txt_user_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="Nguyen Van Quan"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/sp_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txt_hi"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-               <androidx.constraintlayout.widget.ConstraintLayout
-                   android:layout_marginTop="@dimen/dp_8"
-                   android:id="@+id/const_calendar"
-                   app:layout_constraintTop_toBottomOf="@id/txt_user_name"
-                   app:layout_constraintStart_toStartOf="@id/txt_hi"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txt_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="11-04-1998"
+                    android:textColor="@color/color_white"
+                    app:layout_constraintStart_toStartOf="@id/txt_hi"
+                    app:layout_constraintTop_toBottomOf="@id/txt_hi" />
 
-                   <TextView
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintLeft_toLeftOf="parent"
-                       android:id="@+id/txt_day"
-                       android:textColor="@color/color_white"
-                       android:text="20"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"/>
-                   <TextView
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintLeft_toRightOf="@id/txt_day"
-                       android:id="@+id/txt_dash1"
-                       android:textColor="@color/color_white"
-                       android:text="-"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/txt_dayOfWeek"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="Saturday"
+                    android:textColor="@color/color_white"
+                    app:layout_constraintStart_toEndOf="@id/txt_date"
+                    app:layout_constraintTop_toTopOf="@id/txt_date" />
 
-                   <TextView
-                       android:id="@+id/txt_month"
-                       android:text="2"
-                       android:textColor="@color/color_white"
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintLeft_toRightOf="@id/txt_dash1"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"/>
-                   <TextView
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintLeft_toRightOf="@id/txt_month"
-                       android:id="@+id/txt_dash2"
-                       android:textColor="@color/color_white"
-                       android:text="-"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/txt_number_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:text="5"
+                    android:textColor="@color/color_white"
+                    app:layout_constraintStart_toStartOf="@id/txt_date"
+                    app:layout_constraintTop_toBottomOf="@id/txt_date" />
 
-                   <TextView
-                       android:id="@+id/txt_year"
-                       android:text="2020"
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintLeft_toRightOf="@id/txt_dash2"
-                       android:textColor="@color/color_white"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"/>
-                   <TextView
-                       android:id="@+id/txt_dayOfWeek"
-                       android:text="Monday"
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintLeft_toRightOf="@id/txt_year"
-                       android:layout_marginLeft="@dimen/dp_8"
-                       android:textColor="@color/color_white"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"/>
-               </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/txt_entries"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_4"
+                    android:text="entries"
+                    android:textColor="@color/color_white"
+                    app:layout_constraintLeft_toRightOf="@id/txt_number_item"
+                    app:layout_constraintTop_toTopOf="@id/txt_number_item" />
 
-               <androidx.constraintlayout.widget.ConstraintLayout
-                   android:layout_marginTop="@dimen/dp_16"
-                   android:id="@+id/count"
-                   app:layout_constraintTop_toBottomOf="@id/const_calendar"
-                   app:layout_constraintStart_toStartOf="@id/txt_hi"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content">
-
-                   <TextView
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintLeft_toLeftOf="parent"
-                       android:id="@+id/txt_number_item"
-                       android:text="5"
-                       android:textColor="@color/color_white"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"/>
-
-                   <TextView
-                       app:layout_constraintTop_toTopOf="parent"
-                       app:layout_constraintLeft_toRightOf="@id/txt_number_item"
-                       android:id="@+id/txt_entries"
-                       android:layout_marginLeft="@dimen/dp_4"
-                       android:text="entries"
-                       android:textColor="@color/color_white"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"/>
-               </androidx.constraintlayout.widget.ConstraintLayout>
-
-           </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedView"
-        android:layout_marginTop="@dimen/dp_8"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_8"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcv_journey"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_journey"
-        android:layout_margin="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_add_black_24dp"
-        app:layout_anchorGravity="bottom|end"
+        android:layout_margin="16dp"
         android:backgroundTint="@color/color_background_main"
-        app:layout_anchor="@id/nestedView"/>
+        android:src="@drawable/ic_add_black_24dp"
+        app:layout_anchor="@id/nestedView"
+        app:layout_anchorGravity="bottom|end" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

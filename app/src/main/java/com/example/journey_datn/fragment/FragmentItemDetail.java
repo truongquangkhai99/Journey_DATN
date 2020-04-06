@@ -80,12 +80,15 @@ public class FragmentItemDetail extends Fragment {
 
         Glide.with(getContext()).load(getEntity().getMood()).into(img_mood_detail);
         Glide.with(getContext()).load(getEntity().getAction()).into(img_action_detail);
-        txt_day_detail.setText(getEntity().getDay()+ "");
-        txt_month_detail.setText(getEntity().getMonth()+ "");
-        txt_year_detail.setText(getEntity().getYear()+ "");
+        String strDate[] = getEntity().getStrDate().split("-");
+        String strYear[] = strDate[2].split(" ");
+        String strHour[] = strYear[1].split(":");
+        txt_day_detail.setText(strDate[0]+ "");
+        txt_month_detail.setText(strDate[1]+ "");
+        txt_year_detail.setText(strYear[0]+ "");
         txt_th_detail.setText(getEntity().getTh()+ "");
-        txt_hour_detail.setText(getEntity().getHour()+ "");
-        txt_minute_detail.setText(getEntity().getMinute()+ "");
+        txt_hour_detail.setText(strHour[0]+ "");
+        txt_minute_detail.setText(strHour[1]+ "");
         txt_temperature_detail.setText(getEntity().getTemperature()+ "");
         txt_position_detail.setText(getEntity().getStrPosition());
         txt_contain_detail.setText(getEntity().getContent());

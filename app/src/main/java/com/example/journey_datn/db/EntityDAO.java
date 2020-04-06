@@ -31,7 +31,7 @@ public interface EntityDAO {
     @Query("SELECT * FROM Entity WHERE content LIKE :content AND userId = :uId")
     List<Entity> getEntityByContent(String content, int uId);
 
-    @Query("SELECT * FROM Entity WHERE day = :day AND month = :month AND year = :year AND userId = :uId")
+    @Query("SELECT * FROM Entity WHERE day = :day AND year = :year AND month = :month AND userId = :uId")
     List<Entity> getEntityByTime(int day, int month, int year, int uId);
 
     @Delete

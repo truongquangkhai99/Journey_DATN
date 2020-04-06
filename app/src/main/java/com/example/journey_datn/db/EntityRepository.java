@@ -291,7 +291,7 @@ public class EntityRepository {
         return lst;
     }
 
-    public List<Entity> getEntityByTime(final int day, int month, int year, int userId) {
+    public List<Entity> getEntityByTime(int day, int month, int year, int userId) {
         class GetTasks extends AsyncTask<Void, Void, List<Entity>> implements CallbackReciever {
             Context context;
 

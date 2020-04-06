@@ -12,23 +12,23 @@ public class Entity implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private int temperature, action, mood, year, month, day, hour, minute;
-    private String srcImage, th, content, strPosition;
+    private int temperature, action, mood;
+    private String srcImage, th, content, strPosition, strDate;
     private double lat, lng;
     private int userId;
+    private int day, month, year;
 
     @Ignore
-    public Entity(String content, int action, String strPosition, int temperature, int year, int month, int day, String th, int hour, int minute, int mood, String srcImage, double lat, double lng, int userId) {
+    public Entity(String content, int action, String strPosition, int temperature,String strDate, int day, int month, int year, String th, int mood, String srcImage, double lat, double lng, int userId) {
         this.content = content;
         this.action = action;
         this.strPosition = strPosition;
         this.temperature = temperature;
-        this.year = year;
-        this.month = month;
+        this.strDate = strDate;
         this.day = day;
+        this.month = month;
+        this.year = year;
         this.th = th;
-        this.hour = hour;
-        this.minute = minute;
         this.mood = mood;
         this.srcImage = srcImage;
         this.lat = lat;
@@ -37,18 +37,17 @@ public class Entity implements Parcelable {
     }
 
     @Ignore
-    public Entity(int id, String content, int action, String strPosition, int temperature, int year, int month, int day, String th,  int hour, int minute,  int mood, String srcImage, double lat, double lng, int userId) {
+    public Entity(int id, String content, int action, String strPosition, int temperature, String strDate, int day, int month, int year, String th, int mood, String srcImage, double lat, double lng, int userId) {
         this.id = id;
         this.content = content;
         this.strPosition = strPosition;
         this.temperature = temperature;
-        this.action = action;
-        this.mood = mood;
+        this.strDate = strDate;
+        this.day = day;
         this.year = year;
         this.month = month;
-        this.day = day;
-        this.hour = hour;
-        this.minute = minute;
+        this.action = action;
+        this.mood = mood;
         this.th = th;
         this.srcImage = srcImage;
         this.lat = lat;
@@ -65,13 +64,12 @@ public class Entity implements Parcelable {
         content = in.readString();
         strPosition = in.readString();
         temperature = in.readInt();
+        strDate = in.readString();
+        day = in.readInt();
+        month = in.readInt();
+        year = in.readInt();
         action = in.readInt();
         mood = in.readInt();
-        year = in.readInt();
-        month = in.readInt();
-        day = in.readInt();
-        hour = in.readInt();
-        minute = in.readInt();
         th = in.readString();
         srcImage = in.readString();
         lat = in.readDouble();
@@ -90,13 +88,12 @@ public class Entity implements Parcelable {
         dest.writeString(content);
         dest.writeString(strPosition);
         dest.writeInt(temperature);
+        dest.writeString(strDate);
+        dest.writeInt(day);
+        dest.writeInt(month);
+        dest.writeInt(year);
         dest.writeInt(action);
         dest.writeInt(mood);
-        dest.writeInt(year);
-        dest.writeInt(month);
-        dest.writeInt(day);
-        dest.writeInt(hour);
-        dest.writeInt(minute);
         dest.writeString(th);
         dest.writeString(srcImage);
         dest.writeDouble(lat);
@@ -124,7 +121,6 @@ public class Entity implements Parcelable {
     public void setId(int id) {
         this.id = id;
     }
-
 
     public String getContent() {
         return content;
@@ -158,20 +154,12 @@ public class Entity implements Parcelable {
         this.temperature = temperature;
     }
 
-    public int getYear() {
-        return year;
+    public String getStrDate() {
+        return strDate;
     }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
+    public void setStrDate(String strDate) {
+        this.strDate = strDate;
     }
 
     public int getDay() {
@@ -182,28 +170,28 @@ public class Entity implements Parcelable {
         this.day = day;
     }
 
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
     public String getTh() {
         return th;
     }
 
     public void setTh(String th) {
         this.th = th;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public void setMinute(int minute) {
-        this.minute = minute;
     }
 
     public int getMood() {

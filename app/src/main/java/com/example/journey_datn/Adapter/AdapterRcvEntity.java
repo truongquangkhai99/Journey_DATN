@@ -53,15 +53,10 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         final Entity pos = lstEntity.get(position);
         holder.txt_contain_item.setText(pos.getContent());
-        holder.txt_day_item.setText(pos.getDay() + "");
-        holder.txt_hour_item.setText(pos.getHour() + "");
-        holder.txt_minute_item.setText(pos.getMinute() + "");
-        holder.txt_month_item.setText(pos.getMonth() + "");
+        holder.txtDateItem.setText(pos.getStrDate());
         holder.txt_position_item.setText(pos.getStrPosition());
         holder.txt_temperature_item.setText(pos.getTemperature() + "");
         holder.txt_th.setText(pos.getTh() + "");
-        holder.txt_year_item.setText(pos.getYear() + "");
-
         Glide.with(context).load(pos.getMood()).into(holder.img_mood);
         Glide.with(context).load(pos.getAction()).into(holder.img_action);
         String arrSrc = pos.getSrcImage();
@@ -133,20 +128,15 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img_item, img_mood, img_action;
         ConstraintLayout const_item_layout_rcv;
-        TextView txt_day_item, txt_month_item, txt_year_item, txt_th, txt_hour_item, txt_minute_item,
-                txt_contain_item, txt_position_item, txt_temperature_item;
+        TextView txtDateItem, txt_th, txt_contain_item, txt_position_item, txt_temperature_item;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             img_item = itemView.findViewById(R.id.img_item);
             img_mood = itemView.findViewById(R.id.img_icon_happy_item);
             img_action = itemView.findViewById(R.id.img_icon_collect_item);
-            txt_day_item = itemView.findViewById(R.id.txt_day_item);
-            txt_month_item = itemView.findViewById(R.id.txt_month_item);
-            txt_year_item = itemView.findViewById(R.id.txt_year_item);
+            txtDateItem = itemView.findViewById(R.id.txt_date_item);
             txt_th = itemView.findViewById(R.id.txt_th);
-            txt_hour_item = itemView.findViewById(R.id.txt_hour_item);
-            txt_minute_item = itemView.findViewById(R.id.txt_minute_item);
             txt_contain_item = itemView.findViewById(R.id.txt_contain_item);
             txt_position_item = itemView.findViewById(R.id.txt_position_item);
             txt_temperature_item = itemView.findViewById(R.id.txt_temperature_item);

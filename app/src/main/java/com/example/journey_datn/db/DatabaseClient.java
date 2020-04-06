@@ -7,7 +7,7 @@ import androidx.room.Room;
 public class DatabaseClient {
     private Context mCtx;
     private static DatabaseClient mInstance;
-    public static final String DATABASE_NAME = "Journey911";
+    public static final String DATABASE_NAME = "Journey911111";
 
     private EntityDatabase entityDatabase;
 

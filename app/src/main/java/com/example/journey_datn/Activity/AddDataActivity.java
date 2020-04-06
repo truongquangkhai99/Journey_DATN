@@ -81,18 +81,18 @@ import retrofit2.Response;
 import static com.example.journey_datn.fragment.Weather.constants.ProjectConstants.BASE_URL_OPEN_WEATHER;
 
 public class AddDataActivity extends AppCompatActivity implements View.OnClickListener, AdapterRcvAdd.OnItemClickListener, BSImagePicker.OnSingleImageSelectedListener,
-        BSImagePicker.OnMultiImageSelectedListener, BSImagePicker.ImageLoaderDelegate, BSImagePicker.OnSelectImageCancelledListener  {
+        BSImagePicker.OnMultiImageSelectedListener, BSImagePicker.ImageLoaderDelegate, BSImagePicker.OnSelectImageCancelledListener {
 
     private ImageView img_mark, img_calendar_add, img_tag_add, img_three_dots_add;
-    private TextView txt_day_add, txt_month_add, txt_year_add, txt_hour_add, txt_minute_add;
+    private TextView txtDate;
     private EditText edt_contain_add;
     private RecyclerView rcv_add;
     private AdapterRcvAdd adapterRcvAdd;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-    private int mYear, mMonth, mDay, mHour, mMinute, positionUpdate, id = -1;
+    private int positionUpdate, id = -1, mDay, mMonth, mYear, mMinute, mHour;
     private Entity entityUpdate;
     private String position = "", srcImage = "", th, contain;
-    private int day, month, year, hour, minute, temperature = 0, action = R.drawable.ic_action_black_24dp, mood = R.drawable.ic_mood_black_24dp;
+    private int temperature = 0, action = R.drawable.ic_action_black_24dp, mood = R.drawable.ic_mood_black_24dp;
     private int mposition;
     public static int RESULT_CODE = 113;
     private int PERMISSION_ID = 44;
@@ -121,19 +121,14 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 showDialog();
             }
         });
+
+        getCalendar();
         img_calendar_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dateTimePicker();
             }
         });
-
-        getCalendar();
-        txt_day_add.setText(mDay + "");
-        txt_month_add.setText(mMonth + "");
-        txt_year_add.setText(mYear + "");
-        txt_hour_add.setText(mHour + "");
-        txt_minute_add.setText(mMinute + "");
 
         getDataFromDetail();
 
@@ -284,13 +279,19 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
     private void getCalendar() {
         Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-        mHour = c.get(Calendar.HOUR_OF_DAY);
-        mMinute = c.get(Calendar.MINUTE);
-        getDayofMonth(mDay, mMonth, mYear);
-        mMonth = mMonth + 1;
+        Date date = c.getTime();
+        SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        String today = format1.format(date);
+        txtDate.setText(today);
+        String arrToDay[] = today.split("-");
+        mDay = Integer.parseInt(arrToDay[0]);
+        mMonth = Integer.parseInt(arrToDay[1]);
+        String strYear[] = arrToDay[2].split(" ");
+        String strHour[] = strYear[1].split(":");
+        mYear = Integer.parseInt(strYear[0]);
+        mHour = Integer.parseInt(strHour[0]);
+        mMinute = Integer.parseInt(strHour[1]);
+        getDayofMonth(mDay, mYear, mMonth);
     }
 
     private void getDayofMonth(int day, int month, int year) {
@@ -330,23 +331,28 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         final TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                txt_hour_add.setText(hourOfDay + "");
-                txt_minute_add.setText(minute + "");
+                mHour = hourOfDay;
+                mMinute = minute;
+                Calendar c = Calendar.getInstance();
+                c.set(mYear, mMonth, mDay, mHour, mMinute);
+                Date date = c.getTime();
+                SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                txtDate.setText(format1.format(date));
+                mMonth = mMonth + 1;
             }
         }, mHour, mMinute, false);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                txt_day_add.setText(dayOfMonth + "");
-                int month = monthOfYear + 1;
-                txt_month_add.setText(month + "");
-                txt_year_add.setText(year + "");
-
+                mDay = dayOfMonth;
+                mMonth = monthOfYear;
+                mYear = year;
                 getDayofMonth(dayOfMonth, monthOfYear, year);
                 timePickerDialog.show();
             }
         }, mYear, mMonth, mDay);
+
         datePickerDialog.show();
     }
 
@@ -377,22 +383,14 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         img_tag_add = findViewById(R.id.img_tag_add);
         img_three_dots_add = findViewById(R.id.img_three_dots_add);
         edt_contain_add = findViewById(R.id.edt_contain_add);
-        txt_day_add = findViewById(R.id.txt_day_add);
-        txt_month_add = findViewById(R.id.txt_month_add);
-        txt_year_add = findViewById(R.id.txt_year_add);
-        txt_hour_add = findViewById(R.id.txt_hour_add);
-        txt_minute_add = findViewById(R.id.txt_minute_add);
+        txtDate = findViewById(R.id.txt_date_add);
         rcv_add = findViewById(R.id.rcv_add);
     }
 
     @Override
     public void onClick(View v) {
         contain = edt_contain_add.getText().toString();
-        day = Integer.parseInt(txt_day_add.getText().toString());
-        month = Integer.parseInt(txt_month_add.getText().toString());
-        year = Integer.parseInt(txt_year_add.getText().toString());
-        hour = Integer.parseInt(txt_hour_add.getText().toString());
-        minute = Integer.parseInt(txt_minute_add.getText().toString());
+        String strDate = txtDate.getText().toString();
 
         if (TextUtils.isEmpty(contain)) {
             Toast.makeText(this, "No contain", Toast.LENGTH_SHORT).show();
@@ -400,9 +398,9 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             Intent intent = getIntent();
             Entity entity;
             if (id == -1)
-                entity = new Entity(contain, action, position, temperature, year, month, day, th, hour, minute, mood, srcImage, getLatitude(), getLongtitude(), MainActivity.userId);
+                entity = new Entity(contain, action, position, temperature, strDate, mDay, mMonth, mYear, th, mood, srcImage, getLatitude(), getLongtitude(), MainActivity.userId);
             else
-                entity = new Entity(id, contain, action, position, temperature, year, month, day, th, hour, minute, mood, srcImage, getLatitude(), getLongtitude(), MainActivity.userId);
+                entity = new Entity(id, contain, action, position, temperature, strDate, mDay, mMonth, mYear, th, mood, srcImage, getLatitude(), getLongtitude(), MainActivity.userId);
             intent.putExtra("entity", entity);
             setResult(RESULT_CODE, intent);
             finish();
@@ -539,12 +537,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             entityUpdate = intent.getParcelableExtra("entityUpdate");
             positionUpdate = intent.getIntExtra("positionUpdate", 0);
             id = entityUpdate.getId();
-
-            txt_day_add.setText(String.valueOf(entityUpdate.getDay()));
-            txt_month_add.setText(String.valueOf(entityUpdate.getMonth()));
-            txt_year_add.setText(String.valueOf(entityUpdate.getYear()));
-            txt_hour_add.setText(String.valueOf(entityUpdate.getHour()));
-            txt_minute_add.setText(String.valueOf(entityUpdate.getMinute()));
+            txtDate.setText(String.valueOf(entityUpdate.getStrDate()));
             edt_contain_add.setText(entityUpdate.getContent());
 
             position = entityUpdate.getStrPosition();
@@ -559,9 +552,9 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             adapterRcvAdd.updateItem(3, action);
             adapterRcvAdd.updateItem(4, mood);
             String[] separated = srcImage.split(";");
-            if (separated.length == 1){
+            if (separated.length == 1) {
                 Glide.with(this).load(srcImage).into(img_tag_add);
-            }else {
+            } else {
                 Glide.with(this).load(separated[0]).into(img_tag_add);
             }
         }

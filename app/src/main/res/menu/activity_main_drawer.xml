@@ -13,9 +13,9 @@
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_alert"
-                android:icon="@drawable/ic_add_alert_black_24dp"
-                android:title="Setup Alarm" />
+                android:id="@+id/nav_diary"
+                android:icon="@drawable/icons8_love_book_50"
+                android:title="Diary" />
             <item
                 android:id="@+id/nav_help"
                 android:icon="@drawable/ic_gotoweb_black_24dp"

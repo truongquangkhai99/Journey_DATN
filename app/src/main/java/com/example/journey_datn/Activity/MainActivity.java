@@ -21,7 +21,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.example.journey_datn.R;
 import com.example.journey_datn.fragment.FragmentAtlas;
 import com.example.journey_datn.fragment.FragmentCalendar;
@@ -33,11 +32,11 @@ import com.google.android.material.navigation.NavigationView;
 
 import static com.example.journey_datn.Activity.SearchActivity.RESULT_CODE;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private BottomNavigationView navigationView;
     private ImageView img_search, img_cloud;
-    private int WRITE_EXTERNAL_STORAGE_CODE = 1, MY_CAMERA_PERMISSION_CODE = 2, READ_EXTERNAL_STORAGE_CODE = 3, ACCESS_FINE_LOCATION_CODE = 4;
+    private int WRITE_EXTERNAL_STORAGE_CODE = 1, MY_CAMERA_PERMISSION_CODE = 2, READ_EXTERNAL_STORAGE_CODE = 3;
     private DrawerLayout mDrawerLayout;
     private Toolbar toolbar;
     private int idClick, idFragment;
@@ -88,6 +87,19 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new FragmentWeather();
                         loadFragment(fragment);
                         return true;
+                }
+                return false;
+            }
+        });
+
+        navi.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.nav_diary:
+                        Intent intent = new Intent(MainActivity.this, DairyActivity.class);
+                        startActivity(intent);
+                        break;
                 }
                 return false;
             }
@@ -163,6 +175,8 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         loadFragment(new FragmentJourney());
         navigationView.getMenu().getItem(0).setChecked(true);
+        toolbar.setVisibility(View.VISIBLE);
+        navigationView.setVisibility(View.VISIBLE);
     }
 
     private void loadFragment(Fragment fragment) {
@@ -214,8 +228,10 @@ public class MainActivity extends AppCompatActivity {
         navi = findViewById(R.id.nav_view);
         Intent intent = getIntent();
         userId = intent.getIntExtra("userId", -1);
-        firstName = intent.getStringExtra("firstName");
-        lastName = intent.getStringExtra("lastName");
+        firstName = intent.getStringExtra("firstName") + "";
+        lastName = intent.getStringExtra("lastName") + "";
+        if (firstName.equals("null")) firstName = "";
+        if (lastName.equals("null")) lastName = "";
         navi.getMenu().getItem(0).setTitle(lastName + " " + firstName);
     }
 
