@@ -12,6 +12,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -25,8 +27,10 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -83,16 +87,17 @@ import static com.example.journey_datn.fragment.Weather.constants.ProjectConstan
 public class AddDataActivity extends AppCompatActivity implements View.OnClickListener, AdapterRcvAdd.OnItemClickListener, BSImagePicker.OnSingleImageSelectedListener,
         BSImagePicker.OnMultiImageSelectedListener, BSImagePicker.ImageLoaderDelegate, BSImagePicker.OnSelectImageCancelledListener {
 
-    private ImageView img_mark, img_calendar_add, img_tag_add, img_three_dots_add;
+    private ImageView img_mark,  img_tag_add, img_three_dots_add;
     private TextView txtDate;
-    private EditText edt_contain_add;
+    private EditText edt_content_add;
     private RecyclerView rcv_add;
     private AdapterRcvAdd adapterRcvAdd;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
     private int positionUpdate, id = -1, mDay, mMonth, mYear, mMinute, mHour;
     private Entity entityUpdate;
-    private String position = "", srcImage = "", th, contain;
-    private int temperature = 0, action = R.drawable.ic_action_black_24dp, mood = R.drawable.ic_mood_black_24dp;
+    private String position = "", srcImage = "", th, content, desWeather = "", textStyle = "N";
+    private int temperature = 0, action = R.drawable.ic_action_black_24dp, mood = R.drawable.ic_mood_black_24dp,
+            star = R.drawable.ic_star_border_black_24dp;
     private int mposition;
     public static int RESULT_CODE = 113;
     private int PERMISSION_ID = 44;
@@ -123,7 +128,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         getCalendar();
-        img_calendar_add.setOnClickListener(new View.OnClickListener() {
+        txtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dateTimePicker();
@@ -191,6 +196,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 if (response.body() != null) {
                     OpenWeatherModel openWeatherModel = response.body();
                     temperature = (int) openWeatherModel.getMain().getTemp();
+                    desWeather = openWeatherModel.getWeather().get(0).getDescription();
                 }
             }
 
@@ -379,28 +385,26 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
     private void init() {
         img_mark = findViewById(R.id.img_mark);
-        img_calendar_add = findViewById(R.id.img_calendar_add);
         img_tag_add = findViewById(R.id.img_tag_add);
         img_three_dots_add = findViewById(R.id.img_three_dots_add);
-        edt_contain_add = findViewById(R.id.edt_contain_add);
+        edt_content_add = findViewById(R.id.edt_content_add);
         txtDate = findViewById(R.id.txt_date_add);
         rcv_add = findViewById(R.id.rcv_add);
     }
 
     @Override
     public void onClick(View v) {
-        contain = edt_contain_add.getText().toString();
+        content = edt_content_add.getText().toString();
         String strDate = txtDate.getText().toString();
-
-        if (TextUtils.isEmpty(contain)) {
-            Toast.makeText(this, "No contain", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(content)) {
+            Toast.makeText(this, "No content", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = getIntent();
             Entity entity;
             if (id == -1)
-                entity = new Entity(contain, action, position, temperature, strDate, mDay, mMonth, mYear, th, mood, srcImage, getLatitude(), getLongtitude(), MainActivity.userId);
+                entity = new Entity(content, textStyle, action, position, temperature, strDate, mDay, mMonth, mYear, th, mood, star,srcImage, getLatitude(), getLongtitude(), MainActivity.userId);
             else
-                entity = new Entity(id, contain, action, position, temperature, strDate, mDay, mMonth, mYear, th, mood, srcImage, getLatitude(), getLongtitude(), MainActivity.userId);
+                entity = new Entity(id, content, textStyle, action, position, temperature, strDate, mDay, mMonth, mYear, th, mood, star, srcImage, getLatitude(), getLongtitude(), MainActivity.userId);
             intent.putExtra("entity", entity);
             setResult(RESULT_CODE, intent);
             finish();
@@ -436,18 +440,95 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 underlineClick();
                 break;
             case 8:
-                backClick();
-                break;
-            case 9:
-                forwardClick();
+                clearFormat();
                 break;
         }
     }
 
+
+    @Override
+    public void onSingleImageSelected(Uri uri, String tag) {
+        Glide.with(this).load(uri).into(img_tag_add);
+        srcImage = uri.toString();
+    }
+
+    @Override
+    public void onMultiImageSelected(List<Uri> uriList, String tag) {
+        srcImage = "";
+        for (int i = 0; i < uriList.size(); i++) {
+            if (i >= 6) return;
+            srcImage = srcImage + uriList.get(i).toString() + ";";
+        }
+        Glide.with(this).load(uriList.get(0)).into(img_tag_add);
+    }
+
+    @Override
+    public void loadImage(Uri imageUri, ImageView ivImage) {
+        Glide.with(AddDataActivity.this).load(imageUri).into(ivImage);
+    }
+
+    @Override
+    public void onCancelled(boolean isMultiSelecting, String tag) {
+        Toast.makeText(this, "Selection is cancelled ", Toast.LENGTH_SHORT).show();
+    }
+
+    private void getDataFromDetail() {
+        Intent intent = getIntent();
+        int activity = intent.getIntExtra("activity", 0);
+        if (activity == 2) {
+            checkUpdate = true;
+            entityUpdate = intent.getParcelableExtra("entityUpdate");
+            positionUpdate = intent.getIntExtra("positionUpdate", 0);
+            id = entityUpdate.getId();
+            txtDate.setText(String.valueOf(entityUpdate.getStrDate()));
+            edt_content_add.setText(entityUpdate.getContent());
+
+            position = entityUpdate.getStrPosition();
+            srcImage = entityUpdate.getSrcImage();
+            temperature = entityUpdate.getTemperature();
+            action = entityUpdate.getAction();
+            mood = entityUpdate.getMood();
+            star = entityUpdate.getStar();
+            th = entityUpdate.getTh();
+            latitude = entityUpdate.getLat();
+            longtitude = entityUpdate.getLng();
+
+            adapterRcvAdd.updateItem(3, action);
+            adapterRcvAdd.updateItem(4, mood);
+            String[] separated = srcImage.split(";");
+            if (separated.length == 1) {
+                Glide.with(this).load(srcImage).into(img_tag_add);
+            } else {
+                Glide.with(this).load(separated[0]).into(img_tag_add);
+            }
+
+            String strDate[] = entityUpdate.getStrDate().split("-");
+            String strYear[] = strDate[2].split(" ");
+            mDay = Integer.parseInt(strDate[0]);
+            mMonth = Integer.parseInt(strDate[1]);
+            mYear = Integer.parseInt(strYear[0]);
+
+            if (entityUpdate.getTextStyle().equals("B"))
+                edt_content_add.setTypeface(edt_content_add.getTypeface(), Typeface.BOLD);
+            if (entityUpdate.getTextStyle().equals("N"))
+                edt_content_add.setTypeface(Typeface.DEFAULT);
+            if (entityUpdate.getTextStyle().equals("I"))
+                edt_content_add.setTypeface(edt_content_add.getTypeface(), Typeface.ITALIC);
+            if (entityUpdate.getTextStyle().equals("U"))
+                edt_content_add.setPaintFlags(edt_content_add.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+
+        }
+    }
+
     private void mediaClick() {
-        final View dialogView = View.inflate(this, R.layout.dialog_media, null);
+
         final Dialog dialog = new Dialog(this);
-        dialog.setContentView(dialogView);
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setTitle(null);
+        dialog.setContentView(R.layout.dialog_media);
+        dialog.setCancelable(true);
 
         ImageView imgGallery = dialog.findViewById(R.id.img_dl_gallery);
         ImageView imgFile = dialog.findViewById(R.id.img_dl_file);
@@ -503,69 +584,15 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    @Override
-    public void onSingleImageSelected(Uri uri, String tag) {
-        Glide.with(this).load(uri).into(img_tag_add);
-        srcImage = uri.toString();
-    }
-
-    @Override
-    public void onMultiImageSelected(List<Uri> uriList, String tag) {
-        srcImage = "";
-        for (int i = 0; i < uriList.size(); i++) {
-            if (i >= 6) return;
-            srcImage = srcImage + uriList.get(i).toString() + ";";
-        }
-        Glide.with(this).load(uriList.get(0)).into(img_tag_add);
-    }
-
-    @Override
-    public void loadImage(Uri imageUri, ImageView ivImage) {
-        Glide.with(AddDataActivity.this).load(imageUri).into(ivImage);
-    }
-
-    @Override
-    public void onCancelled(boolean isMultiSelecting, String tag) {
-        Toast.makeText(this, "Selection is cancelled ", Toast.LENGTH_SHORT).show();
-    }
-
-    private void getDataFromDetail() {
-        Intent intent = getIntent();
-        int activity = intent.getIntExtra("activity", 0);
-        if (activity == 2) {
-            checkUpdate = true;
-            entityUpdate = intent.getParcelableExtra("entityUpdate");
-            positionUpdate = intent.getIntExtra("positionUpdate", 0);
-            id = entityUpdate.getId();
-            txtDate.setText(String.valueOf(entityUpdate.getStrDate()));
-            edt_contain_add.setText(entityUpdate.getContent());
-
-            position = entityUpdate.getStrPosition();
-            srcImage = entityUpdate.getSrcImage();
-            temperature = entityUpdate.getTemperature();
-            action = entityUpdate.getAction();
-            mood = entityUpdate.getMood();
-            th = entityUpdate.getTh();
-            latitude = entityUpdate.getLat();
-            longtitude = entityUpdate.getLng();
-
-            adapterRcvAdd.updateItem(3, action);
-            adapterRcvAdd.updateItem(4, mood);
-            String[] separated = srcImage.split(";");
-            if (separated.length == 1) {
-                Glide.with(this).load(srcImage).into(img_tag_add);
-            } else {
-                Glide.with(this).load(separated[0]).into(img_tag_add);
-            }
-        }
-    }
-
     private void placeClick() {
-        final View dialogView = View.inflate(this, R.layout.dialog_pick_place, null);
+
         final Dialog dialog = new Dialog(this);
-        TextView txtPlace = dialogView.findViewById(R.id.txt_dl_place_pick_place);
-        txtPlace.setText(position);
-        dialog.setContentView(dialogView);
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setTitle(null);
+        dialog.setContentView(R.layout.dialog_pick_place);
+        dialog.setCancelable(true);
 
         ImageView imgPick = dialog.findViewById(R.id.img_dl_pick_place);
         ImageView imgRename = dialog.findViewById(R.id.img_dl_rename_place_pick_place);
@@ -661,17 +688,35 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void temperatureClick() {
-        final View dialogView = View.inflate(this, R.layout.dialog_temperature, null);
+
         final Dialog dialog = new Dialog(this);
-        dialog.setContentView(dialogView);
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setTitle(null);
+        dialog.setContentView(R.layout.dialog_temperature);
+        dialog.setCancelable(true);
+
+        TextView txtDes = dialog.findViewById(R.id.txt_dl_describe_weather);
+        TextView txtTemp = dialog.findViewById(R.id.txt_dl_temperature);
+        TextView txtRemoveTemp = dialog.findViewById(R.id.txt_dl_remove_temperature);
+        ImageView imgRemoveTemp = dialog.findViewById(R.id.img_dl_remove_temperature);
+
+        txtDes.setText(desWeather + "");
+        txtTemp.setText(temperature + "");
 
         dialog.show();
     }
 
     private void faceClick() {
-        final View dialogView = View.inflate(this, R.layout.dialog_face, null);
+
         final Dialog dialog = new Dialog(this);
-        dialog.setContentView(dialogView);
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setTitle(null);
+        dialog.setContentView(R.layout.dialog_face);
+        dialog.setCancelable(true);
 
         ImageView imgHeart = dialog.findViewById(R.id.img_dl_heart);
         ImageView imgHappy = dialog.findViewById(R.id.img_dl_happy);
@@ -728,23 +773,27 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void boldClick() {
-        Toast.makeText(AddDataActivity.this, "click bold", Toast.LENGTH_SHORT).show();
+        edt_content_add.setPaintFlags(0);
+        edt_content_add.setTypeface(edt_content_add.getTypeface(), Typeface.BOLD);
+        textStyle = "B";
     }
 
     private void italicClick() {
-        Toast.makeText(AddDataActivity.this, "click italick", Toast.LENGTH_SHORT).show();
+        edt_content_add.setPaintFlags(0);
+        edt_content_add.setTypeface(edt_content_add.getTypeface(), Typeface.ITALIC);
+        textStyle = "I";
     }
 
     private void underlineClick() {
-        Toast.makeText(AddDataActivity.this, "click underline", Toast.LENGTH_SHORT).show();
+        edt_content_add.setTypeface(Typeface.DEFAULT);
+        edt_content_add.setPaintFlags(edt_content_add.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+        textStyle = "U";
     }
 
-    private void backClick() {
-        Toast.makeText(AddDataActivity.this, "click back", Toast.LENGTH_SHORT).show();
-    }
-
-    private void forwardClick() {
-        Toast.makeText(AddDataActivity.this, "click forward", Toast.LENGTH_SHORT).show();
+    private void clearFormat() {
+        edt_content_add.setPaintFlags(0);
+        edt_content_add.setTypeface(Typeface.DEFAULT);
+        textStyle = "N";
     }
 
     public double getLatitude() {

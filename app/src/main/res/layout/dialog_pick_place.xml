@@ -11,7 +11,7 @@
         android:id="@+id/txt_dl_place_pick_place"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:text="Yen Hoa, Cau Giay, Ha Noi"
+        android:text=""
         android:textSize="@dimen/sp_16"
         android:textColor="@color/color_background_main"
         android:layout_width="wrap_content"

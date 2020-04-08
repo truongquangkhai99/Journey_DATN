@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity{
                     case R.id.menu_weather:
                         fragment = new FragmentWeather();
                         loadFragment(fragment);
+                        idFragment = 5;
                         return true;
                 }
                 return false;
@@ -166,6 +167,10 @@ public class MainActivity extends AppCompatActivity{
                         fragment = new FragmentAtlas();
                         loadFragment(fragment);
                         return;
+                    case 5:
+                       fragment = new FragmentWeather();
+                       loadFragment(fragment);
+                       return;
                 }
             }
         }

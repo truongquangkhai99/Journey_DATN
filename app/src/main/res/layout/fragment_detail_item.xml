@@ -11,6 +11,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/dp_16"
         app:cardCornerRadius="@dimen/dp_10"
+        android:visibility="gone"
         android:layout_width="match_parent"
         app:layout_constraintDimensionRatio="1:1"
         android:layout_height="0dp">
@@ -79,7 +80,7 @@
         android:textColor="#00BCD4"
         app:layout_constraintTop_toTopOf="@id/txt_day_detail"
         app:layout_constraintStart_toEndOf="@id/txt_day_detail"
-        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginLeft="@dimen/dp_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -90,7 +91,7 @@
         android:textColor="#00BCD4"
         app:layout_constraintTop_toTopOf="@id/txt_day_detail"
         app:layout_constraintStart_toEndOf="@id/txt_month_detail"
-        android:layout_marginLeft="@dimen/dp_8"
+        android:layout_marginLeft="@dimen/dp_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -111,7 +112,7 @@
         android:textColor="#00BCD4"
         app:layout_constraintBottom_toBottomOf="@id/txt_day_detail"
         app:layout_constraintStart_toEndOf="@id/txt_th_detail"
-        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginLeft="@dimen/dp_12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
@@ -141,6 +142,8 @@
         android:layout_marginRight="@dimen/dp_8"
         android:layout_marginTop="@dimen/dp_16"
         android:text="85 vu trong phung"
+        android:textStyle="italic"
+        android:textSize="@dimen/sp_12"
         android:layout_width="0dp"
         android:layout_height="wrap_content"/>
     <ImageView
@@ -149,6 +152,7 @@
         app:layout_constraintTop_toTopOf="@id/txt_position_detail"
         app:layout_constraintBottom_toBottomOf="@id/txt_position_detail"
         android:layout_marginRight="@dimen/dp_8"
+        android:visibility="invisible"
         android:src="@drawable/ic_action_black_24dp"
         android:layout_width="@dimen/dp_24"
         android:layout_height="@dimen/dp_24"/>
@@ -159,6 +163,7 @@
         app:layout_constraintTop_toTopOf="@id/txt_position_detail"
         app:layout_constraintBottom_toBottomOf="@id/txt_position_detail"
         android:text="22"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -168,6 +173,7 @@
         app:layout_constraintTop_toTopOf="@id/txt_position_detail"
         app:layout_constraintBottom_toBottomOf="@id/txt_position_detail"
         android:text="°C"
+        android:visibility="invisible"
         android:layout_marginRight="@dimen/dp_8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -180,16 +186,23 @@
         android:layout_marginLeft="@dimen/dp_8"
         android:layout_marginRight="@dimen/dp_8"
         android:src="@drawable/ic_mood_black_24dp"
+        android:visibility="invisible"
         android:layout_width="@dimen/dp_24"
         android:layout_height="@dimen/dp_24"/>
+    <View
+        app:layout_constraintTop_toBottomOf="@id/txt_position_detail"
+        android:layout_marginTop="@dimen/dp_4"
+        android:background="@color/color_gray"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
 
     <TextView
-        android:id="@+id/txt_contain_detail"
+        android:id="@+id/txt_content_detail"
         app:layout_constraintTop_toBottomOf="@id/txt_position_detail"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="@dimen/dp_16"
         android:text="di choi"
-        android:textStyle="bold"
+        android:textSize="@dimen/sp_16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

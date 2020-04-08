@@ -12,15 +12,17 @@ public class Entity implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private int temperature, action, mood;
+    private int temperature, action, mood, star;
     private String srcImage, th, content, strPosition, strDate;
     private double lat, lng;
     private int userId;
     private int day, month, year;
+    private String textStyle;
 
     @Ignore
-    public Entity(String content, int action, String strPosition, int temperature,String strDate, int day, int month, int year, String th, int mood, String srcImage, double lat, double lng, int userId) {
+    public Entity(String content, String textStyle, int action, String strPosition, int temperature,String strDate, int day, int month, int year, String th, int mood, int star, String srcImage, double lat, double lng, int userId) {
         this.content = content;
+        this.textStyle = textStyle;
         this.action = action;
         this.strPosition = strPosition;
         this.temperature = temperature;
@@ -30,6 +32,7 @@ public class Entity implements Parcelable {
         this.year = year;
         this.th = th;
         this.mood = mood;
+        this.star = star;
         this.srcImage = srcImage;
         this.lat = lat;
         this.lng = lng;
@@ -37,9 +40,10 @@ public class Entity implements Parcelable {
     }
 
     @Ignore
-    public Entity(int id, String content, int action, String strPosition, int temperature, String strDate, int day, int month, int year, String th, int mood, String srcImage, double lat, double lng, int userId) {
+    public Entity(int id, String content, String textStyle, int action, String strPosition, int temperature, String strDate, int day, int month, int year, String th, int mood, int star, String srcImage, double lat, double lng, int userId) {
         this.id = id;
         this.content = content;
+        this.textStyle = textStyle;
         this.strPosition = strPosition;
         this.temperature = temperature;
         this.strDate = strDate;
@@ -48,6 +52,7 @@ public class Entity implements Parcelable {
         this.month = month;
         this.action = action;
         this.mood = mood;
+        this.star = star;
         this.th = th;
         this.srcImage = srcImage;
         this.lat = lat;
@@ -62,6 +67,7 @@ public class Entity implements Parcelable {
     protected Entity(Parcel in) {
         id = in.readInt();
         content = in.readString();
+        textStyle = in.readString();
         strPosition = in.readString();
         temperature = in.readInt();
         strDate = in.readString();
@@ -70,6 +76,7 @@ public class Entity implements Parcelable {
         year = in.readInt();
         action = in.readInt();
         mood = in.readInt();
+        star = in.readInt();
         th = in.readString();
         srcImage = in.readString();
         lat = in.readDouble();
@@ -86,6 +93,7 @@ public class Entity implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(content);
+        dest.writeString(textStyle);
         dest.writeString(strPosition);
         dest.writeInt(temperature);
         dest.writeString(strDate);
@@ -94,6 +102,7 @@ public class Entity implements Parcelable {
         dest.writeInt(year);
         dest.writeInt(action);
         dest.writeInt(mood);
+        dest.writeInt(star);
         dest.writeString(th);
         dest.writeString(srcImage);
         dest.writeDouble(lat);
@@ -128,6 +137,14 @@ public class Entity implements Parcelable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getTextStyle() {
+        return textStyle;
+    }
+
+    public void setTextStyle(String textStyle) {
+        this.textStyle = textStyle;
     }
 
     public int getAction() {
@@ -200,6 +217,14 @@ public class Entity implements Parcelable {
 
     public void setMood(int mood) {
         this.mood = mood;
+    }
+
+    public int getStar() {
+        return star;
+    }
+
+    public void setStar(int star) {
+        this.star = star;
     }
 
     public String getSrcImage() {

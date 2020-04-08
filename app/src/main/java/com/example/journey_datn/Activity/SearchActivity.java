@@ -32,8 +32,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
     public static int RESULT_CODE = 222;
     private AdapterRcvEntity adapterRcvEntity;
     private ArrayList<Entity> lstEntity;
-    private ConstraintLayout contraint1;
-    private ConstraintLayout contraint2;
+    private ConstraintLayout contraint1, contraint2, constStar;
     private ImageView imgBack, imgHeart, imgHappy,imgGrinning, imgSad, imgNeutral;
     private EntityRepository entityRepository;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SearchActivity.this);
@@ -42,7 +41,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
     public static String searchEating = "SearchActionEating", searchStationary = "SearchActionStationary", searchWalking = "SearchActionWalking",
             searchRunning = "SearchActionRunning",searchBiking = "SearchActionBiking", searchAutomotive = "SearchActionAutomotive",
             searchFlying = "SearchActionFlying",searchHeart = "SearchFeelingHeart", searchHappy = "SearchFeelingHappy", searchGrinning = "SearchFeelingGrinning",
-            searchSad = "SearchFeelingSad", searchNeutral = "SearchFeelingNeutral";
+            searchSad = "SearchFeelingSad", searchNeutral = "SearchFeelingNeutral", searchStar = "SearchStar";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +78,6 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
                 if (cs.length() == 0) {
                     contraint1.setVisibility(View.VISIBLE);
                     contraint2.setVisibility(View.GONE);
-
                 } else {
                     contraint1.setVisibility(View.GONE);
                     contraint2.setVisibility(View.VISIBLE);
@@ -99,6 +98,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
     private void init(){
         contraint1 = findViewById(R.id.constaint_1);
         contraint2 = findViewById(R.id.constaint_2);
+        constStar = findViewById(R.id.const_star_search);
         imgBack = findViewById(R.id.img_back_search);
         inputSearch = findViewById(R.id.edt_search);
         rcvJourney = findViewById(R.id.search_rcv);
@@ -117,6 +117,12 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
     }
 
     private void activityAndFeeling(){
+        constStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activityClick(searchStar);
+            }
+        });
         txtStationary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

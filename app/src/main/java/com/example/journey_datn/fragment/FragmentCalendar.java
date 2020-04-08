@@ -90,10 +90,9 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
                 Date date = eventDay.getCalendar().getTime();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                 String strDate[] = dateFormat.format(date).split("-");
-                int  mDay = Integer.parseInt(strDate[0]);
+                int mDay = Integer.parseInt(strDate[0]);
                 int mMonth = Integer.parseInt(strDate[1]);
                 int mYear = Integer.parseInt(strDate[2]);
-                Log.d("aaa", Integer.parseInt(strDate[0]) + " " +  Integer.parseInt(strDate[1]) + " " + strDate[2] + " date: " + dateFormat.format(date));
                 setRcvCalendar(mDay, mMonth, mYear);
             }
         });
@@ -141,9 +140,9 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
         Date date = c.getTime();
         SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
         String strDate[] = format1.format(date).split("-");
-         day = Integer.parseInt(strDate[0]);
-         month = Integer.parseInt(strDate[1]);
-         year = Integer.parseInt(strDate[2]);
+        day = Integer.parseInt(strDate[0]);
+        month = Integer.parseInt(strDate[1]);
+        year = Integer.parseInt(strDate[2]);
         listItem = (ArrayList<Entity>) entityRepository.getEntityByTime(day, month, year, MainActivity.userId);
         adapterRcvEntity = new AdapterRcvEntity(getContext(), listItem);
         rcvCalendar.setAdapter(adapterRcvEntity);
@@ -167,6 +166,9 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
     @Override
     public void onItemClick(int position) {
         pos = position;
+        day = listItem.get(position).getDay();
+        month = listItem.get(position).getMonth();
+        year = listItem.get(position).getYear();
         Intent intent = new Intent(getContext(), ItemDetailActivity.class);
         intent.putExtra("entity", listItem.get(position));
         intent.putParcelableArrayListExtra("listEntity", listItem);
@@ -197,6 +199,5 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-
     }
 }

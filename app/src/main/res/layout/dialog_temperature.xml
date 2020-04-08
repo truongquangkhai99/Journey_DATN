@@ -10,25 +10,29 @@
         android:id="@+id/txt_dl_describe_weather"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="@dimen/dp_24"
         android:textSize="@dimen/dp_24"
         android:textColor="@color/color_background_main"
-        android:text="Nắng ấm xa dần"
+        android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/txt_dl_temperature"
         app:layout_constraintTop_toBottomOf="@id/txt_dl_describe_weather"
-        app:layout_constraintStart_toStartOf="@id/txt_dl_describe_weather"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/dp_8"
         android:textSize="@dimen/dp_32"
+        android:layout_marginRight="@dimen/dp_32"
         android:textColor="@color/color_background_main"
         android:text="22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
+        android:id="@+id/txt_dl_temperature_c"
         app:layout_constraintTop_toBottomOf="@id/txt_dl_describe_weather"
         app:layout_constraintStart_toEndOf="@id/txt_dl_temperature"
         android:layout_marginTop="@dimen/dp_8"
@@ -40,19 +44,21 @@
 
     <ImageView
         android:id="@+id/img_dl_remove_temperature"
-        app:layout_constraintStart_toStartOf="@id/txt_dl_describe_weather"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_dl_temperature"
         android:layout_marginTop="@dimen/dp_16"
-        android:layout_marginLeft="@dimen/dp_16"
+
         android:src="@drawable/ic_cloud_off_blue_24dp"
         android:layout_width="@dimen/dp_48"
         android:layout_height="@dimen/dp_48"/>
 
     <TextView
-        app:layout_constraintStart_toStartOf="@id/img_dl_remove_temperature"
-        app:layout_constraintEnd_toEndOf="@id/img_dl_remove_temperature"
+        android:id="@+id/txt_dl_remove_temperature"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/img_dl_remove_temperature"
-        android:text="Remove Weather"
+        android:text="Remove"
         android:textSize="@dimen/dp_16"
         android:textStyle="bold"
         android:layout_width="wrap_content"

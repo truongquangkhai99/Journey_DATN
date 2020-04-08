@@ -26,8 +26,7 @@ public class AdapterRcvAdd extends RecyclerView.Adapter<AdapterRcvAdd.ViewHolder
         arrItem.add(R.drawable.ic_bold_black_24dp);
         arrItem.add(R.drawable.ic_italic_black_24dp);
         arrItem.add(R.drawable.ic_underlined_black_24dp);
-        arrItem.add(R.drawable.ic_undo_black_24dp);
-        arrItem.add(R.drawable.ic_redo_black_24dp);
+        arrItem.add(R.drawable.ic_format_clear_black_24dp);
     }
 
     public void updateItem(int position, int value){

@@ -31,7 +31,7 @@
             app:layout_constraintEnd_toStartOf="@id/img_dl_file"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/ic_gallery_blue_24dp"
-            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginLeft="14dp"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"/>
 

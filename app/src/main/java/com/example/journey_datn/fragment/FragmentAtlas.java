@@ -165,7 +165,6 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
                                 .position(location)
                                 .icon(BitmapDescriptorFactory.fromBitmap(createMaker(getContext(), separated[0]))));
                     }
-                    Log.d("aaa", "src fff : " + list.getSrcImage());
                 }
             }
             if (locations.size() > 0){
