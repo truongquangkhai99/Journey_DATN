@@ -2,6 +2,7 @@ package com.example.journey_datn.Activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -18,6 +19,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,12 +27,15 @@ import android.os.Environment;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -64,6 +69,8 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -446,12 +453,41 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSingleImageSelected(Uri uri, String tag) {
         Glide.with(this).load(uri).into(img_tag_add);
         srcImage = uri.toString();
+        getLocationPhoto(uri);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void getLocationPhoto(Uri uri){
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(getContentResolver().openInputStream(uri));
+            float[] latLong = new float[2];
+            boolean hasLatLong = exif.getLatLong(latLong);
+            if (hasLatLong) {
+                latitude = latLong[0];
+                longtitude = latLong[1];
+                Geocoder geocoder;
+                List<Address> addresses;
+                geocoder = new Geocoder(AddDataActivity.this, Locale.getDefault());
+                try {
+                    addresses = geocoder.getFromLocation(latitude, longtitude, 1);
+                    position = addresses.get(0).getAddressLine(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onMultiImageSelected(List<Uri> uriList, String tag) {
         srcImage = "";
@@ -460,6 +496,8 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             srcImage = srcImage + uriList.get(i).toString() + ";";
         }
         Glide.with(this).load(uriList.get(0)).into(img_tag_add);
+        for (int i = uriList.size()- 1; i >= 0; i--)
+            getLocationPhoto(uriList.get(i));
     }
 
     @Override
@@ -594,10 +632,19 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         dialog.setContentView(R.layout.dialog_pick_place);
         dialog.setCancelable(true);
 
+        EditText edtPickPlace = dialog.findViewById(R.id.edt_dl_place_pick_place);
+        TextView txtPickPlace = dialog.findViewById(R.id.txt_dl_place_pick_place);
         ImageView imgPick = dialog.findViewById(R.id.img_dl_pick_place);
         ImageView imgRename = dialog.findViewById(R.id.img_dl_rename_place_pick_place);
         ImageView imgRemove = dialog.findViewById(R.id.img_dl_remove_place);
         ImageView imgSetup = dialog.findViewById(R.id.img_dl_setup_gps);
+        TextView txtOk = dialog.findViewById(R.id.txt_dl_OK_rename_place);
+        TextView txtCancel = dialog.findViewById(R.id.txt_dl_Cancel_rename_place);
+        TextView txtPick = dialog.findViewById(R.id.txt_dl_pick_place);
+        TextView txtRename = dialog.findViewById(R.id.txt_dl_rename_pick_place);
+        TextView txtRemove = dialog.findViewById(R.id.txt_dl_remove_pick_place);
+        TextView txtSetup = dialog.findViewById(R.id.txt_dl_setup_pick_place);
+        txtPickPlace.setText(position);
 
         imgPick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -606,17 +653,69 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 dialog.dismiss();
             }
         });
+
         imgRename.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AddDataActivity.this, "choose rename", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                txtPickPlace.setVisibility(View.INVISIBLE);
+                edtPickPlace.setVisibility(View.VISIBLE);
+                edtPickPlace.setText(position);
+                imgPick.setVisibility(View.INVISIBLE);
+                imgRename.setVisibility(View.INVISIBLE);
+                imgRemove.setVisibility(View.INVISIBLE);
+                imgSetup.setVisibility(View.INVISIBLE);
+                txtPick.setVisibility(View.INVISIBLE);
+                txtRename.setVisibility(View.INVISIBLE);
+                txtRemove.setVisibility(View.INVISIBLE);
+                txtSetup.setVisibility(View.INVISIBLE);
+                txtOk.setVisibility(View.VISIBLE);
+                txtCancel.setVisibility(View.VISIBLE);
+
+                txtCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        txtPickPlace.setVisibility(View.VISIBLE);
+                        edtPickPlace.setVisibility(View.INVISIBLE);
+                        imgPick.setVisibility(View.VISIBLE);
+                        imgRename.setVisibility(View.VISIBLE);
+                        imgRemove.setVisibility(View.VISIBLE);
+                        imgSetup.setVisibility(View.VISIBLE);
+                        txtPick.setVisibility(View.VISIBLE);
+                        txtRename.setVisibility(View.VISIBLE);
+                        txtRemove.setVisibility(View.VISIBLE);
+                        txtSetup.setVisibility(View.VISIBLE);
+                        txtOk.setVisibility(View.INVISIBLE);
+                        txtCancel.setVisibility(View.INVISIBLE);
+
+                    }
+                });
+                txtOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        position = edtPickPlace.getText().toString();
+                        txtPickPlace.setText(position);
+                        edtPickPlace.setVisibility(View.INVISIBLE);
+                        txtPickPlace.setVisibility(View.VISIBLE);
+                        imgPick.setVisibility(View.VISIBLE);
+                        imgRename.setVisibility(View.VISIBLE);
+                        imgRemove.setVisibility(View.VISIBLE);
+                        imgSetup.setVisibility(View.VISIBLE);
+                        txtPick.setVisibility(View.VISIBLE);
+                        txtRename.setVisibility(View.VISIBLE);
+                        txtRemove.setVisibility(View.VISIBLE);
+                        txtSetup.setVisibility(View.VISIBLE);
+                        txtOk.setVisibility(View.INVISIBLE);
+                        txtCancel.setVisibility(View.INVISIBLE);
+
+                    }
+                });
             }
         });
         imgRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AddDataActivity.this, "choose remove", Toast.LENGTH_SHORT).show();
+                edtPickPlace.setText("");
+                position = "";
                 dialog.dismiss();
             }
         });
@@ -630,6 +729,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
         dialog.show();
     }
+
 
     private void pickerView() {
         MyOptionsPickerView singlePicker = new MyOptionsPickerView(AddDataActivity.this);
@@ -701,12 +801,32 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         TextView txtTemp = dialog.findViewById(R.id.txt_dl_temperature);
         TextView txtRemoveTemp = dialog.findViewById(R.id.txt_dl_remove_temperature);
         ImageView imgRemoveTemp = dialog.findViewById(R.id.img_dl_remove_temperature);
+        TextView txtTempC = dialog.findViewById(R.id.txt_dl_temperature_c);
+        txtRemoveTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              txtDes.setText("");
+              txtTemp.setText("");
+              txtTempC.setText("");
+              temperature = 0;
+            }
+        });
+        imgRemoveTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtDes.setText("");
+                txtTemp.setText("");
+                txtTempC.setText("");
+                temperature = 0;
+            }
+        });
 
         txtDes.setText(desWeather + "");
         txtTemp.setText(temperature + "");
 
         dialog.show();
     }
+
 
     private void faceClick() {
 

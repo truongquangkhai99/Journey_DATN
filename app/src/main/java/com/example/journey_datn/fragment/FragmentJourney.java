@@ -167,8 +167,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 entityRepository.deleteEntity(adapterRcvEntity.getLstEntity().get(position));
-                adapterRcvEntity.getLstEntity().remove(position);
-                adapterRcvEntity.notifyItemRemoved(position);
+                adapterRcvEntity.setDataRemove(position);
                 txt_number_item.setText("" + adapterRcvEntity.getItemCount());
                 dialogInterface.dismiss();
             }

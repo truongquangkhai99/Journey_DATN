@@ -134,6 +134,11 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         this.longListener = listener;
     }
 
+    public void setDataRemove(int position){
+        lstEntity.remove(position);
+        notifyDataSetChanged();
+    }
+
     public void setData(Entity Entity, int position) {
         if (Entity != null) {
             lstEntity.remove(position);

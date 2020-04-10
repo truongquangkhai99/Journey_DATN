@@ -36,7 +36,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
     private ImageView imgBack, imgHeart, imgHappy,imgGrinning, imgSad, imgNeutral;
     private EntityRepository entityRepository;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SearchActivity.this);
-    private boolean checkUpdateforSearch = false;
+    private boolean checkUpdateforSearch = false, checkShowC1 = true;
     private TextView txtStationary, txtEating, txtWalking, txtRunning, txtBiking, txtAutomotive, txtFlying;
     public static String searchEating = "SearchActionEating", searchStationary = "SearchActionStationary", searchWalking = "SearchActionWalking",
             searchRunning = "SearchActionRunning",searchBiking = "SearchActionBiking", searchAutomotive = "SearchActionAutomotive",
@@ -78,10 +78,12 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
                 if (cs.length() == 0) {
                     contraint1.setVisibility(View.VISIBLE);
                     contraint2.setVisibility(View.GONE);
+                    checkShowC1 = true;
                 } else {
                     contraint1.setVisibility(View.GONE);
                     contraint2.setVisibility(View.VISIBLE);
                     adapterRcvEntity.getFilter().filter(cs);
+                    checkShowC1 = false;
                 }
             }
 
@@ -202,6 +204,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
         contraint1.setVisibility(View.GONE);
         contraint2.setVisibility(View.VISIBLE);
         adapterRcvEntity.getFilter().filter(search);
+        checkShowC1 = false;
     }
 
     @Override
@@ -234,9 +237,16 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.putExtra("checkUpdate", checkUpdateforSearch);
-        setResult(RESULT_CODE, intent);
-        finish();
+        if (!checkShowC1){
+            contraint1.setVisibility(View.VISIBLE);
+            contraint2.setVisibility(View.GONE);
+            checkShowC1 = true;
+        }
+        else {
+            Intent intent = new Intent();
+            intent.putExtra("checkUpdate", checkUpdateforSearch);
+            setResult(RESULT_CODE, intent);
+            finish();
+        }
     }
 }
