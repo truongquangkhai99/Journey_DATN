@@ -41,16 +41,20 @@ public class FragmentWriteDiary extends Fragment implements AdapterRcvAllDiary.O
     private AdapterRcvAllDiary.OnClickItemTab1 onClickItemTab1 = this;
     private int idUpdate = 0;
     private  String today;
+    clickItemDiary clickItemDiary;
+
 
     public AdapterRcvAllDiary.OnClickItemTab1 getOnClickItemTab1() {
         return onClickItemTab1;
     }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_write_diary, container, false);
         init(view);
+
         diaryRepository = new DiaryRepository(getContext());
         getCalendar();
         imgDelete.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +152,7 @@ public class FragmentWriteDiary extends Fragment implements AdapterRcvAllDiary.O
                 edtDiary.setText("");
                 edtTitle.setText("");
                 txtDate.setText(today);
+                idUpdate = 0;
                 dialogInterface.dismiss();
             }
         });
@@ -171,5 +176,14 @@ public class FragmentWriteDiary extends Fragment implements AdapterRcvAllDiary.O
         edtTitle.setText(title);
         txtDate.setText(date);
         idUpdate = id;
+        clickItemDiary.onClickDiary(true);
+    }
+
+    public void setOnClickDiary(clickItemDiary clickDiary){
+        this.clickItemDiary = clickDiary;
+    }
+
+    public  interface  clickItemDiary{
+        void onClickDiary(boolean isClick);
     }
 }

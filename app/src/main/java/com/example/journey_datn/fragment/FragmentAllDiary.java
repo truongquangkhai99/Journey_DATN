@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,8 +34,9 @@ public class FragmentAllDiary extends Fragment implements AdapterRcvAllDiary.onI
     private AdapterRcvAllDiary adapterRcvAllDiary;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
     private DiaryRepository diaryRepository;
-    private ArrayList<Diary> list;
+    private ArrayList<Diary> list = new ArrayList<>();
     private AdapterRcvAllDiary.OnClickItemTab1 onClickItemTab1;
+    private ImageView imgBack;
 
     public void setOnClickItemTab1(AdapterRcvAllDiary.OnClickItemTab1 onClickItemTab1) {
         this.onClickItemTab1 = onClickItemTab1;
@@ -44,14 +47,40 @@ public class FragmentAllDiary extends Fragment implements AdapterRcvAllDiary.onI
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_all_diary, container, false);
         rcvAllDiary = view.findViewById(R.id.rcv_all_diary);
-        diaryRepository = new DiaryRepository(getContext());
-        list = (ArrayList<Diary>) diaryRepository.getDiary(MainActivity.userId);
-        adapterRcvAllDiary = new AdapterRcvAllDiary(getContext(), list, onClickItemTab1);
-        rcvAllDiary.setAdapter(adapterRcvAllDiary);
-        rcvAllDiary.setLayoutManager(linearLayoutManager);
-        adapterRcvAllDiary.setItemLongClickListener(this);
+        imgBack = view.findViewById(R.id.img_back_all_diary);
+        getDataDelay();
 
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
         return view;
+    }
+    private  void getDataDelay(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                diaryRepository = new DiaryRepository(getContext());
+                list = (ArrayList<Diary>) diaryRepository.getDiary(MainActivity.userId);
+                adapterRcvAllDiary = new AdapterRcvAllDiary(getContext(), list, onClickItemTab1);
+                rcvAllDiary.setAdapter(adapterRcvAllDiary);
+                rcvAllDiary.setLayoutManager(linearLayoutManager);
+                setAdapter();
+            }
+
+        }, 300);
+    }
+
+    private void setAdapter(){
+        adapterRcvAllDiary.setItemLongClickListener(this);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        getDataDelay();
     }
 
     @Override

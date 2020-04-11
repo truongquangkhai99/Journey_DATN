@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -674,39 +675,13 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 txtCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        txtPickPlace.setVisibility(View.VISIBLE);
-                        edtPickPlace.setVisibility(View.INVISIBLE);
-                        imgPick.setVisibility(View.VISIBLE);
-                        imgRename.setVisibility(View.VISIBLE);
-                        imgRemove.setVisibility(View.VISIBLE);
-                        imgSetup.setVisibility(View.VISIBLE);
-                        txtPick.setVisibility(View.VISIBLE);
-                        txtRename.setVisibility(View.VISIBLE);
-                        txtRemove.setVisibility(View.VISIBLE);
-                        txtSetup.setVisibility(View.VISIBLE);
-                        txtOk.setVisibility(View.INVISIBLE);
-                        txtCancel.setVisibility(View.INVISIBLE);
-
+                        dialog.dismiss();
                     }
                 });
                 txtOk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        position = edtPickPlace.getText().toString();
-                        txtPickPlace.setText(position);
-                        edtPickPlace.setVisibility(View.INVISIBLE);
-                        txtPickPlace.setVisibility(View.VISIBLE);
-                        imgPick.setVisibility(View.VISIBLE);
-                        imgRename.setVisibility(View.VISIBLE);
-                        imgRemove.setVisibility(View.VISIBLE);
-                        imgSetup.setVisibility(View.VISIBLE);
-                        txtPick.setVisibility(View.VISIBLE);
-                        txtRename.setVisibility(View.VISIBLE);
-                        txtRemove.setVisibility(View.VISIBLE);
-                        txtSetup.setVisibility(View.VISIBLE);
-                        txtOk.setVisibility(View.INVISIBLE);
-                        txtCancel.setVisibility(View.INVISIBLE);
-
+                        dialog.dismiss();
                     }
                 });
             }

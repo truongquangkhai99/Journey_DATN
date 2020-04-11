@@ -24,7 +24,6 @@ public class AdapterRcvAllDiary extends RecyclerView.Adapter<AdapterRcvAllDiary.
 
     private Context context;
     private ArrayList<Diary> listDiary;
-    private onItemClickListener listener;
     private onItemLongClickListener longListener;
     private OnClickItemTab1 onClickItemTab1;
 
@@ -55,7 +54,6 @@ public class AdapterRcvAllDiary extends RecyclerView.Adapter<AdapterRcvAllDiary.
             @Override
             public void onClick(View v) {
                 onClickItemTab1.onClickItem(pos.getId(), pos.getTitle(), pos.getContain(), pos.getDate());
-                Toast.makeText(context, "Switch to WRITE DIARY to see the content", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -78,31 +76,10 @@ public class AdapterRcvAllDiary extends RecyclerView.Adapter<AdapterRcvAllDiary.
         return listDiary.size();
     }
 
-    public void setItemClickListener(onItemClickListener listener) {
-        this.listener = listener;
-    }
     public void setItemLongClickListener(onItemLongClickListener listener) {
         this.longListener = listener;
     }
 
-    public void setData(Diary Entity, int position) {
-        if (Entity != null) {
-            listDiary.remove(position);
-            listDiary.add(position, Entity);
-            notifyDataSetChanged();
-        }
-    }
-
-    public void addData(Diary mDiary) {
-        if (mDiary != null) {
-            listDiary.add(mDiary);
-            notifyDataSetChanged();
-        }
-    }
-
-    public interface onItemClickListener {
-        void onItemClick(int position);
-    }
 
     public  interface onItemLongClickListener{
         void onItemLongClick(int position);

@@ -40,7 +40,6 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
     private int pos;
 
     private ArrayList<Entity> lstEntity;
-
     private EntityRepository entityRepository;
 
     @Nullable

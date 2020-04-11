@@ -1,10 +1,13 @@
 package com.example.journey_datn.fragment.Weather;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
@@ -63,9 +66,18 @@ public class FragmentWeather extends Fragment{
                 getOpenWeatherData(etCityName.getText().toString(),  OPEN_WEATHER_APP_ID);
                 getOpenWeatherData5Days(etCityName.getText().toString(),  OPEN_WEATHER_APP_ID);
                 etCityName.setText("");
+                hideKeyboard(getActivity());
             }
         });
         return view;
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        View view = activity.findViewById(android.R.id.content);
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     private void init(View view){
