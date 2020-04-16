@@ -681,6 +681,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 txtOk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        position = edtPickPlace.getText().toString();
                         dialog.dismiss();
                     }
                 });
@@ -798,6 +799,10 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
         txtDes.setText(desWeather + "");
         txtTemp.setText(temperature + "");
+        if (temperature == 0){
+            txtTemp.setText("");
+            txtTempC.setVisibility(View.INVISIBLE);
+        }
 
         dialog.show();
     }

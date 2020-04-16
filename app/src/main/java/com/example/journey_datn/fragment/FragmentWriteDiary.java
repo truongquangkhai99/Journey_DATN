@@ -1,5 +1,6 @@
 package com.example.journey_datn.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -91,20 +93,30 @@ public class FragmentWriteDiary extends Fragment implements AdapterRcvAllDiary.O
                 String strDate = txtDate.getText().toString();
                 String strTitle = edtTitle.getText().toString();
                 String strContent = edtDiary.getText().toString();
-                if (idUpdate != 0){
-                    Diary diary = new Diary(idUpdate, strDate, strTitle, strContent, MainActivity.userId);
-                    diaryRepository.updateDiary(diary);
-                }else {
-                    Diary diary = new Diary(strDate, strTitle, strContent, MainActivity.userId);
-                    diaryRepository.insertDiary(diary);
-
+                if (!strContent.equals("") && !strTitle.equals("")){
+                    if (idUpdate != 0){
+                        Diary diary = new Diary(idUpdate, strDate, strTitle, strContent, MainActivity.userId);
+                        diaryRepository.updateDiary(diary);
+                    }else {
+                        Diary diary = new Diary(strDate, strTitle, strContent, MainActivity.userId);
+                        diaryRepository.insertDiary(diary);
+                    }
+                    edtTitle.setText("");
+                    edtDiary.setText("");
+                    hideKeyboard(getActivity());
                 }
-                edtTitle.setText("");
-                edtDiary.setText("");
             }
         });
 
         return view;
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        View view = activity.findViewById(android.R.id.content);
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     private void dateTimePicker() {

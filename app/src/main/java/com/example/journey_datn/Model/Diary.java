@@ -9,6 +9,7 @@ public class Diary {
     private int id;
     private String date, title, contain;
     private int userId;
+    private boolean checkRdb = false;
 
     public Diary() {
     }
@@ -68,5 +69,13 @@ public class Diary {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public boolean isCheckRdb() {
+        return checkRdb;
+    }
+
+    public void setCheckRdb(boolean checkRdb) {
+        this.checkRdb = checkRdb;
     }
 }

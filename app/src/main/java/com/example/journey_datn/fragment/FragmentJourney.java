@@ -1,5 +1,6 @@
 package com.example.journey_datn.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,12 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.journey_datn.Activity.AddDataActivity;
 import com.example.journey_datn.Activity.ItemDetailActivity;
 import com.example.journey_datn.Activity.MainActivity;
@@ -27,9 +31,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener{
+public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener {
 
     private RecyclerView rcvJourney;
     private AdapterRcvEntity adapterRcvEntity;
@@ -38,9 +44,12 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
     private TextView txt_user_name, txtDate, txt_number_item, txtDayOfWeek;
     private int REQUEST_CODE = 911;
     private int pos;
+    private Set<Integer> posDelete = new HashSet<>();
+    private ImageView imgDelete;
 
     private ArrayList<Entity> lstEntity;
     private EntityRepository entityRepository;
+    private boolean checkRdb = false;
 
     @Nullable
     @Override
@@ -57,6 +66,13 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
             }
         });
 
+        imgDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteItems();
+            }
+        });
+
         entityRepository = new EntityRepository(getContext());
 
         lstEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
@@ -67,6 +83,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
 
         adapterRcvEntity.setItemClickListener(this);
         adapterRcvEntity.setItemLongClickListener(this);
+
         return view;
     }
 
@@ -79,7 +96,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
             adapterRcvEntity.addData(entity);
             txt_number_item.setText("" + adapterRcvEntity.getItemCount());
         }
-        if (requestCode == REQUEST_CODE && resultCode == ItemDetailActivity.RESULT_CODE){
+        if (requestCode == REQUEST_CODE && resultCode == ItemDetailActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");
             entityRepository.updateEntity(entity);
             adapterRcvEntity.setData(entity, pos);
@@ -96,6 +113,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         String firstName = MainActivity.firstName;
         String lastName = MainActivity.lastName;
         txt_user_name.setText(lastName + " " + firstName);
+        imgDelete = view.findViewById(R.id.img_delete_item);
     }
 
     private void getCalendar() {
@@ -111,6 +129,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         getDayofMonth(mDay, mMonth, mYear);
 
     }
+
     private void getDayofMonth(int day, int month, int year) {
         day = day - 1;
         Date date = new Date(year, month, day);
@@ -142,36 +161,88 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         }
     }
 
+
     @Override
     public void onItemClick(int position) {
-        pos = position;
-        Intent intent = new Intent(getContext(), ItemDetailActivity.class);
-        intent.putExtra("entity",  lstEntity.get(position));
-        intent.putParcelableArrayListExtra("listEntity", lstEntity);
-        intent.putExtra("position", position);
-        startActivityForResult(intent, REQUEST_CODE);
+        if (checkRdb) {
+            if (lstEntity.get(position).isCheckRdb())
+                posDelete.add(position);
+            else if (posDelete.contains(position))
+                posDelete.remove(position);
+        } else {
+            pos = position;
+            Intent intent = new Intent(getContext(), ItemDetailActivity.class);
+            intent.putExtra("entity", lstEntity.get(position));
+            intent.putParcelableArrayListExtra("listEntity", lstEntity);
+            intent.putExtra("position", position);
+            startActivityForResult(intent, REQUEST_CODE);
+        }
     }
+
+    @SuppressLint("RestrictedApi")
     @Override
     public void onItemLongClick(int position) {
+        checkRdb = true;
+        imgDelete.setVisibility(View.VISIBLE);
+        fabJourney.setVisibility(View.INVISIBLE);
+    }
+
+    private void deleteItems() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete");
-        builder.setMessage("Do you want to delete this journal entry?");
+        builder.setMessage("Do you want to delete " + posDelete.size() + " journal entry?");
         builder.setCancelable(false);
         builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                refreshDelete();
             }
         });
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                entityRepository.deleteEntity(adapterRcvEntity.getLstEntity().get(position));
-                adapterRcvEntity.setDataRemove(position);
+                List<Entity> entities = new ArrayList<>();
+                lstEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
+                for (int element : posDelete)
+                    entities.add(lstEntity.get(element));
+                adapterRcvEntity.removeData(posDelete);
+                for (Entity entity : entities)
+                    entityRepository.deleteEntity(entity);
                 txt_number_item.setText("" + adapterRcvEntity.getItemCount());
+
+                refreshData();
                 dialogInterface.dismiss();
             }
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void refreshDelete() {
+        checkRdb = false;
+        imgDelete.setVisibility(View.INVISIBLE);
+        fabJourney.setVisibility(View.VISIBLE);
+        adapterRcvEntity.notifiData(posDelete);
+        posDelete = new HashSet<>();
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void refreshData(){
+        entityRepository = new EntityRepository(getContext());
+        lstEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
+        adapterRcvEntity = new AdapterRcvEntity(getContext(), lstEntity);
+        rcvJourney.setAdapter(adapterRcvEntity);
+        rcvJourney.setLayoutManager(linearLayoutManager);
+        txt_number_item.setText("" + adapterRcvEntity.getItemCount());
+        adapterRcvEntity.setItemClickListener(this);
+        adapterRcvEntity.setItemLongClickListener(this);
+
+        checkRdb = false;
+        imgDelete.setVisibility(View.INVISIBLE);
+        fabJourney.setVisibility(View.VISIBLE);
+        posDelete = new HashSet<>();
     }
 }

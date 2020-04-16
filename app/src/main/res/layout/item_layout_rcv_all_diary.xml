@@ -52,14 +52,26 @@
 
     <TextView
         android:id="@+id/txt_title_rcv_diary"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginRight="@dimen/dp_4"
         android:text="Hello World"
         android:textColor="@color/color_background_main"
         app:layout_constraintBottom_toBottomOf="@id/txt_month_diary"
         app:layout_constraintLeft_toRightOf="@id/txt_year_diary"
+        app:layout_constraintRight_toLeftOf="@id/rdb_delete_diary"
         app:layout_constraintTop_toTopOf="@id/txt_day_diary" />
+
+    <CheckBox
+        android:id="@+id/rdb_delete_diary"
+        app:layout_constraintTop_toTopOf="@id/txt_day_diary"
+        app:layout_constraintBottom_toBottomOf="@id/txt_day_diary"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="invisible"
+        android:layout_marginRight="@dimen/dp_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <View
         app:layout_constraintTop_toBottomOf="@id/txt_month_diary"

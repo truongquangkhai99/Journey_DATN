@@ -2,6 +2,7 @@ package com.example.journey_datn.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.RadioButton;
 
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -18,6 +19,7 @@ public class Entity implements Parcelable {
     private int userId;
     private int day, month, year;
     private String textStyle;
+    private boolean checkRdb = false;
 
     @Ignore
     public Entity(String content, String textStyle, int action, String strPosition, int temperature,String strDate, int day, int month, int year, String th, int mood, int star, String srcImage, double lat, double lng, int userId) {
@@ -249,6 +251,14 @@ public class Entity implements Parcelable {
 
     public void setLng(double lng) {
         this.lng = lng;
+    }
+
+    public boolean isCheckRdb() {
+        return checkRdb;
+    }
+
+    public void setCheckRdb(boolean checkRdb) {
+        this.checkRdb = checkRdb;
     }
 
     public int getUserId() {

@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +26,9 @@ import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.ViewHolder> implements Filterable {
@@ -35,6 +39,8 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
     private ArrayList<Entity> lstFilter;
     private ArrayList<Entity> lstTempFilter = new ArrayList<>();
     private ValueFilter valueFilter;
+    private boolean checkVisibility;
+    private Set<Integer> selectedSet;
 
     public ArrayList<Entity> getLstFillter() {
         return lstTempFilter;
@@ -46,10 +52,20 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         this.lstFilter = lstEntity;
     }
 
+    public boolean isCheckVisibility() {
+        return checkVisibility;
+    }
+
+    public void setCheckVisibility(boolean checkVisibility) {
+        this.checkVisibility = checkVisibility;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_layout_rcv, parent, false);
+        checkVisibility = false;
+        selectedSet = new HashSet<>();
         return new ViewHolder(view);
     }
 
@@ -101,9 +117,16 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
 
 
         holder.const_item_layout_rcv.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
+                if (isCheckVisibility()) {
+                    lstEntity.get(position).setCheckRdb(!lstEntity.get(position).isCheckRdb());
+                    if (lstEntity.get(position).isCheckRdb())
+                        holder.rdb.setVisibility(View.VISIBLE);
+                    else holder.rdb.setVisibility(View.INVISIBLE);
+                    holder.rdb.setChecked(!holder.rdb.isChecked());
+                }
+
                 listener.onItemClick(position);
             }
         });
@@ -111,10 +134,24 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         holder.const_item_layout_rcv.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                holder.rdb.setVisibility(View.VISIBLE);
+                setCheckVisibility(true);
                 longListener.onItemLongClick(position);
                 return false;
             }
         });
+
+
+        if (selectedSet.size() > 0) {
+            for (int element : selectedSet)
+                if (position == element) {
+                    lstEntity.get(position).setCheckRdb(!lstEntity.get(position).isCheckRdb());
+                    holder.rdb.setVisibility(View.INVISIBLE);
+                    holder.rdb.setChecked(!holder.rdb.isChecked());
+                    selectedSet.remove(element);
+                    break;
+                }
+        }
     }
 
     public ArrayList<Entity> getLstEntity() {
@@ -134,9 +171,20 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         this.longListener = listener;
     }
 
-    public void setDataRemove(int position){
-        lstEntity.remove(position);
+    public void removeData(Set<Integer> set) {
+        List<Entity> entityDelete = new ArrayList<>();
+        for (int element : set)
+            entityDelete.add(lstEntity.get(element));
+        for (Entity entity : entityDelete)
+            lstEntity.remove(entity);
         notifyDataSetChanged();
+    }
+
+    public void notifiData(Set<Integer> set) {
+        notifyDataSetChanged();
+        setCheckVisibility(false);
+        selectedSet = new HashSet<>();
+        selectedSet = set;
     }
 
     public void setData(Entity Entity, int position) {
@@ -164,10 +212,11 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView img_item, img_mood, img_action, imgStar;
-        ConstraintLayout const_item_layout_rcv;
-        TextView txtDateItem, txt_th, txt_content_item, txt_position_item, txt_temperature_item, txtTemperatureC;
-        CardView cardviewImg;
+        private ImageView img_item, img_mood, img_action, imgStar;
+        private ConstraintLayout const_item_layout_rcv;
+        private TextView txtDateItem, txt_th, txt_content_item, txt_position_item, txt_temperature_item, txtTemperatureC;
+        private CardView cardviewImg;
+        private CheckBox rdb;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -183,8 +232,10 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
             txtTemperatureC = itemView.findViewById(R.id.txt_temperature_c);
             cardviewImg = itemView.findViewById(R.id.cardview_img);
             imgStar = itemView.findViewById(R.id.img_star_item);
+            rdb = itemView.findViewById(R.id.rdb_delete);
         }
     }
+
 
     @Override
     public Filter getFilter() {
