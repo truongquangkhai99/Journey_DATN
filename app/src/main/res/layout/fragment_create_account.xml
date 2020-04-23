@@ -61,7 +61,7 @@
         android:id="@+id/txt_username"
         app:layout_constraintTop_toBottomOf="@id/edt_last_nameAc"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:text="Username:"
+        android:text="Email:"
         android:textStyle="italic"
         android:textColor="@color/color_blue"
         android:layout_marginTop="@dimen/dp_16"

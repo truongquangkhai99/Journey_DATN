@@ -69,8 +69,7 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
 
     public void setData(Entity Entity, int position) {
         if (Entity != null) {
-            listEntity.remove(position);
-            listEntity.add(position, Entity);
+            listEntity.set(position, Entity);
             notifyDataSetChanged();
         }
     }
@@ -83,7 +82,7 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
     }
 
     public interface OnItemClickMediaListener {
-        void OnItemClick(int id);
+        void OnItemClick(String id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -96,19 +95,19 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
     }
 
     private class itemStr{
-        private int idSource;
+        private String idSource;
         private String source;
 
-        public itemStr(int idSource, String source) {
+        public itemStr(String idSource, String source) {
             this.idSource = idSource;
             this.source = source;
         }
 
-        public int getIdSource() {
+        public String getIdSource() {
             return idSource;
         }
 
-        public void setIdSource(int idSource) {
+        public void setIdSource(String idSource) {
             this.idSource = idSource;
         }
 

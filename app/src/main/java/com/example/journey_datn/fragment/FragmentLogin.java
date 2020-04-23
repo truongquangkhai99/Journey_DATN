@@ -1,7 +1,10 @@
 package com.example.journey_datn.fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -23,18 +26,28 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.journey_datn.Activity.MainActivity;
 import com.example.journey_datn.Model.User;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.UserRepository;
+import com.example.journey_datn.db.FirebaseDB;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentLogin extends Fragment {
     private EditText edtUsername, edtPassword;
-    private TextView txtWrongUserName, txtWrongPassword, txtCreateAccount;
-    private ImageView imgShowPasswWord;
+    private TextView txtWrongUserName, txtWrongPassword, txtCreateAccount, txtForgot;
+    private ImageView imgShowPassword;
     private Button btnLogin;
-    private UserRepository userRepository;
-    private List<User> userList = new ArrayList<>();
+    private FirebaseAuth auth;
+    private String email, password;
+    private FirebaseDB firebaseDB;
 
     @Nullable
     @Override
@@ -42,9 +55,9 @@ public class FragmentLogin extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         init(view);
 
-        userRepository = new UserRepository(getContext());
+        firebaseDB = new FirebaseDB();
 
-        imgShowPasswWord.setOnTouchListener(new View.OnTouchListener() {
+        imgShowPassword.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (edtPassword.length() > 0) {
@@ -61,26 +74,8 @@ public class FragmentLogin extends Fragment {
             }
         });
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String username = edtUsername.getText().toString();
-                String password = edtPassword.getText().toString();
-                if (!username.equals("") && !password.equals("")){
-                    userList = userRepository.getUser();
-                    for (User user : userList)
-                        if (username.equals(user.getUsername()) && password.equals(user.getPassword())){
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            intent.putExtra("userId", user.getId());
-                            intent.putExtra("firstName", user.getFirstName());
-                            intent.putExtra("lastName", user.getLastName());
-                            startActivity(intent);
-                            getActivity().finish();
-                            break;
-                        }else Toast.makeText(getContext(), "Account does not exist", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
+        auth = FirebaseAuth.getInstance();
 
         txtCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,17 +84,67 @@ public class FragmentLogin extends Fragment {
             }
         });
 
+        txtForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new FragmentForgot());
+            }
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                email = edtUsername.getText().toString();
+                password = edtPassword.getText().toString();
+
+                if (TextUtils.isEmpty(email)) {
+                    edtUsername.setError("Enter email address!");
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
+                    edtPassword.setError("Enter password!");
+                    return;
+                }
+
+                auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (!task.isSuccessful()) {
+                                    if (password.length() < 6) {
+                                        edtPassword.setError(getString(R.string.minimum_password));
+                                    } else {
+                                        Toast.makeText(getContext(), getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                    }
+                                } else {
+                                    List<User> userList = firebaseDB.getAllUser();
+                                    for (User user : userList) {
+                                        if (email.equals(user.getUsername())) {
+                                            Intent intent = new Intent(getContext(), MainActivity.class);
+                                            intent.putExtra("user", user);
+                                            startActivity(intent);
+                                            getActivity().finish();
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        });
+            }
+        });
+
         return view;
     }
 
-    private void init(View view){
+    private void init(View view) {
         edtUsername = view.findViewById(R.id.txt_username_login);
         edtPassword = view.findViewById(R.id.txt_password_login);
         txtWrongUserName = view.findViewById(R.id.txt_wrong_username);
         txtWrongPassword = view.findViewById(R.id.txt_wrong_password);
         txtCreateAccount = view.findViewById(R.id.txt_create_account);
-        imgShowPasswWord = view.findViewById(R.id.img_show_password_login);
+        imgShowPassword = view.findViewById(R.id.img_show_password_login);
         btnLogin = view.findViewById(R.id.button_login);
+        txtForgot = view.findViewById(R.id.txt_forgot);
     }
 
     private void loadFragment(Fragment fragment) {

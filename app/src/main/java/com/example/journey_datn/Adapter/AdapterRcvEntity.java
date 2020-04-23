@@ -24,6 +24,10 @@ import com.bumptech.glide.Glide;
 import com.example.journey_datn.Activity.SearchActivity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,23 +37,23 @@ import java.util.Set;
 
 public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.ViewHolder> implements Filterable {
     private Context context;
-    private ArrayList<Entity> lstEntity;
+    private ArrayList<Entity> listEntity;
     private onItemClickListener listener;
     private onItemLongClickListener longListener;
+    private onCountItemListener countItemListener;
     private ArrayList<Entity> lstFilter;
     private ArrayList<Entity> lstTempFilter = new ArrayList<>();
     private ValueFilter valueFilter;
     private boolean checkVisibility;
     private Set<Integer> selectedSet;
-
     public ArrayList<Entity> getLstFillter() {
         return lstTempFilter;
     }
 
     public AdapterRcvEntity(Context context, ArrayList<Entity> mEntity) {
         this.context = context;
-        this.lstEntity = mEntity;
-        this.lstFilter = lstEntity;
+        this.listEntity = mEntity;
+        this.lstFilter = listEntity;
     }
 
     public boolean isCheckVisibility() {
@@ -66,53 +70,54 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         View view = LayoutInflater.from(context).inflate(R.layout.item_layout_rcv, parent, false);
         checkVisibility = false;
         selectedSet = new HashSet<>();
+        countItemListener.onCountItem(listEntity.size());
         return new ViewHolder(view);
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        final Entity pos = lstEntity.get(position);
-        holder.txt_content_item.setText(pos.getContent());
-        holder.txtDateItem.setText(pos.getStrDate());
-        holder.txt_th.setText(pos.getTh() + "");
-        holder.txt_position_item.setText(pos.getStrPosition());
-        if (pos.getTemperature() != 0) {
+        final Entity entity = listEntity.get(position);
+        holder.txt_content_item.setText(entity.getContent());
+        holder.txtDateItem.setText(entity.getStrDate());
+        holder.txt_th.setText(entity.getTh() + "");
+        holder.txt_position_item.setText(entity.getStrPosition());
+        if (entity.getTemperature() != 0) {
             holder.txtTemperatureC.setVisibility(View.VISIBLE);
             holder.txt_temperature_item.setVisibility(View.VISIBLE);
-            holder.txt_temperature_item.setText(pos.getTemperature() + "");
+            holder.txt_temperature_item.setText(entity.getTemperature() + "");
         }
-        if (pos.getMood() != R.drawable.ic_mood_black_24dp) {
+        if (entity.getMood() != R.drawable.ic_mood_black_24dp) {
             holder.img_mood.setVisibility(View.VISIBLE);
-            Glide.with(context).load(pos.getMood()).into(holder.img_mood);
+            Glide.with(context).load(entity.getMood()).into(holder.img_mood);
         }
-        if (pos.getAction() != R.drawable.ic_action_black_24dp) {
+        if (entity.getAction() != R.drawable.ic_action_black_24dp) {
             holder.img_action.setVisibility(View.VISIBLE);
-            Glide.with(context).load(pos.getAction()).into(holder.img_action);
+            Glide.with(context).load(entity.getAction()).into(holder.img_action);
         }
-        if (!pos.getSrcImage().equals("")) {
+        if (!entity.getSrcImage().equals("")) {
             holder.cardviewImg.setVisibility(View.VISIBLE);
-            String arrSrc = pos.getSrcImage();
+            String arrSrc = entity.getSrcImage();
             String[] separated = arrSrc.split(";");
             if (separated.length == 1)
                 Glide.with(context).load(arrSrc).into(holder.img_item);
             else
                 Glide.with(context).load(separated[0]).into(holder.img_item);
         }
-        if (pos.getStar() == R.drawable.ic_star_yellow_24dp) {
+        if (entity.getStar() == R.drawable.ic_star_yellow_24dp) {
             holder.imgStar.setVisibility(View.VISIBLE);
-            Glide.with(context).load(pos.getStar()).into(holder.imgStar);
+            Glide.with(context).load(entity.getStar()).into(holder.imgStar);
         }
-        if (pos.getStar() == R.drawable.ic_star_border_black_24dp)
+        if (entity.getStar() == R.drawable.ic_star_border_black_24dp)
             holder.imgStar.setVisibility(View.INVISIBLE);
 
-        if (pos.getTextStyle().equals("B"))
+        if (entity.getTextStyle().equals("B"))
             holder.txt_content_item.setTypeface(holder.txt_content_item.getTypeface(), Typeface.BOLD);
-        if (pos.getTextStyle().equals("N"))
+        if (entity.getTextStyle().equals("N"))
             holder.txt_content_item.setTypeface(Typeface.DEFAULT);
-        if (pos.getTextStyle().equals("I"))
+        if (entity.getTextStyle().equals("I"))
             holder.txt_content_item.setTypeface(holder.txt_content_item.getTypeface(), Typeface.ITALIC);
-        if (pos.getTextStyle().equals("U"))
+        if (entity.getTextStyle().equals("U"))
             holder.txt_content_item.setPaintFlags(holder.txt_content_item.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
 
@@ -120,8 +125,8 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
             @Override
             public void onClick(View v) {
                 if (isCheckVisibility()) {
-                    lstEntity.get(position).setCheckRdb(!lstEntity.get(position).isCheckRdb());
-                    if (lstEntity.get(position).isCheckRdb())
+                    listEntity.get(position).setCheckRdb(!listEntity.get(position).isCheckRdb());
+                    if (listEntity.get(position).isCheckRdb())
                         holder.rdb.setVisibility(View.VISIBLE);
                     else holder.rdb.setVisibility(View.INVISIBLE);
                     holder.rdb.setChecked(!holder.rdb.isChecked());
@@ -141,11 +146,10 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
             }
         });
 
-
-        if (selectedSet.size() > 0) {
+        if (selectedSet != null && selectedSet.size() > 0) {
             for (int element : selectedSet)
                 if (position == element) {
-                    lstEntity.get(position).setCheckRdb(!lstEntity.get(position).isCheckRdb());
+                    listEntity.get(position).setCheckRdb(!listEntity.get(position).isCheckRdb());
                     holder.rdb.setVisibility(View.INVISIBLE);
                     holder.rdb.setChecked(!holder.rdb.isChecked());
                     selectedSet.remove(element);
@@ -155,12 +159,12 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
     }
 
     public ArrayList<Entity> getLstEntity() {
-        return lstEntity;
+        return listEntity;
     }
 
     @Override
     public int getItemCount() {
-        return lstEntity.size();
+        return listEntity.size();
     }
 
     public void setItemClickListener(onItemClickListener listener) {
@@ -171,35 +175,33 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         this.longListener = listener;
     }
 
-    public void removeData(Set<Integer> set) {
-        List<Entity> entityDelete = new ArrayList<>();
-        for (int element : set)
-            entityDelete.add(lstEntity.get(element));
-        for (Entity entity : entityDelete)
-            lstEntity.remove(entity);
-        notifyDataSetChanged();
-    }
-
     public void notifiData(Set<Integer> set) {
-        notifyDataSetChanged();
         setCheckVisibility(false);
         selectedSet = new HashSet<>();
         selectedSet = set;
+        notifyDataSetChanged();
     }
 
     public void setData(Entity Entity, int position) {
         if (Entity != null) {
-            lstEntity.remove(position);
-            lstEntity.add(position, Entity);
+            listEntity.set(position, Entity);
             notifyDataSetChanged();
         }
     }
 
     public void addData(Entity Entity) {
         if (Entity != null) {
-            lstEntity.add(Entity);
+            listEntity.add(Entity);
             notifyDataSetChanged();
         }
+    }
+
+    public void setOnCountItemListener(onCountItemListener event){
+        this.countItemListener = event;
+    }
+
+    public interface onCountItemListener{
+        void onCountItem(int count);
     }
 
     public interface onItemClickListener {
@@ -349,8 +351,8 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            lstEntity = (ArrayList<Entity>) results.values;
-            lstTempFilter = lstEntity;
+            listEntity = (ArrayList<Entity>) results.values;
+            lstTempFilter = listEntity;
             notifyDataSetChanged();
         }
     }

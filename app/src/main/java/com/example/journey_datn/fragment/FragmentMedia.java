@@ -2,24 +2,23 @@ package com.example.journey_datn.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.journey_datn.Activity.AddDataActivity;
 import com.example.journey_datn.Activity.ItemDetailActivity;
 import com.example.journey_datn.Activity.MainActivity;
-import com.example.journey_datn.Adapter.AdapterRcvEntity;
 import com.example.journey_datn.Adapter.AdapterRcvMedia;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.EntityRepository;
+import com.example.journey_datn.db.FirebaseDB;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
@@ -29,8 +28,9 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
     private GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
     private FloatingActionButton fabMedia;
     private ArrayList<Entity> listEntity;
-    private EntityRepository entityRepository;
+    private FirebaseDB firebaseDB = new FirebaseDB(MainActivity.userId);
     private int pos;
+    private onDataChangeListenerM listener;
 
 
     @Nullable
@@ -47,10 +47,8 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
             }
         });
 
-        listEntity = new ArrayList<>();
         ArrayList<itemMedia> arrItemMedia = new ArrayList<>();
-        entityRepository = new EntityRepository(getContext());
-        listEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
+        listEntity = MainActivity.entityList;
         for (Entity entity : listEntity){
             String arrSrc = entity.getSrcImage();
             String[] separated = arrSrc.split(";");
@@ -75,9 +73,9 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
     }
 
     @Override
-    public void OnItemClick(int id) {
+    public void OnItemClick(String id) {
         for (int i = 0; i < listEntity.size(); i++){
-            if (listEntity.get(i).getId() == id){
+            if (listEntity.get(i).getId().equals(id)){
                 pos = i;
                 break;
             }
@@ -94,30 +92,47 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 10 && resultCode == ItemDetailActivity.RESULT_CODE){
             Entity entity = data.getParcelableExtra("entity");
-            entityRepository.updateEntity(entity);
+            firebaseDB.updateEntity(entity.getId(), entity);
             adapterRcvMedia.setData(entity, pos);
+            loadFragment(new FragmentMedia());
         }
         if (requestCode == 911 && resultCode == AddDataActivity.RESULT_CODE){
             Entity entity = data.getParcelableExtra("entity");
-            entityRepository.insertEntity(entity);
-            adapterRcvMedia.addData(entity);
+            firebaseDB.insertEntity(entity);
+            listener.onDataChangeM(true);
         }
     }
 
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.framelayout_contain, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    public void setOnDataChangeListener(onDataChangeListenerM listener){
+        this.listener = listener;
+    }
+
+    public interface onDataChangeListenerM{
+        void onDataChangeM(boolean change);
+    }
+
+
     public class itemMedia{
-        private int idMedia;
+        private String idMedia;
         private String strMedia;
 
-        public itemMedia(int idMedia, String strMedia) {
+        public itemMedia(String idMedia, String strMedia) {
             this.idMedia = idMedia;
             this.strMedia = strMedia;
         }
 
-        public int getIdMedia() {
+        public String getIdMedia() {
             return idMedia;
         }
 
-        public void setIdMedia(int idMedia) {
+        public void setIdMedia(String idMedia) {
             this.idMedia = idMedia;
         }
 

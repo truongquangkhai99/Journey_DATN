@@ -24,4 +24,9 @@ public class LoginActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+    @Override
+    public void onBackPressed() {
+        loadFragment(new FragmentLogin());
+    }
 }

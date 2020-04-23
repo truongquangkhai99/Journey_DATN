@@ -8,21 +8,17 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@androidx.room.Entity
 public class Entity implements Parcelable {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    private String id;
     private int temperature, action, mood, star;
     private String srcImage, th, content, strPosition, strDate;
     private double lat, lng;
-    private int userId;
     private int day, month, year;
     private String textStyle;
     private boolean checkRdb = false;
 
-    @Ignore
-    public Entity(String content, String textStyle, int action, String strPosition, int temperature,String strDate, int day, int month, int year, String th, int mood, int star, String srcImage, double lat, double lng, int userId) {
+    public Entity(String content, String textStyle, int action, String strPosition, int temperature,String strDate, int day, int month, int year, String th, int mood, int star, String srcImage, double lat, double lng) {
         this.content = content;
         this.textStyle = textStyle;
         this.action = action;
@@ -38,11 +34,9 @@ public class Entity implements Parcelable {
         this.srcImage = srcImage;
         this.lat = lat;
         this.lng = lng;
-        this.userId = userId;
     }
 
-    @Ignore
-    public Entity(int id, String content, String textStyle, int action, String strPosition, int temperature, String strDate, int day, int month, int year, String th, int mood, int star, String srcImage, double lat, double lng, int userId) {
+    public Entity(String id, String content, String textStyle, int action, String strPosition, int temperature, String strDate, int day, int month, int year, String th, int mood, int star, String srcImage, double lat, double lng) {
         this.id = id;
         this.content = content;
         this.textStyle = textStyle;
@@ -59,7 +53,6 @@ public class Entity implements Parcelable {
         this.srcImage = srcImage;
         this.lat = lat;
         this.lng = lng;
-        this.userId = userId;
     }
 
     public Entity(){
@@ -67,7 +60,7 @@ public class Entity implements Parcelable {
     }
 
     protected Entity(Parcel in) {
-        id = in.readInt();
+        id = in.readString();
         content = in.readString();
         textStyle = in.readString();
         strPosition = in.readString();
@@ -83,7 +76,6 @@ public class Entity implements Parcelable {
         srcImage = in.readString();
         lat = in.readDouble();
         lng = in.readDouble();
-        userId = in.readInt();
     }
 
     @Override
@@ -93,7 +85,7 @@ public class Entity implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeString(id);
         dest.writeString(content);
         dest.writeString(textStyle);
         dest.writeString(strPosition);
@@ -109,7 +101,6 @@ public class Entity implements Parcelable {
         dest.writeString(srcImage);
         dest.writeDouble(lat);
         dest.writeDouble(lng);
-        dest.writeInt(userId);
     }
 
     public static final Creator<Entity> CREATOR = new Creator<Entity>() {
@@ -125,11 +116,11 @@ public class Entity implements Parcelable {
     };
 
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -261,11 +252,4 @@ public class Entity implements Parcelable {
         this.checkRdb = checkRdb;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 }

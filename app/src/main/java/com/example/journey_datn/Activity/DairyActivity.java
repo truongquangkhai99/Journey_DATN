@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DairyActivity extends AppCompatActivity implements FragmentWriteDiary.clickItemDiary {
+public class DairyActivity extends AppCompatActivity implements FragmentWriteDiary.clickItemDiary, FragmentAllDiary.onDeletedItemListener {
     private ViewPager mViewPager;
 
     BottomNavigationView navigationView;
@@ -86,12 +86,21 @@ public class DairyActivity extends AppCompatActivity implements FragmentWriteDia
             }
         });
 
+        ((FragmentAllDiary) fragmentList.get(1)).setDeleteItem(this);
     }
 
     @Override
     public void onClickDiary(boolean isClick) {
         mViewPager.setCurrentItem(0);
         navigationView.getMenu().getItem(0).setChecked(true);
+    }
+
+    @Override
+    public void deleted(boolean dl) {
+        if (dl){
+            mViewPager.setCurrentItem(0);
+            mViewPager.setCurrentItem(1);
+        }
     }
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -121,6 +130,7 @@ public class DairyActivity extends AppCompatActivity implements FragmentWriteDia
         }
 
     }
+
     public static void hideKeyboard(Activity activity) {
         View view = activity.findViewById(android.R.id.content);
         if (view != null) {

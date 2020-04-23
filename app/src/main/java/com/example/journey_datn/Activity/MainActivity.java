@@ -21,7 +21,12 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.journey_datn.Model.Diary;
+import com.example.journey_datn.Model.Entity;
+import com.example.journey_datn.Model.User;
 import com.example.journey_datn.R;
+import com.example.journey_datn.db.FirebaseDB;
 import com.example.journey_datn.fragment.FragmentAtlas;
 import com.example.journey_datn.fragment.FragmentCalendar;
 import com.example.journey_datn.fragment.FragmentJourney;
@@ -30,9 +35,12 @@ import com.example.journey_datn.fragment.Weather.FragmentWeather;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.example.journey_datn.Activity.SearchActivity.RESULT_CODE;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements FragmentCalendar.onDataChangeListener, FragmentMedia.onDataChangeListenerM{
 
     private BottomNavigationView navigationView;
     private ImageView img_search, img_cloud;
@@ -40,17 +48,26 @@ public class MainActivity extends AppCompatActivity{
     private DrawerLayout mDrawerLayout;
     private Toolbar toolbar;
     private int idClick, idFragment;
-    public static int userId;
+    public static String userId;
     public static String firstName, lastName;
     private NavigationView navi;
+
+    public static ArrayList<Entity> entityList = new ArrayList<>();
+    public static ArrayList<Diary> diaryList = new ArrayList<>();
+    private FirebaseDB firebaseDB;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         permissions();
         init();
+        firebaseDB = new FirebaseDB(MainActivity.userId);
+        entityList = (ArrayList<Entity>) firebaseDB.getAllEntity();
+        diaryList = (ArrayList<Diary>) firebaseDB.getAllDiary();
+
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
@@ -61,31 +78,29 @@ public class MainActivity extends AppCompatActivity{
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Fragment fragment;
                 switch (menuItem.getItemId()) {
                     case R.id.menu_journey:
-                        fragment = new FragmentJourney();
-                        loadFragment(fragment);
+                        loadFragment(new FragmentJourney());
                         idFragment = 1;
                         return true;
                     case R.id.menu_calendar:
-                        fragment = new FragmentCalendar();
-                        loadFragment(fragment);
+                        FragmentCalendar fc = new FragmentCalendar();
+                        loadFragment(fc);
+                        fc.setOnDataChangeListener(MainActivity.this);
                         idFragment = 2;
                         return true;
                     case R.id.menu_media:
-                        fragment = new FragmentMedia();
-                        loadFragment(fragment);
+                        FragmentMedia fm = new FragmentMedia();
+                        loadFragment(fm);
+                        fm.setOnDataChangeListener(MainActivity.this);
                         idFragment = 3;
                         return true;
                     case R.id.menu_atlas:
-                        fragment = new FragmentAtlas();
-                        loadFragment(fragment);
+                        loadFragment(new FragmentAtlas());
                         idFragment = 4;
                         return true;
                     case R.id.menu_weather:
-                        fragment = new FragmentWeather();
-                        loadFragment(fragment);
+                        loadFragment(new FragmentWeather());
                         idFragment = 5;
                         return true;
                 }
@@ -139,8 +154,6 @@ public class MainActivity extends AppCompatActivity{
                     }
                 }
         );
-
-
     }
 
     @Override
@@ -149,27 +162,21 @@ public class MainActivity extends AppCompatActivity{
         if (requestCode == 10 && resultCode == RESULT_CODE){
             boolean check = data.getBooleanExtra("checkUpdate", false);
             if (check){
-                Fragment fragment;
                 switch (idClick){
                     case 1:
-                        fragment = new FragmentJourney();
-                        loadFragment(fragment);
+                        loadFragment(new FragmentJourney());
                         return;
                     case 2:
-                        fragment = new FragmentCalendar();
-                        loadFragment(fragment);
+                        loadFragment(new FragmentCalendar());
                         return;
                     case 3:
-                        fragment = new FragmentMedia();
-                        loadFragment(fragment);
+                        loadFragment(new FragmentMedia());
                         return;
                     case 4:
-                        fragment = new FragmentAtlas();
-                        loadFragment(fragment);
+                        loadFragment(new FragmentAtlas());
                         return;
                     case 5:
-                       fragment = new FragmentWeather();
-                       loadFragment(fragment);
+                       loadFragment(new FragmentWeather());
                        return;
                 }
             }
@@ -232,9 +239,10 @@ public class MainActivity extends AppCompatActivity{
         toolbar = findViewById(R.id.toolbar);
         navi = findViewById(R.id.nav_view);
         Intent intent = getIntent();
-        userId = intent.getIntExtra("userId", -1);
-        firstName = intent.getStringExtra("firstName") + "";
-        lastName = intent.getStringExtra("lastName") + "";
+        User user = intent.getParcelableExtra("user");
+        userId = user.getId();
+        firstName = user.getFirstName();
+        lastName = user.getLastName();
         if (firstName.equals("null")) firstName = "";
         if (lastName.equals("null")) lastName = "";
         navi.getMenu().getItem(0).setTitle(lastName + " " + firstName);
@@ -248,6 +256,22 @@ public class MainActivity extends AppCompatActivity{
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDataChange(boolean change) {
+        if (change){
+            loadFragment(new FragmentJourney());
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
+    }
+
+    @Override
+    public void onDataChangeM(boolean change) {
+        if (change){
+            loadFragment(new FragmentJourney());
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
     }
 }
 

@@ -2,32 +2,25 @@ package com.example.journey_datn.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.journey_datn.Activity.DairyActivity;
-import com.example.journey_datn.Activity.ItemDetailActivity;
 import com.example.journey_datn.Activity.MainActivity;
 import com.example.journey_datn.Adapter.AdapterRcvAllDiary;
 import com.example.journey_datn.Model.Diary;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.DiaryRepository;
+import com.example.journey_datn.db.FirebaseDB;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,7 +31,7 @@ public class FragmentAllDiary extends Fragment implements AdapterRcvAllDiary.onI
     private RecyclerView rcvAllDiary;
     private AdapterRcvAllDiary adapterRcvAllDiary;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-    private DiaryRepository diaryRepository;
+    private FirebaseDB firebaseDB = new FirebaseDB(MainActivity.userId);
     private ArrayList<Diary> list = new ArrayList<>();
     private AdapterRcvAllDiary.OnClickItemTab1 onClickItemTab1;
     private ImageView imgBack;
@@ -46,6 +39,7 @@ public class FragmentAllDiary extends Fragment implements AdapterRcvAllDiary.onI
     private Set<Integer> posDelete = new HashSet<>();
     private boolean checkRdb = false;
     private ImageView imgDelete;
+    private onDeletedItemListener onDeletedItem;
 
     public void setOnClickItemTab1(AdapterRcvAllDiary.OnClickItemTab1 onClickItemTab1) {
         this.onClickItemTab1 = onClickItemTab1;
@@ -78,8 +72,7 @@ public class FragmentAllDiary extends Fragment implements AdapterRcvAllDiary.onI
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                diaryRepository = new DiaryRepository(getContext());
-                list = (ArrayList<Diary>) diaryRepository.getDiary(MainActivity.userId);
+                list = MainActivity.diaryList;
                 adapterRcvAllDiary = new AdapterRcvAllDiary(getContext(), list, onClickItemTab1);
                 rcvAllDiary.setAdapter(adapterRcvAllDiary);
                 rcvAllDiary.setLayoutManager(linearLayoutManager);
@@ -133,13 +126,12 @@ public class FragmentAllDiary extends Fragment implements AdapterRcvAllDiary.onI
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 List<Diary> diaries = new ArrayList<>();
-                list = (ArrayList<Diary>) diaryRepository.getDiary(MainActivity.userId);
                 for (int element : posDelete)
                     diaries.add(list.get(element));
-                adapterRcvAllDiary.removeData(posDelete);
                 for (Diary diary : diaries)
-                    diaryRepository.deleteDiary(diary);
-                refreshData();
+                    firebaseDB.deleteDiary(diary.getId());
+                onDeletedItem.deleted(true);
+                refreshDelete();
                 dialogInterface.dismiss();
             }
         });
@@ -155,17 +147,11 @@ public class FragmentAllDiary extends Fragment implements AdapterRcvAllDiary.onI
         posDelete = new HashSet<>();
     }
 
-    @SuppressLint("RestrictedApi")
-    private void refreshData(){
-        diaryRepository = new DiaryRepository(getContext());
-        list = (ArrayList<Diary>) diaryRepository.getDiary(MainActivity.userId);
-        adapterRcvAllDiary = new AdapterRcvAllDiary(getContext(), list, onClickItemTab1);
-        rcvAllDiary.setAdapter(adapterRcvAllDiary);
-        rcvAllDiary.setLayoutManager(linearLayoutManager);
-        setAdapter();
+    public void setDeleteItem(onDeletedItemListener dl){
+        this.onDeletedItem = dl;
+    }
 
-        checkRdb = false;
-        imgDelete.setVisibility(View.INVISIBLE);
-        posDelete = new HashSet<>();
+    public interface onDeletedItemListener{
+         void deleted(boolean dl);
     }
 }

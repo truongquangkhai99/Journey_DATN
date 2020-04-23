@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,11 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.journey_datn.Adapter.AdapterRcvEntity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.EntityRepository;
+import com.example.journey_datn.db.FirebaseDB;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener {
+public class SearchActivity extends AppCompatActivity implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener,
+        AdapterRcvEntity.onCountItemListener {
 
     private RecyclerView rcvJourney;
     private int pos;
@@ -34,7 +35,6 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
     private ArrayList<Entity> lstEntity;
     private ConstraintLayout contraint1, contraint2, constStar;
     private ImageView imgBack, imgHeart, imgHappy,imgGrinning, imgSad, imgNeutral;
-    private EntityRepository entityRepository;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SearchActivity.this);
     private boolean checkUpdateforSearch = false, checkShowC1 = true;
     private TextView txtStationary, txtEating, txtWalking, txtRunning, txtBiking, txtAutomotive, txtFlying;
@@ -43,6 +43,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
             searchFlying = "SearchActionFlying",searchHeart = "SearchFeelingHeart", searchHappy = "SearchFeelingHappy", searchGrinning = "SearchFeelingGrinning",
             searchSad = "SearchFeelingSad", searchNeutral = "SearchFeelingNeutral", searchStar = "SearchStar";
 
+    private FirebaseDB firebaseDB = new FirebaseDB(MainActivity.userId);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +52,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
         setContentView(R.layout.activity_search);
         init();
 
-        entityRepository = new EntityRepository(SearchActivity.this);
-        entityRepository = new EntityRepository(this);
-        lstEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
+        lstEntity = MainActivity.entityList;
         adapterRcvEntity = new AdapterRcvEntity(SearchActivity.this, lstEntity);
         rcvJourney.setAdapter(adapterRcvEntity);
         rcvJourney.setLayoutManager(linearLayoutManager);
@@ -60,6 +60,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
         adapterRcvEntity.notifyDataSetChanged();
         adapterRcvEntity.setItemClickListener(this);
         adapterRcvEntity.setItemLongClickListener(this);
+        adapterRcvEntity.setOnCountItemListener(this);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,7 +214,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
         if (requestCode == REQUEST_CODE && resultCode == ItemDetailActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");
             checkUpdateforSearch = data.getBooleanExtra("checkUpdate", false);
-            entityRepository.updateEntity(entity);
+            firebaseDB.updateEntity(entity.getId(), entity);
             adapterRcvEntity.setData(entity, pos);
         }
     }
@@ -240,6 +241,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
         if (!checkShowC1){
             contraint1.setVisibility(View.VISIBLE);
             contraint2.setVisibility(View.GONE);
+            inputSearch.setText("");
             checkShowC1 = true;
         }
         else {
@@ -248,5 +250,10 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
             setResult(RESULT_CODE, intent);
             finish();
         }
+    }
+
+    @Override
+    public void onCountItem(int count) {
+
     }
 }

@@ -3,39 +3,33 @@ package com.example.journey_datn.Model;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@androidx.room.Entity
 public class Diary {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    private String id;
     private String date, title, contain;
-    private int userId;
     private boolean checkRdb = false;
 
     public Diary() {
     }
 
-    @Ignore
-    public Diary(int id, String date, String title, String contain, int userId) {
+    public Diary(String id, String date, String title, String contain) {
         this.id = id;
         this.date = date;
         this.title = title;
         this.contain = contain;
-        this.userId = userId;
+
     }
 
-    @Ignore
-    public Diary(String date, String title, String contain, int userId) {
+    public Diary(String date, String title, String contain) {
         this.date = date;
         this.title = title;
         this.contain = contain;
-        this.userId = userId;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -61,14 +55,6 @@ public class Diary {
 
     public void setContain(String contain) {
         this.contain = contain;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public boolean isCheckRdb() {

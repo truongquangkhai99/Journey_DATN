@@ -1,41 +1,57 @@
 package com.example.journey_datn.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@androidx.room.Entity
-public class User {
+public class User  implements Parcelable {
+    private String idUser;
+    private String firstName, lastName, username;
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-    private String firstName, lastName, username, password;
 
-    @Ignore
-    public User(int id, String firstName, String lastName, String username, String password) {
-        this.id = id;
+    public User(String id, String firstName, String lastName, String username) {
+        this.idUser = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
-        this.password = password;
     }
 
-    @Ignore
-    public User(String firstName, String lastName, String username, String password) {
+    public User(String firstName, String lastName, String username) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
-        this.password = password;
     }
 
     public User() {
     }
 
-    public int getId() {
-        return id;
+    protected User(Parcel in) {
+        idUser = in.readString();
+        firstName = in.readString();
+        lastName = in.readString();
+        username = in.readString();
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
+    public String getId() {
+        return idUser;
+    }
+
+    public void setId(String id) {
+        this.idUser = id;
     }
 
     public String getFirstName() {
@@ -62,11 +78,17 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(idUser);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(username);
     }
 }

@@ -2,10 +2,9 @@ package com.example.journey_datn.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,30 +21,29 @@ import androidx.fragment.app.Fragment;
 import com.example.journey_datn.Activity.MainActivity;
 import com.example.journey_datn.Model.User;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.EntityRepository;
-import com.example.journey_datn.db.UserRepository;
-
-import java.util.List;
+import com.example.journey_datn.db.BranchDBFB;
+import com.example.journey_datn.db.FirebaseDB;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class FragmentCreateAccount extends Fragment {
     private EditText edtFirstName, edtLastName, edtUsername, edtPassword, edtConfirmPassword;
     private Button btnCreateAc;
     private ImageView imgShowPassword, imgShowConfirmPw;
-    private UserRepository userRepository;
+
+    private FirebaseAuth auth;
+    private FirebaseDB firebaseDB = new FirebaseDB();
+    private String email, password, strFirstName, strLastName, strConfirmPW;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_account, container, false);
         init(view);
-
-        userRepository = new UserRepository(getContext());
-        btnCreateAc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createAccount();
-            }
-        });
 
         imgShowPassword.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -81,8 +79,64 @@ public class FragmentCreateAccount extends Fragment {
             }
         });
 
+
+        auth = FirebaseAuth.getInstance();
+        btnCreateAc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                email = edtUsername.getText().toString().trim();
+                password = edtPassword.getText().toString().trim();
+                strFirstName = edtFirstName.getText().toString().trim();
+                strLastName = edtLastName.getText().toString().trim();
+                strConfirmPW = edtConfirmPassword.getText().toString().trim();
+                if (TextUtils.isEmpty(strFirstName)) {
+                    edtFirstName.setError("Enter first name!");
+                    return;
+                }
+                if (TextUtils.isEmpty(strLastName)) {
+                    edtLastName.setError("Enter last name!");
+                    return;
+                }
+                if (TextUtils.isEmpty(email)) {
+                    edtUsername.setError(getString(R.string.enter_email));
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
+                    edtPassword.setError(getString(R.string.enter_password));
+                    return;
+                }
+                if (password.length() < 6) {
+                    edtPassword.setError(getString(R.string.minimum_password));
+                    return;
+                }
+                if (TextUtils.isEmpty(strConfirmPW)) {
+                    edtConfirmPassword.setError("Enter confirm password!");
+                    return;
+                }
+                if (!password.equals(strConfirmPW)) {
+                    edtConfirmPassword.setError("Confirm password is wrong!");
+                    return;
+                }
+
+
+                auth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Toast.makeText(getContext(), "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(getContext(), "Authentication failed." + task.getException(),
+                                            Toast.LENGTH_SHORT).show();
+                                } else createAccount();
+                            }
+                        });
+            }
+        });
+
+
         return view;
     }
+
 
     private void init(View view) {
         edtFirstName = view.findViewById(R.id.edt_first_nameAc);
@@ -96,40 +150,13 @@ public class FragmentCreateAccount extends Fragment {
     }
 
     private void createAccount() {
-        String strFirstName = edtFirstName.getText().toString();
-        String strLastName = edtLastName.getText().toString();
-        String strUserName = edtUsername.getText().toString();
-        String strPassWord = edtPassword.getText().toString();
-        String strConfirmPW = edtConfirmPassword.getText().toString();
-        boolean checkAccount = false;
-
-        List<User> userList = userRepository.getUser();
-        if (!strFirstName.equals("") && !strLastName.equals("") && !strUserName.equals("") && !strPassWord.equals("") && !strConfirmPW.equals("")) {
-            if (strPassWord.equals(strConfirmPW)) {
-                for (User userItem : userList) {
-                    if (strUserName.equals(userItem.getUsername())) {
-                        Toast.makeText(getContext(), "Account already exists", Toast.LENGTH_SHORT).show();
-                        checkAccount = true;
-                        break;
-                    }
-                }
-                if (!checkAccount) {
-                    User user = new User(strFirstName, strLastName, strUserName, strPassWord);
-                    userRepository.insertUser(user);
-                    userList = userRepository.getUser();
-                    for (User userItem : userList)
-                        if (strUserName.equals(userItem.getUsername()) && strPassWord.equals(userItem.getPassword())) {
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            intent.putExtra("userId", userItem.getId());
-                            intent.putExtra("firstName", userItem.getFirstName());
-                            intent.putExtra("lastName", userItem.getLastName());
-                            startActivity(intent);
-                            getActivity().finish();
-                            break;
-                        }
-                }
-
-            }else Toast.makeText(getContext(), "Confirm password is wrong", Toast.LENGTH_SHORT).show();
-        }else  Toast.makeText(getContext(), "You must enter all fields", Toast.LENGTH_SHORT).show();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        String userId = mDatabase.push().getKey();
+        User user = new User(userId, strFirstName, strLastName, email);
+        firebaseDB.insertUser(user);
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+        getActivity().finish();
     }
 }

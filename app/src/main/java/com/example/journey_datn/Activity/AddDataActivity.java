@@ -2,17 +2,14 @@ package com.example.journey_datn.Activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.location.Address;
@@ -23,20 +20,13 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Looper;
-import android.provider.MediaStore;
 import android.provider.Settings;
-import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,11 +35,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,7 +47,6 @@ import com.example.journey_datn.Adapter.AdapterRcvAdd;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.Model.bsimagepicker.BSImagePicker;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.EntityRepository;
 import com.example.journey_datn.fragment.Weather.interfaces.IWeatherApi;
 import com.example.journey_datn.fragment.Weather.models.OpenWeatherModel;
 import com.example.journey_datn.fragment.Weather.utils.ApiService;
@@ -70,20 +57,17 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.io.IOException;
 import java.text.Normalizer;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 import retrofit2.Call;
@@ -101,9 +85,9 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     private RecyclerView rcv_add;
     private AdapterRcvAdd adapterRcvAdd;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-    private int positionUpdate, id = -1, mDay, mMonth, mYear, mMinute, mHour;
+    private int positionUpdate, mDay, mMonth, mYear, mMinute, mHour;
     private Entity entityUpdate;
-    private String position = "", srcImage = "", th, content, desWeather = "", textStyle = "N";
+    private String position = "", srcImage = "", th, content, desWeather = "", textStyle = "N", entityId = "", strDate;
     private int temperature = 0, action = R.drawable.ic_action_black_24dp, mood = R.drawable.ic_mood_black_24dp,
             star = R.drawable.ic_star_border_black_24dp;
     private int mposition;
@@ -305,14 +289,15 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         mYear = Integer.parseInt(strYear[0]);
         mHour = Integer.parseInt(strHour[0]);
         mMinute = Integer.parseInt(strHour[1]);
-        getDayofMonth(mDay, mYear, mMonth);
+        int day = mDay - 1;
+        getDayOfWeek(day, mYear, mMonth);
     }
 
-    private void getDayofMonth(int day, int month, int year) {
-        day = day - 1;
-        Date date = new Date(year, month, day);
+    private void getDayOfWeek(int day, int month, int year) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         switch (dayOfWeek) {
             case Calendar.SUNDAY:
@@ -341,6 +326,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
     private void dateTimePicker() {
         getCalendar();
+        getDataFromDetail();
         mMonth = mMonth - 1;
         final TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -362,7 +348,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 mDay = dayOfMonth;
                 mMonth = monthOfYear;
                 mYear = year;
-                getDayofMonth(dayOfMonth, monthOfYear, year);
+                getDayOfWeek(dayOfMonth, monthOfYear, year);
                 timePickerDialog.show();
             }
         }, mYear, mMonth, mDay);
@@ -403,16 +389,18 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         content = edt_content_add.getText().toString();
-        String strDate = txtDate.getText().toString();
+        strDate = txtDate.getText().toString();
         if (TextUtils.isEmpty(content)) {
             Toast.makeText(this, "No content", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = getIntent();
             Entity entity;
-            if (id == -1)
-                entity = new Entity(content, textStyle, action, position, temperature, strDate, mDay, mMonth, mYear, th, mood, star,srcImage, getLatitude(), getLongtitude(), MainActivity.userId);
-            else
-                entity = new Entity(id, content, textStyle, action, position, temperature, strDate, mDay, mMonth, mYear, th, mood, star, srcImage, getLatitude(), getLongtitude(), MainActivity.userId);
+            if (entityId.equals("")){
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                entityId = mDatabase.child(MainActivity.userId).push().getKey();
+            }
+            entity = new Entity(entityId, content, textStyle, action, position, temperature, strDate, mDay, mMonth, mYear, th, mood, star,srcImage, getLatitude(), getLongtitude());
+
             intent.putExtra("entity", entity);
             setResult(RESULT_CODE, intent);
             finish();
@@ -465,7 +453,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void getLocationPhoto(Uri uri){
-        ExifInterface exif = null;
+        ExifInterface exif;
         try {
             exif = new ExifInterface(getContentResolver().openInputStream(uri));
             float[] latLong = new float[2];
@@ -518,7 +506,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             checkUpdate = true;
             entityUpdate = intent.getParcelableExtra("entityUpdate");
             positionUpdate = intent.getIntExtra("positionUpdate", 0);
-            id = entityUpdate.getId();
+            entityId = entityUpdate.getId();
             txtDate.setText(String.valueOf(entityUpdate.getStrDate()));
             edt_content_add.setText(entityUpdate.getContent());
 
@@ -541,11 +529,15 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 Glide.with(this).load(separated[0]).into(img_tag_add);
             }
 
-            String strDate[] = entityUpdate.getStrDate().split("-");
-            String strYear[] = strDate[2].split(" ");
-            mDay = Integer.parseInt(strDate[0]);
-            mMonth = Integer.parseInt(strDate[1]);
+            strDate = entityUpdate.getStrDate();
+            String arrStrDate[] = strDate.split("-");
+            String strYear[] = arrStrDate[2].split(" ");
+            mDay = Integer.parseInt(arrStrDate[0]);
+            mMonth = Integer.parseInt(arrStrDate[1]);
             mYear = Integer.parseInt(strYear[0]);
+            String strTime[] = strYear[1].split(":");
+            mHour = Integer.parseInt(strTime[0]);
+            mMinute = Integer.parseInt(strTime[1]);
 
             if (entityUpdate.getTextStyle().equals("B"))
                 edt_content_add.setTypeface(edt_content_add.getTypeface(), Typeface.BOLD);

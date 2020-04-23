@@ -9,6 +9,10 @@
     <string name="imagepicker_multiselect_overselect">You cannot select more than %d images</string>
     <string name="imagepicker_gallery_intent_title">Select Multiple Images</string>
     <string name="imagepicker_no_image_text_view">There are no image in your device.</string>
+    <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
+    <string name="auth_failed">Authentication failed, check your email and password or sign up</string>
+    <string name="enter_email">Enter email address!</string>
+    <string name="enter_password">Enter password!</string>
 </resources>
 
 

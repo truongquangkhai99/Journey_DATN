@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,7 @@ import androidx.fragment.app.Fragment;
 import com.example.journey_datn.Activity.MainActivity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.EntityRepository;
+import com.example.journey_datn.db.FirebaseDB;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -62,7 +61,6 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient mFusedLocationClient;
 
     private ArrayList<Entity> lstEntity;
-    private EntityRepository entityRepository;
     private String knownName = "", roadName = "";
     private FloatingActionButton fabZoom;
 
@@ -73,8 +71,7 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_atlas, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        entityRepository = new EntityRepository(getContext());
-        lstEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
+        lstEntity = MainActivity.entityList;
         fabZoom = view.findViewById(R.id.fab_enlarge);
         fabZoom.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -61,12 +61,12 @@ public class AdapterRcvAllDiary extends RecyclerView.Adapter<AdapterRcvAllDiary.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        final Diary pos = listDiary.get(position);
-        String[] date = pos.getDate().split("-");
+        final Diary diary = listDiary.get(position);
+        String[] date = diary.getDate().split("-");
         holder.txtDayRcvDiary.setText("" + date[0]);
         holder.txtMonthRcvDiary.setText("" + date[1]);
         holder.txtYearRcvDiary.setText("" + date[2]);
-        holder.txtTitleRcvDiary.setText(pos.getTitle() + "");
+        holder.txtTitleRcvDiary.setText(diary.getTitle() + "");
 
         holder.constItemRcvDiary.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +79,7 @@ public class AdapterRcvAllDiary extends RecyclerView.Adapter<AdapterRcvAllDiary.
                     holder.rdb.setChecked(!holder.rdb.isChecked());
                     listener.onItemClick(position);
                 }else
-                    onClickItemTab1.onClickItem(pos.getId(), pos.getTitle(), pos.getContain(), pos.getDate());
+                    onClickItemTab1.onClickItem(diary.getId(), diary.getTitle(), diary.getContain(), diary.getDate());
             }
         });
 
@@ -105,22 +105,9 @@ public class AdapterRcvAllDiary extends RecyclerView.Adapter<AdapterRcvAllDiary.
         }
     }
 
-    public ArrayList<Diary> getListDiary() {
-        return listDiary;
-    }
-
     @Override
     public int getItemCount() {
         return listDiary.size();
-    }
-
-    public void removeData(Set<Integer> set) {
-        List<Diary> diaryDelete = new ArrayList<>();
-        for (int element : set)
-            diaryDelete.add(listDiary.get(element));
-        for (Diary diary : diaryDelete)
-            listDiary.remove(diary);
-        notifyDataSetChanged();
     }
 
     public void notifiData(Set<Integer> set) {
@@ -148,7 +135,7 @@ public class AdapterRcvAllDiary extends RecyclerView.Adapter<AdapterRcvAllDiary.
     }
 
     public interface OnClickItemTab1{
-        void onClickItem(int id, String title, String content, String date);
+        void onClickItem(String id, String title, String content, String date);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

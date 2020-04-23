@@ -3,12 +3,9 @@ package com.example.journey_datn.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +14,18 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.journey_datn.Activity.MainActivity;
 import com.example.journey_datn.Adapter.AdapterRcvAllDiary;
 import com.example.journey_datn.Model.Diary;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.DiaryRepository;
+import com.example.journey_datn.db.FirebaseDB;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,9 +36,9 @@ public class FragmentWriteDiary extends Fragment implements AdapterRcvAllDiary.O
     private TextView txtDate;
     private EditText edtDiary, edtTitle;
     private int mDay, mMonth, mYear;
-    private DiaryRepository diaryRepository;
+    private FirebaseDB firebaseDB = new FirebaseDB(MainActivity.userId);
     private AdapterRcvAllDiary.OnClickItemTab1 onClickItemTab1 = this;
-    private int idUpdate = 0;
+    private String idUpdate = "";
     private  String today;
     clickItemDiary clickItemDiary;
 
@@ -57,7 +54,6 @@ public class FragmentWriteDiary extends Fragment implements AdapterRcvAllDiary.O
         View view = inflater.inflate(R.layout.fragment_write_diary, container, false);
         init(view);
 
-        diaryRepository = new DiaryRepository(getContext());
         getCalendar();
         imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,12 +90,15 @@ public class FragmentWriteDiary extends Fragment implements AdapterRcvAllDiary.O
                 String strTitle = edtTitle.getText().toString();
                 String strContent = edtDiary.getText().toString();
                 if (!strContent.equals("") && !strTitle.equals("")){
-                    if (idUpdate != 0){
-                        Diary diary = new Diary(idUpdate, strDate, strTitle, strContent, MainActivity.userId);
-                        diaryRepository.updateDiary(diary);
+                    if (!idUpdate.equals("")){
+                        Diary diary = new Diary(idUpdate, strDate, strTitle, strContent);
+                        firebaseDB.updateDiary(diary.getId(), diary);
+                        idUpdate = "";
                     }else {
-                        Diary diary = new Diary(strDate, strTitle, strContent, MainActivity.userId);
-                        diaryRepository.insertDiary(diary);
+                        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                        String diaryId = mDatabase.child(MainActivity.userId).push().getKey();
+                        Diary diary = new Diary(diaryId, strDate, strTitle, strContent);
+                        firebaseDB.insertDiary(diary);
                     }
                     edtTitle.setText("");
                     edtDiary.setText("");
@@ -164,7 +163,7 @@ public class FragmentWriteDiary extends Fragment implements AdapterRcvAllDiary.O
                 edtDiary.setText("");
                 edtTitle.setText("");
                 txtDate.setText(today);
-                idUpdate = 0;
+                idUpdate = "";
                 dialogInterface.dismiss();
             }
         });
@@ -183,7 +182,7 @@ public class FragmentWriteDiary extends Fragment implements AdapterRcvAllDiary.O
     }
 
     @Override
-    public void onClickItem(int id, String title, String content, String date) {
+    public void onClickItem(String id, String title, String content, String date) {
         edtDiary.setText(content);
         edtTitle.setText(title);
         txtDate.setText(date);

@@ -529,7 +529,7 @@ public class OpenWeather5DayModel {
         Collections.sort(arrayList4, new Comparator());
         Collections.sort(arrayList5, new Comparator());
 
-//        tempListDateWise.put(dateFirstDay, arrayList1);
+        tempListDateWise.put(dateFirstDay, arrayList1);
         tempListDateWise.put(dateSecondDay, arrayList2);
         tempListDateWise.put(dateThirdDay, arrayList3);
         tempListDateWise.put(dateFourthDay, arrayList4);

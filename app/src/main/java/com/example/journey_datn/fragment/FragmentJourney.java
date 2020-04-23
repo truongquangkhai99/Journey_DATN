@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,8 +25,11 @@ import com.example.journey_datn.Activity.MainActivity;
 import com.example.journey_datn.Adapter.AdapterRcvEntity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.EntityRepository;
+import com.example.journey_datn.db.BranchDBFB;
+import com.example.journey_datn.db.FirebaseDB;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,7 +39,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener {
+public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener,
+        AdapterRcvEntity.onCountItemListener {
 
     private RecyclerView rcvJourney;
     private AdapterRcvEntity adapterRcvEntity;
@@ -47,8 +52,8 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
     private Set<Integer> posDelete = new HashSet<>();
     private ImageView imgDelete;
 
-    private ArrayList<Entity> lstEntity;
-    private EntityRepository entityRepository;
+    private ArrayList<Entity> listEntity;
+    private FirebaseDB firebaseDB = new FirebaseDB(MainActivity.userId);
     private boolean checkRdb = false;
 
     @Nullable
@@ -73,17 +78,13 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
             }
         });
 
-        entityRepository = new EntityRepository(getContext());
-
-        lstEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
-        adapterRcvEntity = new AdapterRcvEntity(getContext(), lstEntity);
+        listEntity = MainActivity.entityList;
+        adapterRcvEntity = new AdapterRcvEntity(getContext(), listEntity);
         rcvJourney.setAdapter(adapterRcvEntity);
         rcvJourney.setLayoutManager(linearLayoutManager);
-        txt_number_item.setText("" + adapterRcvEntity.getItemCount());
-
         adapterRcvEntity.setItemClickListener(this);
         adapterRcvEntity.setItemLongClickListener(this);
-
+        adapterRcvEntity.setOnCountItemListener(this);
         return view;
     }
 
@@ -92,13 +93,11 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == AddDataActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");
-            entityRepository.insertEntity(entity);
-            adapterRcvEntity.addData(entity);
-            txt_number_item.setText("" + adapterRcvEntity.getItemCount());
+            firebaseDB.insertEntity(entity);
         }
         if (requestCode == REQUEST_CODE && resultCode == ItemDetailActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");
-            entityRepository.updateEntity(entity);
+            firebaseDB.updateEntity(entity.getId(), entity);
             adapterRcvEntity.setData(entity, pos);
         }
     }
@@ -117,24 +116,15 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
     }
 
     private void getCalendar() {
-        Calendar c = Calendar.getInstance();
-        Date date = c.getTime();
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
         SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
         String today = format1.format(date);
         txtDate.setText(today);
-        String arrToDay[] = today.split("-");
-        int mDay = Integer.parseInt(arrToDay[0]);
-        int mMonth = Integer.parseInt(arrToDay[1]);
-        int mYear = Integer.parseInt(arrToDay[2]);
-        getDayofMonth(mDay, mMonth, mYear);
-
+        getDayofMonth(calendar);
     }
 
-    private void getDayofMonth(int day, int month, int year) {
-        day = day - 1;
-        Date date = new Date(year, month, day);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+    private void getDayofMonth(Calendar calendar) {
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         switch (dayOfWeek) {
             case Calendar.SUNDAY:
@@ -165,15 +155,15 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
     @Override
     public void onItemClick(int position) {
         if (checkRdb) {
-            if (lstEntity.get(position).isCheckRdb())
+            if (listEntity.get(position).isCheckRdb())
                 posDelete.add(position);
             else if (posDelete.contains(position))
                 posDelete.remove(position);
         } else {
             pos = position;
             Intent intent = new Intent(getContext(), ItemDetailActivity.class);
-            intent.putExtra("entity", lstEntity.get(position));
-            intent.putParcelableArrayListExtra("listEntity", lstEntity);
+            intent.putExtra("entity", listEntity.get(position));
+            intent.putParcelableArrayListExtra("listEntity", listEntity);
             intent.putExtra("position", position);
             startActivityForResult(intent, REQUEST_CODE);
         }
@@ -185,6 +175,11 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         checkRdb = true;
         imgDelete.setVisibility(View.VISIBLE);
         fabJourney.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onCountItem(int count) {
+        txt_number_item.setText("" + count);
     }
 
     private void deleteItems() {
@@ -204,15 +199,12 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 List<Entity> entities = new ArrayList<>();
-                lstEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
                 for (int element : posDelete)
-                    entities.add(lstEntity.get(element));
-                adapterRcvEntity.removeData(posDelete);
+                    entities.add(listEntity.get(element));
                 for (Entity entity : entities)
-                    entityRepository.deleteEntity(entity);
-                txt_number_item.setText("" + adapterRcvEntity.getItemCount());
+                    firebaseDB.deleteEntity(entity.getId());
 
-                refreshData();
+                refreshDelete();
                 dialogInterface.dismiss();
             }
         });
@@ -227,22 +219,13 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         fabJourney.setVisibility(View.VISIBLE);
         adapterRcvEntity.notifiData(posDelete);
         posDelete = new HashSet<>();
+        loadFragment(new FragmentJourney());
     }
 
-    @SuppressLint("RestrictedApi")
-    private void refreshData(){
-        entityRepository = new EntityRepository(getContext());
-        lstEntity = (ArrayList<Entity>) entityRepository.getEntity(MainActivity.userId);
-        adapterRcvEntity = new AdapterRcvEntity(getContext(), lstEntity);
-        rcvJourney.setAdapter(adapterRcvEntity);
-        rcvJourney.setLayoutManager(linearLayoutManager);
-        txt_number_item.setText("" + adapterRcvEntity.getItemCount());
-        adapterRcvEntity.setItemClickListener(this);
-        adapterRcvEntity.setItemLongClickListener(this);
-
-        checkRdb = false;
-        imgDelete.setVisibility(View.INVISIBLE);
-        fabJourney.setVisibility(View.VISIBLE);
-        posDelete = new HashSet<>();
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.framelayout_contain, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
