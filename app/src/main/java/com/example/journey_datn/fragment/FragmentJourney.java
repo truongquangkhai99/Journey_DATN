@@ -56,6 +56,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
     private FirebaseDB firebaseDB = new FirebaseDB(MainActivity.userId);
     private boolean checkRdb = false;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -97,6 +98,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         }
         if (requestCode == REQUEST_CODE && resultCode == ItemDetailActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");
+            pos = data.getIntExtra("position", -1);
             firebaseDB.updateEntity(entity.getId(), entity);
             adapterRcvEntity.setData(entity, pos);
         }
@@ -162,7 +164,6 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         } else {
             pos = position;
             Intent intent = new Intent(getContext(), ItemDetailActivity.class);
-            intent.putExtra("entity", listEntity.get(position));
             intent.putParcelableArrayListExtra("listEntity", listEntity);
             intent.putExtra("position", position);
             startActivityForResult(intent, REQUEST_CODE);

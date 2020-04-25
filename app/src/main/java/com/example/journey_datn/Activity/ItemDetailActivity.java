@@ -2,7 +2,6 @@ package com.example.journey_datn.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,14 +14,13 @@ import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
 
 import java.util.ArrayList;
-public class ItemDetailActivity extends AppCompatActivity {
+public class ItemDetailActivity extends AppCompatActivity{
 
     private ViewPager mViewPager;
     private AdapterPagerDetail adapterPagerDetail;
     private ArrayList<Entity> lstEntity;
     private int position;
-    private Entity entity;
-    private ImageView img_back_detail, img_star_detail, img_share_detail, img_update_detail, img_menu_detail;
+    private ImageView img_back_detail, img_star_detail, img_share_detail, img_update_detail, img_menu_detail, imgBefore, imgNext;
     private final static int UPDATE_REQUESTCODE = 114;
     public static int RESULT_CODE = 115;
     private boolean checkUpdateforSearch = false, checkStar = false, checkSee = false;
@@ -34,20 +32,20 @@ public class ItemDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item_detail);
         getDataIntent();
         init();
-        img_star_detail.setImageResource(getEntity().getStar());
-        if (getEntity().getStar() == R.drawable.ic_star_border_black_24dp) checkStar = false;
+        img_star_detail.setImageResource(lstEntity.get(position).getStar());
+        if (lstEntity.get(position).getStar() == R.drawable.ic_star_border_black_24dp) checkStar = false;
         else  checkStar = true;
         img_star_detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkStar) {
                     img_star_detail.setImageResource(R.drawable.ic_star_border_black_24dp);
-                    getEntity().setStar(R.drawable.ic_star_border_black_24dp);
+                    lstEntity.get(position).setStar(R.drawable.ic_star_border_black_24dp);
                     checkStar = false;
                 }
                 else {
                     img_star_detail.setImageResource(R.drawable.ic_star_yellow_24dp);
-                    getEntity().setStar(R.drawable.ic_star_yellow_24dp);
+                    lstEntity.get(position).setStar(R.drawable.ic_star_yellow_24dp);
                     checkStar = true;
                 }
                 checkUpdateforSearch = true;
@@ -59,12 +57,65 @@ public class ItemDetailActivity extends AppCompatActivity {
         mViewPager.setAdapter(adapterPagerDetail);
         mViewPager.setCurrentItem(position);
 
+        if (position == 0) imgBefore.setVisibility(View.INVISIBLE);
+        if (position == lstEntity.size() - 1) imgNext.setVisibility(View.INVISIBLE);
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int pos) {
+                if (pos == 0){
+                    imgBefore.setVisibility(View.INVISIBLE);
+                }
+                else if (pos == (lstEntity.size() - 1)) imgNext.setVisibility(View.INVISIBLE);
+                else {
+                    imgBefore.setVisibility(View.VISIBLE);
+                    imgNext.setVisibility(View.VISIBLE);
+                }
+                position = pos;
+                img_star_detail.setImageResource(lstEntity.get(position).getStar());
+                setPosition(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        imgBefore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                position = position - 1;
+                mViewPager.setCurrentItem(position);
+                imgNext.setVisibility(View.VISIBLE);
+                if (position == 0) imgBefore.setVisibility(View.INVISIBLE);
+                setPosition(position);
+                img_star_detail.setImageResource(lstEntity.get(position).getStar());
+            }
+        });
+
+        imgNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                position = position + 1;
+                mViewPager.setCurrentItem(position);
+                imgBefore.setVisibility(View.VISIBLE);
+                if (position == lstEntity.size() - 1) imgNext.setVisibility(View.INVISIBLE);
+                setPosition(position);
+                img_star_detail.setImageResource(lstEntity.get(position).getStar());
+            }
+        });
+
         img_back_detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkSee){
                     Intent intent = getIntent();
-                    intent.putExtra("entity", getEntity());
+                    intent.putExtra("entity", lstEntity.get(position));
+                    intent.putExtra("position", getPosition());
                     intent.putExtra("checkUpdate", checkUpdateforSearch);
                     setResult(RESULT_CODE, intent);
                     finish();
@@ -77,7 +128,7 @@ public class ItemDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ItemDetailActivity.this, AddDataActivity.class);
                 intent.putExtra("activity", 2);
-                intent.putExtra("entityUpdate", getEntity());
+                intent.putExtra("entityUpdate", lstEntity.get(position));
                 intent.putExtra("positionUpdate", getPosition());
                 startActivityForResult(intent, UPDATE_REQUESTCODE);
             }
@@ -88,7 +139,7 @@ public class ItemDetailActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (checkSee){
             Intent intent = getIntent();
-            intent.putExtra("entity", getEntity());
+            intent.putExtra("entity", lstEntity.get(position));
             intent.putExtra("checkUpdate", checkUpdateforSearch);
             setResult(RESULT_CODE, intent);
             finish();
@@ -102,6 +153,8 @@ public class ItemDetailActivity extends AppCompatActivity {
         img_share_detail = findViewById(R.id.img_share_detail);
         img_update_detail = findViewById(R.id.img_update_detail);
         img_menu_detail = findViewById(R.id.img_menu_detail);
+        imgBefore = findViewById(R.id.img_before);
+        imgNext = findViewById(R.id.img_next);
     }
 
     @Override
@@ -112,6 +165,7 @@ public class ItemDetailActivity extends AppCompatActivity {
             Entity entity = data.getParcelableExtra("entity");
             Intent intent = getIntent();
             intent.putExtra("entity", entity);
+            intent.putExtra("position", getPosition());
             intent.putExtra("checkUpdate", checkUpdateforSearch);
             setResult(RESULT_CODE, intent);
             finish();
@@ -121,19 +175,9 @@ public class ItemDetailActivity extends AppCompatActivity {
 
     public void getDataIntent() {
         Intent intent = getIntent();
-        Entity entity = intent.getParcelableExtra("entity");
         lstEntity = intent.getParcelableArrayListExtra("listEntity");
         position = intent.getIntExtra("position", -1);
-        setEntity(entity);
         setPosition(position);
-    }
-
-    public Entity getEntity() {
-        return entity;
-    }
-
-    public void setEntity(Entity entity) {
-        this.entity = entity;
     }
 
     public int getPosition() {

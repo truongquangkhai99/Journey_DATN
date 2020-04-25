@@ -34,6 +34,16 @@
             android:src="@drawable/ic_zoom_out_map_white_24dp"
             app:layout_constraintBottom_toTopOf="@id/fab_add_atlas"
             app:layout_constraintRight_toRightOf="parent" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_zoom_in"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_10"
+            android:backgroundTint="@color/color_background_main"
+            android:src="@drawable/icons8_zoom_in"
+            app:layout_constraintBottom_toTopOf="@id/fab_add_atlas"
+            app:layout_constraintRight_toRightOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -62,21 +62,36 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
 
     private ArrayList<Entity> lstEntity;
     private String knownName = "", roadName = "";
-    private FloatingActionButton fabZoom;
+    private FloatingActionButton fabZoom, fabZoomIn;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        lstEntity = MainActivity.entityList;
         View view = inflater.inflate(R.layout.fragment_atlas, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        lstEntity = MainActivity.entityList;
         fabZoom = view.findViewById(R.id.fab_enlarge);
+        fabZoomIn = view.findViewById(R.id.fab_zoom_in);
+
         fabZoom.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onClick(View v) {
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(6), 2000, null);
+                fabZoom.setVisibility(View.INVISIBLE);
+                fabZoomIn.setVisibility(View.VISIBLE);
+            }
+        });
+
+        fabZoomIn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onClick(View v) {
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
+                fabZoom.setVisibility(View.VISIBLE);
+                fabZoomIn.setVisibility(View.INVISIBLE);
             }
         });
 

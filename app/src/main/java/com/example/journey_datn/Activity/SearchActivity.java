@@ -32,7 +32,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
     public static int REQUEST_CODE = 111;
     public static int RESULT_CODE = 222;
     private AdapterRcvEntity adapterRcvEntity;
-    private ArrayList<Entity> lstEntity;
+    private ArrayList<Entity> listEntity;
     private ConstraintLayout contraint1, contraint2, constStar;
     private ImageView imgBack, imgHeart, imgHappy,imgGrinning, imgSad, imgNeutral;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SearchActivity.this);
@@ -52,8 +52,9 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
         setContentView(R.layout.activity_search);
         init();
 
-        lstEntity = MainActivity.entityList;
-        adapterRcvEntity = new AdapterRcvEntity(SearchActivity.this, lstEntity);
+        listEntity = MainActivity.entityList;
+
+        adapterRcvEntity = new AdapterRcvEntity(SearchActivity.this, listEntity);
         rcvJourney.setAdapter(adapterRcvEntity);
         rcvJourney.setLayoutManager(linearLayoutManager);
 

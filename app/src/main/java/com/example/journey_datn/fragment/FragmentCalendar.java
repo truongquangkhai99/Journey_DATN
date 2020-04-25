@@ -40,7 +40,7 @@ import java.util.Set;
 public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener,
         AdapterRcvEntity.onCountItemListener{
 
-    private ArrayList<Entity> list = new ArrayList<>();
+    private ArrayList<Entity> listEntity;
     private ArrayList<Entity> listItem = new ArrayList<>();
     private RecyclerView rcvCalendar;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -53,10 +53,11 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
     private Set<Integer> posDelete = new HashSet<>();
     private onDataChangeListener listener;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        list = MainActivity.entityList;
+        listEntity = MainActivity.entityList;
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
         calendarView = v.findViewById(R.id.calendarView);
         rcvCalendar = v.findViewById(R.id.rcvCalendar);
@@ -101,7 +102,7 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
     }
 
     private void setRcvCalendar(int day, int month, int year) {
-        listItem = (ArrayList<Entity>) firebaseDB.getEntityByTime(day, month, year);
+        listItem = (ArrayList<Entity>) firebaseDB.getEntityByTime(listEntity,day, month, year);
         adapterRcvEntity = new AdapterRcvEntity(getContext(), listItem);
         rcvCalendar.setAdapter(adapterRcvEntity);
         rcvCalendar.setLayoutManager(linearLayoutManager);
@@ -115,6 +116,7 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE1 && resultCode == ItemDetailActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");
+            pos = data.getIntExtra("position", -1);
             firebaseDB.updateEntity(entity.getId(), entity);
             adapterRcvEntity.setData(entity, pos);
         }
@@ -134,7 +136,7 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
         day = Integer.parseInt(strDate[0]);
         month = Integer.parseInt(strDate[1]);
         year = Integer.parseInt(strDate[2]);
-        listItem = (ArrayList<Entity>) firebaseDB.getEntityByTime(day, month, year);
+        listItem = (ArrayList<Entity>) firebaseDB.getEntityByTime(listEntity, day, month, year);
         adapterRcvEntity = new AdapterRcvEntity(getContext(), listItem);
         rcvCalendar.setAdapter(adapterRcvEntity);
         rcvCalendar.setLayoutManager(linearLayoutManager);
@@ -142,11 +144,11 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
 
     private List<Calendar> getSelectedDays() {
         List<Calendar> calendars = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < listEntity.size(); i++) {
             Calendar calendar = new GregorianCalendar();
-            calendar.set(Calendar.DAY_OF_MONTH, list.get(i).getDay());
-            calendar.set(Calendar.MONTH, list.get(i).getMonth() - 1);
-            calendar.set(Calendar.YEAR, list.get(i).getYear());
+            calendar.set(Calendar.DAY_OF_MONTH, listEntity.get(i).getDay());
+            calendar.set(Calendar.MONTH, listEntity.get(i).getMonth() - 1);
+            calendar.set(Calendar.YEAR, listEntity.get(i).getYear());
             calendars.add(calendar);
         }
         return calendars;

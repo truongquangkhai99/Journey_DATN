@@ -42,11 +42,9 @@ public class FragmentWriteDiary extends Fragment implements AdapterRcvAllDiary.O
     private  String today;
     clickItemDiary clickItemDiary;
 
-
     public AdapterRcvAllDiary.OnClickItemTab1 getOnClickItemTab1() {
         return onClickItemTab1;
     }
-
 
     @Nullable
     @Override

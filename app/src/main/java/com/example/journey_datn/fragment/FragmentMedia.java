@@ -36,6 +36,7 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        listEntity = MainActivity.entityList;
         View view = inflater.inflate(R.layout.fragment_media, container, false);
         initView(view);
 
@@ -48,7 +49,6 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
         });
 
         ArrayList<itemMedia> arrItemMedia = new ArrayList<>();
-        listEntity = MainActivity.entityList;
         for (Entity entity : listEntity){
             String arrSrc = entity.getSrcImage();
             String[] separated = arrSrc.split(";");
@@ -92,6 +92,7 @@ public class FragmentMedia extends Fragment implements AdapterRcvMedia.OnItemCli
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 10 && resultCode == ItemDetailActivity.RESULT_CODE){
             Entity entity = data.getParcelableExtra("entity");
+            pos = data.getIntExtra("position", -1);
             firebaseDB.updateEntity(entity.getId(), entity);
             adapterRcvMedia.setData(entity, pos);
             loadFragment(new FragmentMedia());

@@ -95,9 +95,9 @@ public class FirebaseDB {
         mDatabase.child(userId).child(BranchDBFB.entityBranch).removeValue();
     }
 
-    public List<Entity> getEntityByTime(int day, int month, int year) {
+    public List<Entity> getEntityByTime(List<Entity> entityList, int day, int month, int year) {
         List<Entity> list = new ArrayList(), allList;
-        allList = MainActivity.entityList;
+        allList = entityList;
         for (Entity entity : allList)
             if (entity.getDay() == day && entity.getMonth() == month && entity.getYear() == year)
                 list.add(entity);

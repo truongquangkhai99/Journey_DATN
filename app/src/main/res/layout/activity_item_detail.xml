@@ -75,4 +75,22 @@
 
     </androidx.viewpager.widget.ViewPager>
 
+    <ImageView
+        android:id="@+id/img_before"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/ic_navigate_before_blue_24dp"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
+
+    <ImageView
+        android:id="@+id/img_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/ic_navigate_next_blue_24dp"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
