@@ -74,6 +74,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.journey_datn.Activity.ItemDetailActivity.ACTIVITY_CODE;
 import static com.example.journey_datn.fragment.Weather.constants.ProjectConstants.BASE_URL_OPEN_WEATHER;
 
 public class AddDataActivity extends AppCompatActivity implements View.OnClickListener, AdapterRcvAdd.OnItemClickListener, BSImagePicker.OnSingleImageSelectedListener,
@@ -85,17 +86,13 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     private RecyclerView rcv_add;
     private AdapterRcvAdd adapterRcvAdd;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-    private int positionUpdate, mDay, mMonth, mYear, mMinute, mHour;
-    private Entity entityUpdate;
-    private String position = "", srcImage = "", th, content, desWeather = "", textStyle = "N", entityId = "", strDate;
-    private int temperature = 0, action = R.drawable.ic_action_black_24dp, mood = R.drawable.ic_mood_black_24dp,
+    private int positionUpdate, mDay, mMonth, mYear, mMinute, mHour, mPosition, PERMISSION_ID = 44,temperature = 0, action = R.drawable.ic_action_black_24dp, mood = R.drawable.ic_mood_black_24dp,
             star = R.drawable.ic_star_border_black_24dp;
-    private int mposition;
+    private Entity entityUpdate;
+    private String position = "", srcImage = "", dayOfWeek, content, desWeather = "", textStyle = "N", entityId = "", strDate, OPEN_WEATHER_APP_ID = "b317aca2e83ad16e219ff2283ca837d5";
     public static int RESULT_CODE = 113;
-    private int PERMISSION_ID = 44;
-    private double latitude, longtitude;
+    private double latitude, longitude;
     private FusedLocationProviderClient mFusedLocationClient;
-    private String OPEN_WEATHER_APP_ID = "b317aca2e83ad16e219ff2283ca837d5";
     private static IWeatherApi mWeatherApi;
     private boolean checkUpdate;
 
@@ -133,6 +130,9 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         getLastLocation();
     }
 
+    /**
+     * lấy vị trí hiện tại: latitude, longitude, position
+     */
     @SuppressLint("MissingPermission")
     private void getLastLocation() {
         if (!checkUpdate) {
@@ -147,15 +147,15 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                                         requestNewLocationData();
                                     } else {
                                         latitude = location.getLatitude();
-                                        longtitude = location.getLongitude();
+                                        longitude = location.getLongitude();
                                         setLatitude(latitude);
-                                        setLongtitude(longtitude);
+                                        setLongitude(longitude);
                                         Geocoder geocoder;
                                         List<Address> addresses;
                                         geocoder = new Geocoder(AddDataActivity.this, Locale.getDefault());
                                         try {
                                             String address, state;
-                                            addresses = geocoder.getFromLocation(latitude, longtitude, 1);
+                                            addresses = geocoder.getFromLocation(latitude, longitude, 1);
                                             address = addresses.get(0).getAddressLine(0);
                                             state = addresses.get(0).getAdminArea();
                                             position = address;
@@ -169,7 +169,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                             }
                     );
                 } else {
-                    Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.turn_on_location), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivity(intent);
                 }
@@ -179,6 +179,11 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /**
+     * lấy thông tin nhiệt độ và mô tả thời tiết thông qua Api
+     * @param city
+     * @param appId
+     */
     public void getOpenWeatherData(String city, String appId) {
         mWeatherApi = ApiService.getRetrofitInstance(BASE_URL_OPEN_WEATHER).create(IWeatherApi.class);
         Call<OpenWeatherModel> resForgotPasswordCall = mWeatherApi.getOpenWeatherData(appId, city);
@@ -199,15 +204,19 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    public static String removeAccent(String s) {
-        String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+    /**
+     *
+     * @param cityName
+     * @return  tên thành phố không có dấu
+     */
+    public static String removeAccent(String cityName) {
+        String temp = Normalizer.normalize(cityName, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(temp).replaceAll("");
     }
 
     @SuppressLint("MissingPermission")
     private void requestNewLocationData() {
-
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(0);
@@ -219,7 +228,6 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 mLocationRequest, mLocationCallback,
                 Looper.myLooper()
         );
-
     }
 
     private LocationCallback mLocationCallback = new LocationCallback() {
@@ -227,12 +235,16 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
             latitude = mLastLocation.getLatitude();
-            longtitude = mLastLocation.getLongitude();
+            longitude = mLastLocation.getLongitude();
             setLatitude(mLastLocation.getLatitude());
-            setLongtitude(mLastLocation.getLongitude());
+            setLongitude(mLastLocation.getLongitude());
         }
     };
 
+    /**
+     * Phân quyền truy cập location
+     * @return
+     */
     private boolean checkPermissions() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -275,6 +287,9 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    /**
+     * trả về thời gian hiện tại gồm: day, month, year, hour, minute, dayOfWeek
+     */
     private void getCalendar() {
         Calendar c = Calendar.getInstance();
         Date date = c.getTime();
@@ -293,36 +308,43 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         getDayOfWeek(day, mYear, mMonth);
     }
 
+    /**
+     * @param day
+     * @param month
+     * @param year
+     * trả về dayOfWeek
+     */
     private void getDayOfWeek(int day, int month, int year) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        switch (dayOfWeek) {
+        int numDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (numDayOfWeek) {
             case Calendar.SUNDAY:
-                th = "Sunday";
+                dayOfWeek = "Sunday";
                 break;
             case Calendar.MONDAY:
-                th = "Monday";
+                dayOfWeek = "Monday";
                 break;
             case Calendar.TUESDAY:
-                th = "Tuesday";
+                dayOfWeek = "Tuesday";
                 break;
             case Calendar.WEDNESDAY:
-                th = "Wednesday";
+                dayOfWeek = "Wednesday";
                 break;
             case Calendar.THURSDAY:
-                th = "Thursday";
+                dayOfWeek = "Thursday";
                 break;
             case Calendar.FRIDAY:
-                th = "Friday";
+                dayOfWeek = "Friday";
                 break;
             case Calendar.SATURDAY:
-                th = "Saturday";
+                dayOfWeek = "Saturday";
                 break;
         }
     }
+
 
     private void dateTimePicker() {
         getCalendar();
@@ -352,14 +374,13 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 timePickerDialog.show();
             }
         }, mYear, mMonth, mDay);
-
         datePickerDialog.show();
     }
 
     private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Discard");
-        builder.setMessage("Do you want to discard the changes?");
+        builder.setMessage(getString(R.string.discard));
         builder.setCancelable(false);
         builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -386,12 +407,16 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         rcv_add = findViewById(R.id.rcv_add);
     }
 
+    /**
+     * @param v
+     * gửi trả về 1 đối tượng entity cho Fragment Journey
+     */
     @Override
     public void onClick(View v) {
         content = edt_content_add.getText().toString();
         strDate = txtDate.getText().toString();
         if (TextUtils.isEmpty(content)) {
-            Toast.makeText(this, "No content", Toast.LENGTH_SHORT).show();
+            edt_content_add.setError(getString(R.string.write_something));
         } else {
             Intent intent = getIntent();
             Entity entity;
@@ -399,7 +424,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                 entityId = mDatabase.child(MainActivity.userId).push().getKey();
             }
-            entity = new Entity(entityId, content, textStyle, action, position, temperature, strDate, mDay, mMonth, mYear, th, mood, star,srcImage, getLatitude(), getLongtitude());
+            entity = new Entity(entityId, content, textStyle, action, position, temperature, strDate, mDay, mMonth, mYear, dayOfWeek, mood, star,srcImage, getLatitude(), getLongitude());
 
             intent.putExtra("entity", entity);
             setResult(RESULT_CODE, intent);
@@ -409,7 +434,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void OnItemClick(int position) {
-        mposition = position;
+        mPosition = position;
         switch (position) {
             case 0:
                 mediaClick();
@@ -441,8 +466,12 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
-
+    // bắt đầu xử lý hình ảnh dựa vào BSImagePicker
+    /**
+     * lấy uri photo  khi chọn 1 ảnh
+     * @param uri
+     * @param tag
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSingleImageSelected(Uri uri, String tag) {
@@ -451,6 +480,10 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         getLocationPhoto(uri);
     }
 
+    /**
+     * lấy vị trí latitude, longitude của photo tại vị trí khi chụp ảnh
+     * @param uri
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void getLocationPhoto(Uri uri){
         ExifInterface exif;
@@ -460,12 +493,12 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             boolean hasLatLong = exif.getLatLong(latLong);
             if (hasLatLong) {
                 latitude = latLong[0];
-                longtitude = latLong[1];
+                longitude = latLong[1];
                 Geocoder geocoder;
                 List<Address> addresses;
                 geocoder = new Geocoder(AddDataActivity.this, Locale.getDefault());
                 try {
-                    addresses = geocoder.getFromLocation(latitude, longtitude, 1);
+                    addresses = geocoder.getFromLocation(latitude, longitude, 1);
                     position = addresses.get(0).getAddressLine(0);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -476,6 +509,11 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /**
+     * lấy uri photo  khi chọn nhiều ảnh
+     * @param uriList
+     * @param tag
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onMultiImageSelected(List<Uri> uriList, String tag) {
@@ -498,11 +536,15 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     public void onCancelled(boolean isMultiSelecting, String tag) {
         Toast.makeText(this, "Selection is cancelled ", Toast.LENGTH_SHORT).show();
     }
+    // kết thúc xử lý hình ảnh dựa vào BSImagePicker
 
+    /**
+     * lấy thông tin từ ItemDetailActivity truyền sang qua intent
+     */
     private void getDataFromDetail() {
         Intent intent = getIntent();
         int activity = intent.getIntExtra("activity", 0);
-        if (activity == 2) {
+        if (activity == ACTIVITY_CODE) {
             checkUpdate = true;
             entityUpdate = intent.getParcelableExtra("entityUpdate");
             positionUpdate = intent.getIntExtra("positionUpdate", 0);
@@ -516,9 +558,9 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             action = entityUpdate.getAction();
             mood = entityUpdate.getMood();
             star = entityUpdate.getStar();
-            th = entityUpdate.getTh();
+            dayOfWeek = entityUpdate.getTh();
             latitude = entityUpdate.getLat();
-            longtitude = entityUpdate.getLng();
+            longitude = entityUpdate.getLng();
 
             adapterRcvAdd.updateItem(3, action);
             adapterRcvAdd.updateItem(4, mood);
@@ -552,7 +594,6 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void mediaClick() {
-
         final Dialog dialog = new Dialog(this);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
@@ -616,7 +657,6 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void placeClick() {
-
         final Dialog dialog = new Dialog(this);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
@@ -719,35 +759,35 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             public void onOptionsSelect(int options1, int option2, int options3) {
                 if (items.get(options1) == items.get(0)) {
                     action = R.drawable.ic_action_black_24dp;
-                    adapterRcvAdd.updateItem(mposition, action);
+                    adapterRcvAdd.updateItem(mPosition, action);
                 }
                 if (items.get(options1) == items.get(1)) {
                     action = R.drawable.ic_accessibility_black_24dp;
-                    adapterRcvAdd.updateItem(mposition, action);
+                    adapterRcvAdd.updateItem(mPosition, action);
                 }
                 if (items.get(options1) == items.get(2)) {
                     action = R.drawable.ic_restaurant_menu_black_24dp;
-                    adapterRcvAdd.updateItem(mposition, action);
+                    adapterRcvAdd.updateItem(mPosition, action);
                 }
                 if (items.get(options1) == items.get(3)) {
                     action = R.drawable.ic_directions_walk_black_24dp;
-                    adapterRcvAdd.updateItem(mposition, action);
+                    adapterRcvAdd.updateItem(mPosition, action);
                 }
                 if (items.get(options1) == items.get(4)) {
                     action = R.drawable.ic_directions_run_black_24dp;
-                    adapterRcvAdd.updateItem(mposition, action);
+                    adapterRcvAdd.updateItem(mPosition, action);
                 }
                 if (items.get(options1) == items.get(5)) {
                     action = R.drawable.ic_directions_bike_black_24dp;
-                    adapterRcvAdd.updateItem(mposition, action);
+                    adapterRcvAdd.updateItem(mPosition, action);
                 }
                 if (items.get(options1) == items.get(6)) {
                     action = R.drawable.ic_directions_car_black_24dp;
-                    adapterRcvAdd.updateItem(mposition, action);
+                    adapterRcvAdd.updateItem(mPosition, action);
                 }
                 if (items.get(options1) == items.get(7)) {
                     action = R.drawable.ic_airplanemode_active_black_24dp;
-                    adapterRcvAdd.updateItem(mposition, action);
+                    adapterRcvAdd.updateItem(mPosition, action);
                 }
             }
         });
@@ -756,7 +796,6 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void temperatureClick() {
-
         final Dialog dialog = new Dialog(this);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
@@ -801,7 +840,6 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void faceClick() {
-
         final Dialog dialog = new Dialog(this);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
@@ -820,7 +858,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
                 mood = R.drawable.ic_favorite_red_24dp;
-                adapterRcvAdd.updateItem(mposition, mood);
+                adapterRcvAdd.updateItem(mPosition, mood);
                 dialog.dismiss();
             }
         });
@@ -829,7 +867,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
                 mood = R.drawable.ic_happy_red_24dp;
-                adapterRcvAdd.updateItem(mposition, mood);
+                adapterRcvAdd.updateItem(mPosition, mood);
                 dialog.dismiss();
             }
         });
@@ -838,7 +876,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
                 mood = R.drawable.ic_mood_emoticon_red_24dp;
-                adapterRcvAdd.updateItem(mposition, mood);
+                adapterRcvAdd.updateItem(mPosition, mood);
                 dialog.dismiss();
             }
         });
@@ -847,7 +885,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
                 mood = R.drawable.ic_sad_red_24dp;
-                adapterRcvAdd.updateItem(mposition, mood);
+                adapterRcvAdd.updateItem(mPosition, mood);
                 dialog.dismiss();
             }
         });
@@ -856,7 +894,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
                 mood = R.drawable.ic_neutral_red_24dp;
-                adapterRcvAdd.updateItem(mposition, mood);
+                adapterRcvAdd.updateItem(mPosition, mood);
                 dialog.dismiss();
             }
         });
@@ -896,11 +934,11 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         this.latitude = latitude;
     }
 
-    public double getLongtitude() {
-        return longtitude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(double longtitude) {
+        this.longitude = longtitude;
     }
 }

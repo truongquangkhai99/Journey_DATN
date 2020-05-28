@@ -47,11 +47,9 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
     private FloatingActionButton fabJourney;
     private TextView txt_user_name, txtDate, txt_number_item, txtDayOfWeek;
-    private int REQUEST_CODE = 911;
-    private int pos;
+    private int REQUEST_CODE = 911, pos;
     private Set<Integer> posDelete = new HashSet<>();
     private ImageView imgDelete;
-
     private ArrayList<Entity> listEntity;
     private FirebaseDB firebaseDB = new FirebaseDB(MainActivity.userId);
     private boolean checkRdb = false;
@@ -123,10 +121,10 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
         String today = format1.format(date);
         txtDate.setText(today);
-        getDayofMonth(calendar);
+        getDayOfWeek(calendar);
     }
 
-    private void getDayofMonth(Calendar calendar) {
+    private void getDayOfWeek(Calendar calendar) {
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         switch (dayOfWeek) {
             case Calendar.SUNDAY:
@@ -218,7 +216,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         checkRdb = false;
         imgDelete.setVisibility(View.INVISIBLE);
         fabJourney.setVisibility(View.VISIBLE);
-        adapterRcvEntity.notifiData(posDelete);
+        adapterRcvEntity.notifyData(posDelete);
         posDelete = new HashSet<>();
         loadFragment(new FragmentJourney());
     }

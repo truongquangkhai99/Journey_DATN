@@ -40,13 +40,11 @@ import java.util.Set;
 public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onItemLongClickListener, AdapterRcvEntity.onItemClickListener,
         AdapterRcvEntity.onCountItemListener{
 
-    private ArrayList<Entity> listEntity;
-    private ArrayList<Entity> listItem = new ArrayList<>();
+    private ArrayList<Entity> listItem = new ArrayList<>(), listEntity;
     private RecyclerView rcvCalendar;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
     private AdapterRcvEntity adapterRcvEntity;
-    private int day, month, year, pos;
-    private int REQUEST_CODE1 = 10, REQUEST_CODE2 = 20;
+    private int day, month, year, pos, REQUEST_CODE1 = 10, REQUEST_CODE2 = 20;
     private FloatingActionButton fabCalendar;
     private CalendarView calendarView;
     private FirebaseDB firebaseDB = new FirebaseDB(MainActivity.userId);
@@ -79,7 +77,7 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
         List<EventDay> events = new ArrayList<>();
         List<Calendar> arrCr = getSelectedDays();
         for (int i = 0; i < arrCr.size(); i++) {
-            events.add(new EventDay(arrCr.get(i), null, R.drawable.night_sky));
+            events.add(new EventDay(arrCr.get(i), null, R.drawable.night_sky)); // xét màu sắc cho ngày có sự kiện
         }
         calendarView.setEvents(events);
         getCalendar();
@@ -128,6 +126,9 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
 
     }
 
+    /**
+     * lấy ra thời gian hiện tại, tìm kiếm các item theo ngày hiện tại rồi hiện lên recycleView
+     */
     private void getCalendar() {
         Calendar c = Calendar.getInstance();
         Date date = c.getTime();
@@ -142,6 +143,10 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
         rcvCalendar.setLayoutManager(linearLayoutManager);
     }
 
+    /**
+     * lấy ra những ngày có sự kiện từ danh sách để xét màu sắc cho ngày đó
+     * @return
+     */
     private List<Calendar> getSelectedDays() {
         List<Calendar> calendars = new ArrayList<>();
         for (int i = 0; i < listEntity.size(); i++) {
@@ -173,12 +178,12 @@ public class FragmentCalendar extends Fragment implements AdapterRcvEntity.onIte
     public void onItemLongClick(int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete");
-        builder.setMessage("Do you want to delete this journal entry?");
+        builder.setMessage(getString(R.string.delete_journal));
         builder.setCancelable(false);
         builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                adapterRcvEntity.notifiData(posDelete);
+                adapterRcvEntity.notifyData(posDelete);
             }
         });
         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {

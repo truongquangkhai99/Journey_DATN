@@ -143,7 +143,6 @@ public class AdapterRcvAllDiary extends RecyclerView.Adapter<AdapterRcvAllDiary.
         ConstraintLayout constItemRcvDiary;
         private CheckBox rdb;
 
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtDayRcvDiary = itemView.findViewById(R.id.txt_day_diary);

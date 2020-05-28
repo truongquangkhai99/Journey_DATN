@@ -42,16 +42,13 @@ import static com.example.journey_datn.Activity.SearchActivity.RESULT_CODE;
 
 public class MainActivity extends AppCompatActivity implements FragmentCalendar.onDataChangeListener, FragmentMedia.onDataChangeListenerM{
 
-    private BottomNavigationView navigationView;
+    private BottomNavigationView btnNavigationView;
     private ImageView img_search, img_cloud;
-    private int WRITE_EXTERNAL_STORAGE_CODE = 1, MY_CAMERA_PERMISSION_CODE = 2, READ_EXTERNAL_STORAGE_CODE = 3;
+    private int WRITE_EXTERNAL_STORAGE_CODE = 1, MY_CAMERA_PERMISSION_CODE = 2, READ_EXTERNAL_STORAGE_CODE = 3, idClick, idFragment;
     private DrawerLayout mDrawerLayout;
     private Toolbar toolbar;
-    private int idClick, idFragment;
-    public static String userId;
-    public static String firstName, lastName;
-    private NavigationView navi;
-
+    public static String userId, firstName, lastName;
+    private NavigationView navigationView;
     public static ArrayList<Entity> entityList = new ArrayList<>();
     public static ArrayList<Diary> diaryList = new ArrayList<>();
     private FirebaseDB firebaseDB;
@@ -75,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCalendar.
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         loadFragment(new FragmentJourney());
         idFragment = 1;
-        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        btnNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
@@ -108,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCalendar.
             }
         });
 
-        navi.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
@@ -130,27 +127,22 @@ public class MainActivity extends AppCompatActivity implements FragmentCalendar.
             }
         });
 
-
         mDrawerLayout.addDrawerListener(
                 new DrawerLayout.DrawerListener() {
                     @Override
                     public void onDrawerSlide(View drawerView, float slideOffset) {
-                        // Respond when the drawer's position changes
                     }
 
                     @Override
                     public void onDrawerOpened(View drawerView) {
-                        // Respond when the drawer is opened
                     }
 
                     @Override
                     public void onDrawerClosed(View drawerView) {
-                        // Respond when the drawer is closed
                     }
 
                     @Override
                     public void onDrawerStateChanged(int newState) {
-                        // Respond when the drawer motion state changes
                     }
                 }
         );
@@ -186,9 +178,9 @@ public class MainActivity extends AppCompatActivity implements FragmentCalendar.
     @Override
     public void onBackPressed() {
         loadFragment(new FragmentJourney());
-        navigationView.getMenu().getItem(0).setChecked(true);
+        btnNavigationView.getMenu().getItem(0).setChecked(true);
         toolbar.setVisibility(View.VISIBLE);
-        navigationView.setVisibility(View.VISIBLE);
+        btnNavigationView.setVisibility(View.VISIBLE);
     }
 
     private void loadFragment(Fragment fragment) {
@@ -232,12 +224,12 @@ public class MainActivity extends AppCompatActivity implements FragmentCalendar.
     }
 
     private void init() {
-        navigationView = findViewById(R.id.navigation);
+        btnNavigationView = findViewById(R.id.navigation);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         img_search = findViewById(R.id.img_search);
         img_cloud = findViewById(R.id.img_cloud);
         toolbar = findViewById(R.id.toolbar);
-        navi = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         Intent intent = getIntent();
         User user = intent.getParcelableExtra("user");
         userId = user.getId();
@@ -245,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCalendar.
         lastName = user.getLastName();
         if (firstName.equals("null")) firstName = "";
         if (lastName.equals("null")) lastName = "";
-        navi.getMenu().getItem(0).setTitle(lastName + " " + firstName);
+        navigationView.getMenu().getItem(0).setTitle(lastName + " " + firstName);
     }
 
     @Override
@@ -262,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCalendar.
     public void onDataChange(boolean change) {
         if (change){
             loadFragment(new FragmentJourney());
-            navigationView.getMenu().getItem(0).setChecked(true);
+            btnNavigationView.getMenu().getItem(0).setChecked(true);
         }
     }
 
@@ -270,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCalendar.
     public void onDataChangeM(boolean change) {
         if (change){
             loadFragment(new FragmentJourney());
-            navigationView.getMenu().getItem(0).setChecked(true);
+            btnNavigationView.getMenu().getItem(0).setChecked(true);
         }
     }
 }

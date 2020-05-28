@@ -38,7 +38,7 @@ public class FragmentForgot extends Fragment {
                 String email = edtEmail.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
-                    edtEmail.setError("Enter your registered email!");
+                    edtEmail.setError(getString(R.string.registered_email));
                     return;
                 }
 
@@ -47,10 +47,10 @@ public class FragmentForgot extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(getContext(), "We have sent you instructions to reset your password!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getString(R.string.reset_password), Toast.LENGTH_SHORT).show();
                                     loadFragment(new FragmentLogin());
                                 } else {
-                                    Toast.makeText(getContext(), "Failed to send reset email!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getString(R.string.failed_email), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

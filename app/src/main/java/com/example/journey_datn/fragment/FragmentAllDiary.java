@@ -34,12 +34,11 @@ public class FragmentAllDiary extends Fragment implements AdapterRcvAllDiary.onI
     private FirebaseDB firebaseDB = new FirebaseDB(MainActivity.userId);
     private ArrayList<Diary> list = new ArrayList<>();
     private AdapterRcvAllDiary.OnClickItemTab1 onClickItemTab1;
-    private ImageView imgBack;
-
+    private ImageView imgBack, imgDelete;
     private Set<Integer> posDelete = new HashSet<>();
     private boolean checkRdb = false;
-    private ImageView imgDelete;
     private onDeletedItemListener onDeletedItem;
+
 
     public void setOnClickItemTab1(AdapterRcvAllDiary.OnClickItemTab1 onClickItemTab1) {
         this.onClickItemTab1 = onClickItemTab1;

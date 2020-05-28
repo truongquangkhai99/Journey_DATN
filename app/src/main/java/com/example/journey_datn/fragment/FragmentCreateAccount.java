@@ -31,10 +31,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FragmentCreateAccount extends Fragment {
+
     private EditText edtFirstName, edtLastName, edtUsername, edtPassword, edtConfirmPassword;
     private Button btnCreateAc;
     private ImageView imgShowPassword, imgShowConfirmPw;
-
     private FirebaseAuth auth;
     private FirebaseDB firebaseDB = new FirebaseDB();
     private String email, password, strFirstName, strLastName, strConfirmPW;
@@ -90,11 +90,11 @@ public class FragmentCreateAccount extends Fragment {
                 strLastName = edtLastName.getText().toString().trim();
                 strConfirmPW = edtConfirmPassword.getText().toString().trim();
                 if (TextUtils.isEmpty(strFirstName)) {
-                    edtFirstName.setError("Enter first name!");
+                    edtFirstName.setError(getString(R.string.firstName));
                     return;
                 }
                 if (TextUtils.isEmpty(strLastName)) {
-                    edtLastName.setError("Enter last name!");
+                    edtLastName.setError(getString(R.string.lastName));
                     return;
                 }
                 if (TextUtils.isEmpty(email)) {
@@ -110,23 +110,20 @@ public class FragmentCreateAccount extends Fragment {
                     return;
                 }
                 if (TextUtils.isEmpty(strConfirmPW)) {
-                    edtConfirmPassword.setError("Enter confirm password!");
+                    edtConfirmPassword.setError(getString(R.string.confirm_password));
                     return;
                 }
                 if (!password.equals(strConfirmPW)) {
-                    edtConfirmPassword.setError("Confirm password is wrong!");
+                    edtConfirmPassword.setError(getString(R.string.wrong_password));
                     return;
                 }
-
 
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(getContext(), "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
                                 if (!task.isSuccessful()) {
-                                    Toast.makeText(getContext(), "Authentication failed." + task.getException(),
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getString(R.string.invalid_info), Toast.LENGTH_SHORT).show();
                                 } else createAccount();
                             }
                         });
@@ -149,6 +146,9 @@ public class FragmentCreateAccount extends Fragment {
         imgShowConfirmPw = view.findViewById(R.id.img_show_confirm_password);
     }
 
+    /**
+     * tạo tài khoản và chuyển ngay sang màn hình MainActivity
+     */
     private void createAccount() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         String userId = mDatabase.push().getKey();

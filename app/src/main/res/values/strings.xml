@@ -9,10 +9,23 @@
     <string name="imagepicker_multiselect_overselect">You cannot select more than %d images</string>
     <string name="imagepicker_gallery_intent_title">Select Multiple Images</string>
     <string name="imagepicker_no_image_text_view">There are no image in your device.</string>
-    <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
-    <string name="auth_failed">Authentication failed, check your email and password or sign up</string>
-    <string name="enter_email">Enter email address!</string>
-    <string name="enter_password">Enter password!</string>
+    <string name="minimum_password">Password too short, enter minimum 6 characters</string>
+    <string name="auth_failed">Account does not exist</string>
+    <string name="enter_email">Enter email address</string>
+    <string name="enter_password">Enter password</string>
+    <string name="firstName">Enter first name</string>
+    <string name="lastName">Enter last name</string>
+    <string name="confirm_password">Enter confirm password</string>
+    <string name="invalid_info">Invalid information</string>
+    <string name="wrong_password">Confirm password is wrong</string>
+    <string name="registered_email">Enter your registered email</string>
+    <string name="reset_password">We have sent you instructions to reset your password</string>
+    <string name="failed_email">Failed to send reset email</string>
+    <string name="content_not_empty">Content is not empty</string>
+    <string name="title_not_empty">Title is not empty</string>
+    <string name="delete_content">Do you want to delete the content?</string>
+    <string name="delete_journal">Do you want to delete this journal entry?</string>
+    <string name="turn_on_location">Turn on location</string>
+    <string name="discard">Do you want to discard the changes?</string>
+    <string name="write_something">You need to write something</string>
 </resources>
-
-

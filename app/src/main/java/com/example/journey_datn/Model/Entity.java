@@ -10,12 +10,9 @@ import androidx.room.PrimaryKey;
 
 public class Entity implements Parcelable {
 
-    private String id;
-    private int temperature, action, mood, star;
-    private String srcImage, th, content, strPosition, strDate;
+    private int temperature, action, mood, star, day, month, year;
+    private String id, srcImage, th, content, strPosition, strDate, textStyle;
     private double lat, lng;
-    private int day, month, year;
-    private String textStyle;
     private boolean checkRdb = false;
 
     public Entity(String content, String textStyle, int action, String strPosition, int temperature,String strDate, int day, int month, int year, String th, int mood, int star, String srcImage, double lat, double lng) {

@@ -29,20 +29,18 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
     private RecyclerView rcvJourney;
     private int pos;
     private EditText inputSearch;
-    public static int REQUEST_CODE = 111;
-    public static int RESULT_CODE = 222;
+    public static int REQUEST_CODE = 111,RESULT_CODE = 222;
     private AdapterRcvEntity adapterRcvEntity;
     private ArrayList<Entity> listEntity;
-    private ConstraintLayout contraint1, contraint2, constStar;
+    private ConstraintLayout constOne, constTwo, constStar;
     private ImageView imgBack, imgHeart, imgHappy,imgGrinning, imgSad, imgNeutral;
     private LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SearchActivity.this);
-    private boolean checkUpdateforSearch = false, checkShowC1 = true;
+    private boolean checkUpdateSearch = false, checkShowC1 = true;
     private TextView txtStationary, txtEating, txtWalking, txtRunning, txtBiking, txtAutomotive, txtFlying;
     public static String searchEating = "SearchActionEating", searchStationary = "SearchActionStationary", searchWalking = "SearchActionWalking",
             searchRunning = "SearchActionRunning",searchBiking = "SearchActionBiking", searchAutomotive = "SearchActionAutomotive",
             searchFlying = "SearchActionFlying",searchHeart = "SearchFeelingHeart", searchHappy = "SearchFeelingHappy", searchGrinning = "SearchFeelingGrinning",
             searchSad = "SearchFeelingSad", searchNeutral = "SearchFeelingNeutral", searchStar = "SearchStar";
-
     private FirebaseDB firebaseDB = new FirebaseDB(MainActivity.userId);
 
 
@@ -67,7 +65,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("checkUpdate", checkUpdateforSearch);
+                intent.putExtra("checkUpdate", checkUpdateSearch);
                 setResult(RESULT_CODE, intent);
                 finish();
             }
@@ -78,12 +76,12 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 if (cs.length() == 0) {
-                    contraint1.setVisibility(View.VISIBLE);
-                    contraint2.setVisibility(View.GONE);
+                    constOne.setVisibility(View.VISIBLE);
+                    constTwo.setVisibility(View.GONE);
                     checkShowC1 = true;
                 } else {
-                    contraint1.setVisibility(View.GONE);
-                    contraint2.setVisibility(View.VISIBLE);
+                    constOne.setVisibility(View.GONE);
+                    constTwo.setVisibility(View.VISIBLE);
                     adapterRcvEntity.getFilter().filter(cs);
                     checkShowC1 = false;
                 }
@@ -100,8 +98,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
     }
 
     private void init(){
-        contraint1 = findViewById(R.id.constaint_1);
-        contraint2 = findViewById(R.id.constaint_2);
+        constOne = findViewById(R.id.constaint_1);
+        constTwo = findViewById(R.id.constaint_2);
         constStar = findViewById(R.id.const_star_search);
         imgBack = findViewById(R.id.img_back_search);
         inputSearch = findViewById(R.id.edt_search);
@@ -203,8 +201,8 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
     }
 
     private void activityClick(String search){
-        contraint1.setVisibility(View.GONE);
-        contraint2.setVisibility(View.VISIBLE);
+        constOne.setVisibility(View.GONE);
+        constTwo.setVisibility(View.VISIBLE);
         adapterRcvEntity.getFilter().filter(search);
         checkShowC1 = false;
     }
@@ -214,7 +212,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == ItemDetailActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");
-            checkUpdateforSearch = data.getBooleanExtra("checkUpdate", false);
+            checkUpdateSearch = data.getBooleanExtra("checkUpdate", false);
             firebaseDB.updateEntity(entity.getId(), entity);
             adapterRcvEntity.setData(entity, pos);
         }
@@ -224,7 +222,7 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
     public void onItemClick(int position) {
         ArrayList<Entity> listFilter;
         pos = position;
-        listFilter = adapterRcvEntity.getLstFillter();
+        listFilter = adapterRcvEntity.getListFilter();
         Intent intent = new Intent(SearchActivity.this, ItemDetailActivity.class);
         intent.putExtra("entity", listFilter.get(position));
         intent.putParcelableArrayListExtra("listEntity", listFilter);
@@ -240,14 +238,14 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
     @Override
     public void onBackPressed() {
         if (!checkShowC1){
-            contraint1.setVisibility(View.VISIBLE);
-            contraint2.setVisibility(View.GONE);
+            constOne.setVisibility(View.VISIBLE);
+            constTwo.setVisibility(View.GONE);
             inputSearch.setText("");
             checkShowC1 = true;
         }
         else {
             Intent intent = new Intent();
-            intent.putExtra("checkUpdate", checkUpdateforSearch);
+            intent.putExtra("checkUpdate", checkUpdateSearch);
             setResult(RESULT_CODE, intent);
             finish();
         }
@@ -255,6 +253,5 @@ public class SearchActivity extends AppCompatActivity implements AdapterRcvEntit
 
     @Override
     public void onCountItem(int count) {
-
     }
 }

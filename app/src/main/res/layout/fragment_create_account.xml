@@ -34,6 +34,7 @@
         android:id="@+id/edt_first_nameAc"
         app:layout_constraintTop_toBottomOf="@id/txt_first_name"
         android:layout_marginTop="@dimen/dp_4"
+        android:singleLine="true"
         app:layout_constraintStart_toStartOf="@id/txt_first_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -53,6 +54,7 @@
         android:id="@+id/edt_last_nameAc"
         app:layout_constraintTop_toBottomOf="@id/txt_last_name"
         android:layout_marginTop="@dimen/dp_4"
+        android:singleLine="true"
         app:layout_constraintStart_toStartOf="@id/txt_first_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -72,6 +74,7 @@
         android:id="@+id/edt_usernameAc"
         app:layout_constraintTop_toBottomOf="@id/txt_username"
         android:layout_marginTop="@dimen/dp_4"
+        android:singleLine="true"
         app:layout_constraintStart_toStartOf="@id/txt_first_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -92,6 +95,7 @@
         app:layout_constraintTop_toBottomOf="@id/txt_password"
         android:layout_marginTop="@dimen/dp_4"
         android:password="true"
+        android:singleLine="true"
         app:layout_constraintStart_toStartOf="@id/txt_first_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -120,6 +124,7 @@
         android:id="@+id/edt_confirm_passwordAc"
         app:layout_constraintTop_toBottomOf="@id/txt_confirm_password"
         android:layout_marginTop="@dimen/dp_4"
+        android:singleLine="true"
         android:password="true"
         app:layout_constraintStart_toStartOf="@id/txt_first_name"
         android:layout_width="match_parent"

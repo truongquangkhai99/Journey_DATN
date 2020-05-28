@@ -102,6 +102,8 @@ public class FragmentWriteDiary extends Fragment implements AdapterRcvAllDiary.O
                     edtDiary.setText("");
                     hideKeyboard(getActivity());
                 }
+                if (strContent.equals("")) edtDiary.setError(getString(R.string.content_not_empty));
+                if (strTitle.equals("")) edtTitle.setError(getString(R.string.title_not_empty));
             }
         });
 
@@ -148,7 +150,7 @@ public class FragmentWriteDiary extends Fragment implements AdapterRcvAllDiary.O
     private void dialogDelete(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete");
-        builder.setMessage("Do you want to delete the content?");
+        builder.setMessage(getString(R.string.delete_content));
         builder.setCancelable(false);
         builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
             @Override

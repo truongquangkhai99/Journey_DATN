@@ -95,6 +95,14 @@ public class FirebaseDB {
         mDatabase.child(userId).child(BranchDBFB.entityBranch).removeValue();
     }
 
+    /**
+     * lấy ra các Entity theo thời gian truyền vào sử dụng trong FragmentCalendar
+     * @param entityList
+     * @param day
+     * @param month
+     * @param year
+     * @return
+     */
     public List<Entity> getEntityByTime(List<Entity> entityList, int day, int month, int year) {
         List<Entity> list = new ArrayList(), allList;
         allList = entityList;

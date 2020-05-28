@@ -46,7 +46,7 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
     private ValueFilter valueFilter;
     private boolean checkVisibility;
     private Set<Integer> selectedSet;
-    public ArrayList<Entity> getLstFillter() {
+    public ArrayList<Entity> getListFilter() {
         return lstTempFilter;
     }
 
@@ -175,7 +175,7 @@ public class AdapterRcvEntity extends RecyclerView.Adapter<AdapterRcvEntity.View
         this.longListener = listener;
     }
 
-    public void notifiData(Set<Integer> set) {
+    public void notifyData(Set<Integer> set) {
         setCheckVisibility(false);
         selectedSet = new HashSet<>();
         selectedSet = set;

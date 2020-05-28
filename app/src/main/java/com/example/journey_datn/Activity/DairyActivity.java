@@ -32,8 +32,8 @@ import java.util.List;
 public class DairyActivity extends AppCompatActivity implements FragmentWriteDiary.clickItemDiary, FragmentAllDiary.onDeletedItemListener {
     private ViewPager mViewPager;
 
-    BottomNavigationView navigationView;
-    List<Fragment> fragmentList = new ArrayList<>();
+    private BottomNavigationView navigationView;
+    private List<Fragment> fragmentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

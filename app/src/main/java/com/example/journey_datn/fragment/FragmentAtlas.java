@@ -57,9 +57,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private int PERMISSION_ID = 44;
-    private double latitude, longtitude;
+    private double latitude, longitude;
     private FusedLocationProviderClient mFusedLocationClient;
-
     private ArrayList<Entity> lstEntity;
     private String knownName = "", roadName = "";
     private FloatingActionButton fabZoom, fabZoomIn;
@@ -106,6 +105,9 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
         getAllPosition();
     }
 
+    /**
+     * lấy ra tọa độ vị trí hiện tại
+     */
     @SuppressLint("MissingPermission")
     private void getLastLocation() {
         if (checkPermissions()) {
@@ -119,9 +121,9 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
                                     requestNewLocationData();
                                 } else {
                                     latitude = location.getLatitude();
-                                    longtitude = location.getLongitude();
-                                    getLatLng(latitude, longtitude);
-                                    LatLng currentLocation = new LatLng(latitude, longtitude);
+                                    longitude = location.getLongitude();
+                                    getLatLng(latitude, longitude);
+                                    LatLng currentLocation = new LatLng(latitude, longitude);
                                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 13));
                                     mMap.addMarker(new MarkerOptions()
                                             .title("Current Location")
@@ -153,6 +155,9 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    /**
+     * lấy ra tất cả các vị trí trong danh sách phần tử
+     */
     private void getAllPosition() {
         if (lstEntity.size() > 0) {
             List<LatLng> locations = new ArrayList<>();
@@ -190,6 +195,12 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    /**
+     * tạo Maker dạng CircleImageView
+     * @param context
+     * @param resource
+     * @return
+     */
     public static Bitmap createMaker(Context context, String resource) {
         View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
         CircleImageView markerImage = marker.findViewById(R.id.user_dp);
@@ -228,7 +239,7 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
             latitude = mLastLocation.getLatitude();
-            longtitude = mLastLocation.getLongitude();
+            longitude = mLastLocation.getLongitude();
         }
     };
 

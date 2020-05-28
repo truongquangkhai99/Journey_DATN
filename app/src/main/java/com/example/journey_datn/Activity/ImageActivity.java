@@ -28,6 +28,9 @@ public class ImageActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * lấy thông tin từ FragmentDetail truyền sang thông qua intent
+     */
     private void getData(){
         Intent intent = getIntent();
         srcImg = intent.getStringArrayExtra("srcImg");

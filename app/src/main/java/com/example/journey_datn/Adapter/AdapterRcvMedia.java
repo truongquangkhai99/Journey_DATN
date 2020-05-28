@@ -33,6 +33,9 @@ public class AdapterRcvMedia extends RecyclerView.Adapter<AdapterRcvMedia.ViewHo
         setStr();
     }
 
+    /**
+     * lấy ra những ảnh có đường dẫn
+     */
     private void setStr() {
         for (FragmentMedia.itemMedia itemMedia : listMedia)
             if (!itemMedia.getStrMedia().equals(""))

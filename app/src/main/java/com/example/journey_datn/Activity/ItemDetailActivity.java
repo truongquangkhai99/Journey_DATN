@@ -21,9 +21,9 @@ public class ItemDetailActivity extends AppCompatActivity{
     private ArrayList<Entity> lstEntity;
     private int position;
     private ImageView img_back_detail, img_star_detail, img_share_detail, img_update_detail, img_menu_detail, imgBefore, imgNext;
-    private final static int UPDATE_REQUESTCODE = 114;
-    public static int RESULT_CODE = 115;
-    private boolean checkUpdateforSearch = false, checkStar = false, checkSee = false;
+    private final static int UPDATE_REQUEST_CODE = 114;
+    public static int RESULT_CODE = 115, ACTIVITY_CODE = 2;
+    private boolean checkUpdateSearch = false, checkStar = false, checkSee = false;
 
 
     @Override
@@ -48,7 +48,7 @@ public class ItemDetailActivity extends AppCompatActivity{
                     lstEntity.get(position).setStar(R.drawable.ic_star_yellow_24dp);
                     checkStar = true;
                 }
-                checkUpdateforSearch = true;
+                checkUpdateSearch = true;
                 checkSee = true;
             }
         });
@@ -69,8 +69,12 @@ public class ItemDetailActivity extends AppCompatActivity{
             public void onPageSelected(int pos) {
                 if (pos == 0){
                     imgBefore.setVisibility(View.INVISIBLE);
+                    imgNext.setVisibility(View.VISIBLE);
                 }
-                else if (pos == (lstEntity.size() - 1)) imgNext.setVisibility(View.INVISIBLE);
+                else if (pos == (lstEntity.size() - 1)){
+                    imgNext.setVisibility(View.INVISIBLE);
+                    imgBefore.setVisibility(View.VISIBLE);
+                }
                 else {
                     imgBefore.setVisibility(View.VISIBLE);
                     imgNext.setVisibility(View.VISIBLE);
@@ -116,7 +120,7 @@ public class ItemDetailActivity extends AppCompatActivity{
                     Intent intent = getIntent();
                     intent.putExtra("entity", lstEntity.get(position));
                     intent.putExtra("position", getPosition());
-                    intent.putExtra("checkUpdate", checkUpdateforSearch);
+                    intent.putExtra("checkUpdate", checkUpdateSearch);
                     setResult(RESULT_CODE, intent);
                     finish();
                 }else finish();
@@ -127,10 +131,10 @@ public class ItemDetailActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ItemDetailActivity.this, AddDataActivity.class);
-                intent.putExtra("activity", 2);
+                intent.putExtra("activity", ACTIVITY_CODE);
                 intent.putExtra("entityUpdate", lstEntity.get(position));
                 intent.putExtra("positionUpdate", getPosition());
-                startActivityForResult(intent, UPDATE_REQUESTCODE);
+                startActivityForResult(intent, UPDATE_REQUEST_CODE);
             }
         });
     }
@@ -140,7 +144,7 @@ public class ItemDetailActivity extends AppCompatActivity{
         if (checkSee){
             Intent intent = getIntent();
             intent.putExtra("entity", lstEntity.get(position));
-            intent.putExtra("checkUpdate", checkUpdateforSearch);
+            intent.putExtra("checkUpdate", checkUpdateSearch);
             setResult(RESULT_CODE, intent);
             finish();
         }else finish();
@@ -160,18 +164,17 @@ public class ItemDetailActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == UPDATE_REQUESTCODE && resultCode == AddDataActivity.RESULT_CODE) {
-            checkUpdateforSearch = true;
+        if (requestCode == UPDATE_REQUEST_CODE && resultCode == AddDataActivity.RESULT_CODE) {
+            checkUpdateSearch = true;
             Entity entity = data.getParcelableExtra("entity");
             Intent intent = getIntent();
             intent.putExtra("entity", entity);
             intent.putExtra("position", getPosition());
-            intent.putExtra("checkUpdate", checkUpdateforSearch);
+            intent.putExtra("checkUpdate", checkUpdateSearch);
             setResult(RESULT_CODE, intent);
             finish();
         }
     }
-
 
     public void getDataIntent() {
         Intent intent = getIntent();

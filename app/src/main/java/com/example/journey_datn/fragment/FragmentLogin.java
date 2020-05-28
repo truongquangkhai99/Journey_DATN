@@ -42,7 +42,7 @@ import java.util.List;
 
 public class FragmentLogin extends Fragment {
     private EditText edtUsername, edtPassword;
-    private TextView txtWrongUserName, txtWrongPassword, txtCreateAccount, txtForgot;
+    private TextView txtCreateAccount, txtForgot;
     private ImageView imgShowPassword;
     private Button btnLogin;
     private FirebaseAuth auth;
@@ -74,7 +74,6 @@ public class FragmentLogin extends Fragment {
             }
         });
 
-
         auth = FirebaseAuth.getInstance();
 
         txtCreateAccount.setOnClickListener(new View.OnClickListener() {
@@ -98,11 +97,11 @@ public class FragmentLogin extends Fragment {
                 password = edtPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
-                    edtUsername.setError("Enter email address!");
+                    edtUsername.setError(getString(R.string.enter_email));
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
-                    edtPassword.setError("Enter password!");
+                    edtPassword.setError(getString(R.string.enter_password));
                     return;
                 }
 
@@ -139,8 +138,6 @@ public class FragmentLogin extends Fragment {
     private void init(View view) {
         edtUsername = view.findViewById(R.id.txt_username_login);
         edtPassword = view.findViewById(R.id.txt_password_login);
-        txtWrongUserName = view.findViewById(R.id.txt_wrong_username);
-        txtWrongPassword = view.findViewById(R.id.txt_wrong_password);
         txtCreateAccount = view.findViewById(R.id.txt_create_account);
         imgShowPassword = view.findViewById(R.id.img_show_password_login);
         btnLogin = view.findViewById(R.id.button_login);
