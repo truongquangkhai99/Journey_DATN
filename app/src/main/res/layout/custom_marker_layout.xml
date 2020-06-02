@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_dp"
@@ -17,5 +17,17 @@
         android:layout_marginLeft="4dp"
         android:layout_marginTop="3.5dp"
         android:contentDescription="@null"
+        android:paddingRight="@dimen/dp_8"
         android:src="@drawable/singapore" />
+    <TextView
+        android:id="@+id/number"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@android:color/white"
+        android:text="11"
+        android:background="@drawable/circle_num"
+        app:layout_constraintCircleRadius="@dimen/dp_8"
+        android:gravity="center"
+        android:layout_width="@dimen/dp_18"
+        android:layout_height="@dimen/dp_18"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

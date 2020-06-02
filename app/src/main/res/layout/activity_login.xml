@@ -10,7 +10,7 @@
         android:id="@+id/const_toolbar_login"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:background="#0461A8"
+        android:background="@color/color_background_main"
         android:layout_width="match_parent"
         android:layout_height="60dp">
 

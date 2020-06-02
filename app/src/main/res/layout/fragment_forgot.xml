@@ -58,7 +58,7 @@
                 android:id="@+id/btn_fr_reset_pw"
                 android:text="reset password"
                 android:textColor="@color/color_white"
-                android:background="#0461A8"
+                android:background="@color/color_background_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </androidx.cardview.widget.CardView>

@@ -5,6 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/const_create_account"
+        android:src="@drawable/icon_journey"
+        android:layout_width="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:layout_marginTop="@dimen/dp_32"
+        android:layout_marginBottom="@dimen/dp_32"
+        android:layout_height="0dp"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/const_create_account"
         app:layout_constraintTop_toTopOf="parent"
@@ -107,7 +119,7 @@
                 android:id="@+id/button_login"
                 android:text="Login"
                 android:textColor="@color/color_white"
-                android:background="#0461A8"
+                android:background="@color/color_background_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </androidx.cardview.widget.CardView>

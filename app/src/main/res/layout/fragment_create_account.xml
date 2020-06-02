@@ -13,7 +13,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:text="Create Account"
         android:textSize="@dimen/dp_24"
-        android:textColor="#0461A8"
+        android:textColor="@color/color_background_main"
         android:textStyle="bold"
         android:layout_marginTop="@dimen/dp_16"
         android:layout_width="wrap_content"
@@ -152,7 +152,7 @@
             android:id="@+id/button_create_account"
             android:text="Create account"
             android:textColor="@color/color_white"
-            android:background="#0461A8"
+            android:background="@color/color_background_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </androidx.cardview.widget.CardView>

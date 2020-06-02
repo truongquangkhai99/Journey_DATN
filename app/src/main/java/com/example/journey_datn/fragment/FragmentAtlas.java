@@ -17,9 +17,11 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,9 +50,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -126,8 +136,7 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
                                     LatLng currentLocation = new LatLng(latitude, longitude);
                                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 13));
                                     mMap.addMarker(new MarkerOptions()
-                                            .title("Current Location")
-                                            .snippet("" + knownName + ", " + roadName)
+                                            .title(knownName + ", " + roadName)
                                             .position(currentLocation));
                                 }
                             }
@@ -148,8 +157,10 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
         geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {
             addresses = geocoder.getFromLocation(lat, lng, 1);
-            knownName = addresses.get(0).getFeatureName();
-            roadName = addresses.get(0).getThoroughfare();
+            if (addresses.get(0).getFeatureName() != null && addresses.get(0).getThoroughfare() != null){
+                knownName = addresses.get(0).getFeatureName();
+                roadName = addresses.get(0).getThoroughfare();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -161,30 +172,69 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
     private void getAllPosition() {
         if (lstEntity.size() > 0) {
             List<LatLng> locations = new ArrayList<>();
-            for (Entity list : lstEntity) {
-                if (!list.getStrPosition().equals("") && !list.getSrcImage().equals("")) {
-                    getLatLng(list.getLat(), list.getLng());
-                    LatLng location = new LatLng(list.getLat(), list.getLng());
-                    locations.add(location);
-
-                    String arrSrc = list.getSrcImage();
-                    String[] separated = arrSrc.split(";");
-                    if (separated.length == 1){
-                        mMap.addMarker(new MarkerOptions()
-                                .title("Location")
-                                .snippet(knownName + ", " + roadName)
-                                .position(location)
-                                .icon(BitmapDescriptorFactory.fromBitmap(createMaker(getContext(), arrSrc))));
-                    }else {
-                        mMap.addMarker(new MarkerOptions()
-                                .title("Location")
-                                .snippet(knownName + ", " + roadName)
-                                .position(location)
-                                .icon(BitmapDescriptorFactory.fromBitmap(createMaker(getContext(), separated[0]))));
-                    }
+            Set<String> listCountryName = new HashSet<>();
+            int count;
+            for (Entity entity : lstEntity) {  //lấy ra list tên quốc ra
+                if (!entity.getStrPosition().equals("")) {
+                    String[] pos = entity.getStrPosition().split(",");
+                    String name = pos[pos.length - 1];
+                    listCountryName.add(name);
                 }
             }
-            if (locations.size() > 0){
+
+            for (String item : listCountryName) { // gộp những item có cùng 1 quốc gia lại thành 1 list riêng
+                count = 0;
+                List<Entity> listCountry = new ArrayList<>();
+                for (Entity entity : lstEntity) {
+                    if (!entity.getStrPosition().equals("") && !entity.getSrcImage().equals("")) {
+                        String[] pos = entity.getStrPosition().split(",");
+                        String name = pos[pos.length - 1];
+                        if (name.equalsIgnoreCase(item)) {
+                            listCountry.add(entity);
+                        }
+                    }
+                }
+
+                Collections.sort(listCountry, new Comparator<Entity>() { // sắp xếp list quốc gia theo thời gian
+                    @Override
+                    public int compare(Entity o1, Entity o2) {
+                        Calendar c1 = Calendar.getInstance();
+                        Calendar c2 = Calendar.getInstance();
+
+                        String strDate[] = o1.getStrDate().split("-");
+                        String strYear[] = strDate[2].split(" ");
+                        String strHour[] = strYear[1].split(":");
+                        int hour = Integer.parseInt(strHour[0]);
+                        int minute = Integer.parseInt(strHour[1]);
+
+                        String strDate2[] = o2.getStrDate().split("-");
+                        String strYear2[] = strDate2[2].split(" ");
+                        String strHour2[] = strYear2[1].split(":");
+                        int hour2 = Integer.parseInt(strHour2[0]);
+                        int minute2 = Integer.parseInt(strHour2[1]);
+
+                        c1.set(o1.getYear(), o1.getMonth() - 1, o1.getDay(), hour, minute);
+                        c2.set(o2.getYear(), o2.getMonth() - 1, o2.getDay(), hour2, minute2);
+
+                        return (int) (c1.getTimeInMillis()  - c2.getTimeInMillis());
+                    }
+                });
+
+                for (Entity entity : listCountry){
+                    count = count + 1;
+                    getLatLng(entity.getLat(), entity.getLng());
+                    LatLng location = new LatLng(entity.getLat(), entity.getLng());
+                    locations.add(location);
+
+                    String arrSrc = entity.getSrcImage();
+                    String[] separated = arrSrc.split(";");
+                    mMap.addMarker(new MarkerOptions()
+                            .title(knownName + ", " + roadName)
+                            .position(location)
+                            .icon(BitmapDescriptorFactory.fromBitmap(createMaker(getContext(), separated[0], count))));
+                }
+            }
+            if (locations.size() > 0) {
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
                 builder.include(locations.get(0)); //point A
                 builder.include(locations.get(locations.size() - 1)); //point B
@@ -197,13 +247,16 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
 
     /**
      * tạo Maker dạng CircleImageView
+     *
      * @param context
      * @param resource
      * @return
      */
-    public static Bitmap createMaker(Context context, String resource) {
+    public static Bitmap createMaker(Context context, String resource, int num) {
         View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
         CircleImageView markerImage = marker.findViewById(R.id.user_dp);
+        TextView txtNum = marker.findViewById(R.id.number);
+        txtNum.setText(num + "");
         markerImage.setImageURI(Uri.parse(resource));
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
