@@ -93,6 +93,7 @@ public class FragmentJourney extends Fragment implements AdapterRcvEntity.onItem
         if (requestCode == REQUEST_CODE && resultCode == AddDataActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");
             firebaseDB.insertEntity(entity);
+            loadFragment(new FragmentJourney());
         }
         if (requestCode == REQUEST_CODE && resultCode == ItemDetailActivity.RESULT_CODE) {
             Entity entity = data.getParcelableExtra("entity");

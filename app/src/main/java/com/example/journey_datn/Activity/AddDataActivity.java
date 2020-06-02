@@ -2,6 +2,7 @@ package com.example.journey_datn.Activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -23,6 +24,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -50,11 +53,15 @@ import com.example.journey_datn.R;
 import com.example.journey_datn.fragment.Weather.interfaces.IWeatherApi;
 import com.example.journey_datn.fragment.Weather.models.OpenWeatherModel;
 import com.example.journey_datn.fragment.Weather.utils.ApiService;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -656,6 +663,40 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+    int place_request = 1;
+    private void placePicker(){
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build( AddDataActivity.this), place_request);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == place_request) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, AddDataActivity.this);
+                 latitude = place.getLatLng().latitude;
+                 longitude = place.getLatLng().longitude;
+
+                Geocoder geocoder;
+                List<Address> addresses;
+                geocoder = new Geocoder(AddDataActivity.this, Locale.getDefault());
+                try {
+                    addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                    position = addresses.get(0).getAddressLine(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     private void placeClick() {
         final Dialog dialog = new Dialog(this);
         Window window = dialog.getWindow();
@@ -682,7 +723,7 @@ public class AddDataActivity extends AppCompatActivity implements View.OnClickLi
         imgPick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AddDataActivity.this, "choose pick", Toast.LENGTH_SHORT).show();
+                placePicker();
                 dialog.dismiss();
             }
         });

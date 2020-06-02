@@ -31,12 +31,16 @@ import androidx.fragment.app.Fragment;
 import com.example.journey_datn.Activity.MainActivity;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
-import com.example.journey_datn.db.FirebaseDB;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -50,19 +54,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.app.Activity.RESULT_OK;
 
 public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -72,7 +75,6 @@ public class FragmentAtlas extends Fragment implements OnMapReadyCallback {
     private ArrayList<Entity> lstEntity;
     private String knownName = "", roadName = "";
     private FloatingActionButton fabZoom, fabZoomIn;
-
 
     @Nullable
     @Override

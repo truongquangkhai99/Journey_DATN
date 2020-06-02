@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.journey_datn.Adapter.AdapterPagerDetail;
 import com.example.journey_datn.Model.Entity;
 import com.example.journey_datn.R;
+import com.example.journey_datn.db.FirebaseDB;
 
 import java.util.ArrayList;
 public class ItemDetailActivity extends AppCompatActivity{
@@ -24,6 +25,7 @@ public class ItemDetailActivity extends AppCompatActivity{
     private final static int UPDATE_REQUEST_CODE = 114;
     public static int RESULT_CODE = 115, ACTIVITY_CODE = 2;
     private boolean checkUpdateSearch = false, checkStar = false, checkSee = false;
+    private FirebaseDB firebaseDB = new FirebaseDB(MainActivity.userId);
 
 
     @Override
@@ -41,11 +43,13 @@ public class ItemDetailActivity extends AppCompatActivity{
                 if (checkStar) {
                     img_star_detail.setImageResource(R.drawable.ic_star_border_black_24dp);
                     lstEntity.get(position).setStar(R.drawable.ic_star_border_black_24dp);
+                    firebaseDB.updateEntity(lstEntity.get(position).getId(), lstEntity.get(position));
                     checkStar = false;
                 }
                 else {
                     img_star_detail.setImageResource(R.drawable.ic_star_yellow_24dp);
                     lstEntity.get(position).setStar(R.drawable.ic_star_yellow_24dp);
+                    firebaseDB.updateEntity(lstEntity.get(position).getId(), lstEntity.get(position));
                     checkStar = true;
                 }
                 checkUpdateSearch = true;
@@ -144,6 +148,7 @@ public class ItemDetailActivity extends AppCompatActivity{
         if (checkSee){
             Intent intent = getIntent();
             intent.putExtra("entity", lstEntity.get(position));
+            intent.putExtra("position", getPosition());
             intent.putExtra("checkUpdate", checkUpdateSearch);
             setResult(RESULT_CODE, intent);
             finish();
